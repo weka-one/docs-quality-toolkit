@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Documenting a product that shipped every two weeks — Wesley Kao</title>
+<meta name="description" content="Keeping an Effect House learning-resources estate accurate against a two-week release cadence that delays and patch builds kept reshaping.">
+<meta property="og:title" content="Documenting a product that shipped every two weeks">
+<meta property="og:description" content="Keeping a docs estate accurate against a release cadence that kept moving underneath it.">
+<meta property="og:type" content="article">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=Newsreader:opsz,wght@6..72,300;6..72,400;6..72,500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/site.css">
+</head>
+<body data-base="../" data-page="release-documentation">
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="rail"></header>
+
+<main id="main">
+  <article class="case">
+    <a class="case__back" href="index.html">&larr; Portfolio</a>
+    <p class="case__kicker">TikTok · Effect House · 2023–2025</p>
+    <h1 class="case__title">Documenting a product that shipped every two weeks</h1>
+    <p class="case__deck">Keeping a learning-resources estate accurate against a release cadence that kept moving underneath it.</p>
+
+    <dl class="meta">
+      <div><dt>Role</dt><dd>Feature documentation writer; release workflow contributor</dd></div>
+      <div><dt>Surface</dt><dd>Effect House learning resources</dd></div>
+      <div><dt>Worked with</dt><dd>Technical writing, product, engineering, UX writing, template teams</dd></div>
+      <div><dt>Cadence</dt><dd>Two-week release cycle, week-long staged release window</dd></div>
+    </dl>
+
+    <dl class="stats">
+      <div><dt>2 weeks</dt><dd>between releases, with patch builds arriving off-schedule</dd></div>
+      <div><dt>1 week</dt><dd>staged release window to write, review, and publish against a build that was still changing</dd></div>
+      <div><dt>6</dt><dd>major feature areas documented across the releases from March onward</dd></div>
+    </dl>
+
+    <div class="prose">
+
+      <h2>The cadence was the constraint</h2>
+      <p>Effect House shipped on a two-week release cycle, and the writing team was expected to publish release notes and feature guides against it. The complication was that the cycle was nominal rather than real: delays and patch builds meant the actual schedule was irregular, and the documentation team had to flex around a cadence we could not predict more than a few days out.</p>
+      <p>The work happened inside a week-long staged release window — writing, reviewing, and publishing learning resources for features that were, in some cases, still settling while we documented them. Documentation written too early describes a build that shipped differently. Documentation written too late arrives after the creators who needed it have already given up.</p>
+
+      <h2>What shipped</h2>
+      <p>Across the releases from March onward I wrote and published the learning resources for a run of significant features:</p>
+      <ul>
+        <li>The majority of the <strong>Material Editor</strong> documentation</li>
+        <li><strong>Interactions</strong> guides</li>
+        <li><strong>Physics features</strong> guides</li>
+        <li>The <strong>Effect Icon Creator</strong> guide</li>
+        <li><strong>User Media Texture</strong></li>
+        <li>A guide on promoting published effects, aimed at creators trying to find an audience rather than build one more thing</li>
+      </ul>
+
+      <h2>The unglamorous half: keeping existing pages true</h2>
+      <p>New features get attention. The pages that quietly stop being correct do not, and they are where a documentation set actually loses reader trust.</p>
+      <p>Each release also meant updating documents that were not about the new feature but were invalidated by it. I revised the technical optimization guide and the submission workflow guide to reflect version changes — two pages that sit at the end of every creator's workflow, where being out of date costs someone a rejected submission rather than a moment of confusion.</p>
+
+      <div class="pull">
+        <p>Writing documentation for a moving product is mostly a review problem, not a writing problem. The draft is quick. Knowing which of the 300 pages you already published just became wrong is the hard part.</p>
+      </div>
+
+      <h2>The review loop</h2>
+      <p>Working inside a staged release meant the documentation review was also a product review. Through the writing process I raised pull request risks, bugs, UX writing questions, and technical clarifications with the product and engineering leads — often before the feature reached general availability.</p>
+      <p>This is the part of release documentation I would defend as genuinely load-bearing. A writer working through a feature end to end, in order, with fresh eyes is running an unusually thorough usability pass. Treating those findings as documentation-blocked bugs rather than writer confusion caught real problems.</p>
+
+      <h2>Process improvements that came out of it</h2>
+      <ul>
+        <li><strong>Release notes.</strong> External release notes were owned by another writer on the team; I supported that work alongside the product lead, and the publication process improved substantially over the period — release notes moved from something assembled under deadline pressure to something with a repeatable shape.</li>
+        <li><strong>Decoupling what did not need to be coupled.</strong> Template guides were produced with the teams building effect templates on a track independent of the release cadence. Not every piece of documentation needs to be hostage to the build schedule, and separating the two removed a recurring source of crunch.</li>
+        <li><strong>Collaboration under pressure.</strong> The throughput here depended on two other writers reviewing and publishing in parallel with me during the staged release window. The cadence was survivable because the review workflow was shared, not because any one person absorbed it.</li>
+      </ul>
+
+      <h2>What I would do differently</h2>
+      <p>The link between a product change and the documentation it invalidated was carried entirely by people paying attention — a writer remembering that the submission workflow guide mentions a setting that just moved. That works at 300 pages and one product surface. It does not scale, and it degrades exactly when the team is busiest, which is when releases are largest.</p>
+      <p>The version of this I would build now instruments the connection: diff each release's changelog against the documentation set and flag every page that references a changed surface, so the update list is generated rather than remembered. Pair that with staleness signals — pages that have not been touched across N releases of the feature area they document — and the two-week cycle stops depending on recall.</p>
+      <p>I would also push harder on the thing that made the schedule painful in the first place. We treated the irregular cadence as weather. Some of it was: patch builds are genuinely unpredictable. But a documented contract for when documentation gets a stable build to write against would have converted some of that unpredictability into a known constraint, and I did not push for one at the time.</p>
+
+    </div>
+
+    <nav class="pager" id="pager" aria-label="More projects"></nav>
+  </article>
+
+  <footer>Built by hand with HTML, CSS, and a little JavaScript.</footer>
+</main>
+
+<script src="../assets/data.js"></script>
+<script src="../assets/site.js"></script>
+</body>
+</html>
