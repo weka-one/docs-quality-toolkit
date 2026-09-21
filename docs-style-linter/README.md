@@ -198,4 +198,4 @@ publishable and the two sets can have different review requirements.
 
 ## Requirements
 
-Vale 3.9.6 (`make install-vale`), Python 3.11+, PyYAML.
+Vale 3.9.6 (`make install`), Python 3.9+, PyYAML.

@@ -31,6 +31,10 @@ import urllib.request
 from typing import Iterator, Protocol
 
 
+class SourceError(RuntimeError):
+    """A problem fetching content, phrased for the person who has to fix it."""
+
+
 @dataclasses.dataclass
 class Page:
     """One documentation page, however it was obtained.
@@ -204,16 +208,78 @@ class SiteCrawlSource:
         self._opener = opener or urllib.request.urlopen
         self.delay = float(config.get("delay_seconds", 1.0))
         self.limit = int(config.get("limit", 0)) or None
+        self.user_agent = config.get("user_agent", "docs-pipeline/1.0")
+        self._robots = None
+        self.skipped_by_robots = 0
+
+    def robots(self):
+        """Load the site's robots.txt once.
+
+        Checking it is not optional politeness. This is the one adapter that
+        fetches somebody's live site at volume, and the site has already
+        published the rules it wants followed. A crawler that ignores them gets
+        blocked, and deserves to be.
+
+        A missing or unreadable robots.txt means no rules were published, which
+        is permission by default - not a reason to stop.
+        """
+        if self._robots is not None:
+            return self._robots
+        import urllib.robotparser
+
+        parsed = urllib.parse.urlparse(self.config["sitemap_url"])
+        parser = urllib.robotparser.RobotFileParser()
+        robots_url = f"{parsed.scheme}://{parsed.netloc}/robots.txt"
+        try:
+            request = urllib.request.Request(
+                robots_url, headers={"User-Agent": self.user_agent}
+            )
+            with self._opener(request, timeout=self.config.get("timeout", 60)) as response:
+                parser.parse(response.read().decode("utf-8", errors="replace").splitlines())
+        except Exception:
+            parser.allow_all = True
+        self._robots = parser
+
+        # A site that asks for a slower pace gets it.
+        try:
+            published = parser.crawl_delay(self.user_agent)
+        except Exception:
+            published = None
+        if published and float(published) > self.delay:
+            self.delay = float(published)
+        return parser
+
+    def allowed(self, url: str) -> bool:
+        if self.config.get("ignore_robots"):
+            return True
+        try:
+            return self.robots().can_fetch(self.user_agent, url)
+        except Exception:
+            return True
 
     def _get(self, url: str) -> str:
-        request = urllib.request.Request(
-            url, headers={"User-Agent": self.config.get("user_agent", "docs-pipeline/1.0")}
-        )
+        request = urllib.request.Request(url, headers={"User-Agent": self.user_agent})
         with self._opener(request, timeout=self.config.get("timeout", 60)) as response:
             return response.read().decode("utf-8", errors="replace")
 
     def urls(self) -> list[str]:
-        sitemap = self._get(self.config["sitemap_url"])
+        url = self.config["sitemap_url"]
+        try:
+            sitemap = self._get(url)
+        except Exception as exc:
+            # This is the first thing a crawl does, so it is where a wrong
+            # address, a VPN requirement or a blocked network shows up. A raw
+            # traceback here tells the reader nothing they can act on.
+            raise SourceError(
+                f"Could not read the sitemap at {url}\n"
+                f"  ({type(exc).__name__}: {exc})\n\n"
+                "Things to check, in order:\n"
+                "  1. Open that address in a browser. If it 404s, look for a "
+                "'Sitemap:' line in the site's robots.txt and use that address.\n"
+                "  2. If the site is behind a VPN or SSO, connect first.\n"
+                "  3. If the browser works but this does not, the site may be "
+                "blocking automated requests; try a slower delay_seconds."
+            ) from exc
         host = urllib.parse.urlparse(self.config["sitemap_url"]).netloc
         found = []
         for loc in _LOC.findall(sitemap):
@@ -221,6 +287,9 @@ class SiteCrawlSource:
             if urllib.parse.urlparse(loc).netloc != host:
                 continue        # never wander off the configured host
             if any(re.search(p, loc) for p in self.config.get("exclude_patterns", [])):
+                continue
+            if not self.allowed(loc):
+                self.skipped_by_robots += 1
                 continue
             found.append(loc)
         return found[: self.limit] if self.limit else found

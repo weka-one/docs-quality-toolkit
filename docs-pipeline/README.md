@@ -125,4 +125,4 @@ rather than the end of the run.
 
 ## Requirements
 
-Python 3.11+, PyYAML, and Vale 3.9.6 on `PATH` for the style checks.
+Python 3.9+, PyYAML, and Vale 3.9.6 on `PATH` for the style checks.

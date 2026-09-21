@@ -1,0 +1,66 @@
+# Check the PUBLIC TikTok for Developers docs by reading the published site.
+#
+# Use this when the CMS has no export and no read API. It reads the site's
+# sitemap, fetches each page, reduces the HTML to Markdown, and runs the
+# checks over that.
+#
+# It checks what actually went live, which is its real advantage over checking
+# a source of truth that may not match what was published.
+#
+# Before the first full run:
+#   1. Open https://developers.tiktok.com/robots.txt in a browser and read it.
+#      The crawler obeys it automatically, but you should know what it says.
+#   2. Open https://developers.tiktok.com/sitemap.xml. If that 404s, look for a
+#      sitemap line inside robots.txt and use the address it gives.
+#   3. Leave `limit: 25` on for the first run. Confirm the pages come back
+#      looking like pages before fetching the whole site.
+
+source:
+  type: site-crawl
+  sitemap_url: https://developers.tiktok.com/sitemap.xml
+
+  # Seconds between requests. The crawler raises this automatically if
+  # robots.txt asks for a slower pace.
+  delay_seconds: 1.5
+
+  # Say who is calling. A site owner who sees this in their logs can find you.
+  user_agent: "tt4d-docs-health/1.0 (internal docs quality check)"
+
+  # Start small. Set to 0 for every page once a short run looks right.
+  limit: 25
+
+  # Blog posts follow different rules (em dashes and exclamation points are
+  # allowed there), so they are not checked against the documentation rules.
+  exclude_patterns:
+    - "/blog/"
+    - "/changelog/"
+    - "/release-notes/"
+    - "/community/"
+
+checks:
+  style:
+    enabled: true
+    vale_config: ../docs-style-linter/.vale.ini
+
+  structure:
+    enabled: true
+    # The TT4D policy: title case for H1, the approved callout labels and
+    # fence languages, Yes/No/Conditional in the Required column.
+    policy: ../docs-style-linter/config/tiktok.yml
+
+  # OFF on purpose. The freshness checker compares code samples against a
+  # machine-readable definition of the API (an OpenAPI file). TikTok does not
+  # publish one, so there is nothing to compare against. Turn this on and point
+  # `spec` at the file if you can get one internally - that is when it starts
+  # catching samples that call endpoints which no longer exist.
+  freshness:
+    enabled: false
+    spec: ../spec/meilisearch-openapi.json
+    min_confidence: 0.6
+
+report:
+  out: reports
+  history: history
+  # Fail only when NEW error-level problems appear, never on the standing
+  # backlog. Raise this once you know the normal run-to-run noise.
+  fail_on_new_errors: 1

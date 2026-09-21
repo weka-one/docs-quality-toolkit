@@ -193,3 +193,52 @@ def test_materialise_refuses_path_traversal(tmp_path):
 def test_build_rejects_unknown_type():
     with pytest.raises(ValueError):
         build({"type": "telepathy"})
+
+
+# --- robots.txt -------------------------------------------------------------
+
+ROBOTS = """User-agent: *
+Disallow: /internal/
+Crawl-delay: 3
+"""
+
+
+def test_crawl_obeys_robots_disallow():
+    """The site published rules; a crawler that ignores them deserves blocking."""
+    sitemap = """<?xml version="1.0"?><urlset>
+    <url><loc>https://docs.example/public</loc></url>
+    <url><loc>https://docs.example/internal/secret</loc></url>
+    </urlset>"""
+    source = SiteCrawlSource(
+        {"sitemap_url": "https://docs.example/sitemap.xml", "delay_seconds": 0},
+        opener=opener_for({
+            "https://docs.example/robots.txt": ROBOTS,
+            "https://docs.example/sitemap.xml": sitemap,
+        }),
+    )
+    assert source.urls() == ["https://docs.example/public"]
+    assert source.skipped_by_robots == 1
+
+
+def test_crawl_adopts_published_crawl_delay():
+    source = SiteCrawlSource(
+        {"sitemap_url": "https://docs.example/sitemap.xml", "delay_seconds": 0.5},
+        opener=opener_for({
+            "https://docs.example/robots.txt": ROBOTS,
+            "https://docs.example/sitemap.xml": SITEMAP,
+        }),
+    )
+    source.urls()
+    assert source.delay == 3.0
+
+
+def test_missing_robots_is_permission_not_a_stop():
+    def no_robots(request, timeout=None):
+        if request.full_url.endswith("robots.txt"):
+            raise OSError("404")
+        return FakeResponse(SITEMAP.encode())
+    source = SiteCrawlSource(
+        {"sitemap_url": "https://docs.example/sitemap.xml", "exclude_patterns": ["/blog/"]},
+        opener=no_robots,
+    )
+    assert source.urls() == ["https://docs.example/a"]

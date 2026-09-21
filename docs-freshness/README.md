@@ -166,4 +166,4 @@ scanning, so drift lands on the pull request that caused it.
 
 ## Requirements
 
-Python 3.11+, PyYAML, pytest. `anthropic` only for the `claude` arm.
+Python 3.9+, PyYAML, pytest. `anthropic` only for the `claude` arm.

@@ -201,7 +201,15 @@ def main() -> int:
     tmp = pathlib.Path(tempfile.mkdtemp(prefix="docs-pipeline-"))
     staged = tmp / "content"
     print(f"==> Pulling content from {source.name}")
-    sources.materialise(source, staged)
+    try:
+        sources.materialise(source, staged)
+    except sources.SourceError as exc:
+        print(f"\nCould not fetch the documentation.\n\n{exc}\n", file=sys.stderr)
+        return 1
+    except Exception as exc:
+        print(f"\nCould not fetch the documentation.\n  {type(exc).__name__}: {exc}\n",
+              file=sys.stderr)
+        return 1
     pages = len([p for p in staged.rglob("*.md")] + [p for p in staged.rglob("*.mdx")])
     print(f"    {pages} pages staged")
 

@@ -19,11 +19,20 @@ REPO = ROOT.parent
 OK, BAD = "  ok  ", " todo "
 
 
+# 3.9 is the real floor: every module uses `from __future__ import annotations`,
+# so modern type syntax stays lazy, and the only 3.9-specific call is
+# pathlib.Path.is_relative_to in the pipeline's staging guard. Checked with
+# vermin. An earlier version of this file demanded 3.11 and would have sent a
+# macOS user (which ships 3.9) off to install a Python they did not need.
+MIN_PYTHON = (3, 9)
+
+
 def check_python() -> tuple[bool, str, str]:
     version = sys.version_info
-    good = (version.major, version.minor) >= (3, 11)
+    good = (version.major, version.minor) >= MIN_PYTHON
+    wanted = ".".join(str(n) for n in MIN_PYTHON)
     return good, f"Python {version.major}.{version.minor}", (
-        "" if good else "Install Python 3.11 or newer from python.org"
+        "" if good else f"Install Python {wanted} or newer from python.org"
     )
 
 
