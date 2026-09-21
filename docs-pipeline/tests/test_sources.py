@@ -358,3 +358,22 @@ def test_extraction_can_be_turned_off():
         }),
     )
     assert "register an app" not in list(source.pages())[0].text
+
+
+@pytest.mark.parametrize(
+    "markdown,expected",
+    [
+        ("# Query Creator Info\n\nBody.\n", "Query Creator Info"),
+        # A site that renders its own h1 as furniture leaves the article at h2.
+        ("## TikTok Developer Documentation\n\nBody.\n", "TikTok Developer Documentation"),
+        ("### Deep start\n", "Deep start"),
+        ("## Closed ATX ##\n", "Closed ATX"),
+        ("Body with no heading at all.\n", ""),
+        # The first heading wins, not the highest-ranking one.
+        ("## Second level\n\n# First level\n", "Second level"),
+    ],
+)
+def test_first_heading_accepts_any_level(markdown, expected):
+    from pipeline.sources import _first_heading
+
+    assert _first_heading(markdown) == expected

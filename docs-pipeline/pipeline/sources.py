@@ -441,7 +441,15 @@ def _frontmatter_title(text: str) -> str:
 
 
 def _first_heading(text: str) -> str:
-    m = re.search(r"^#\s+(.+)$", text, re.M)
+    """The page's title, from its first heading at any level.
+
+    Plenty of real pages open at `##` rather than `#` - a site that renders its
+    own `<h1>` in the page furniture leaves the article starting one level down,
+    and the furniture is exactly what the reader strips out. Insisting on `#`
+    reported those pages as untitled, which made them harder to find in a report
+    listing several hundred.
+    """
+    m = re.search(r"^#{1,6}\s+(.+?)\s*#*\s*$", text, re.M)
     return m.group(1).strip() if m else ""
 
 
