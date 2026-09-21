@@ -1,0 +1,29 @@
+{
+  "files_scanned": 553,
+  "files_modified": 97,
+  "fixes_total": 228,
+  "fixes_by_rule": {
+    "ApiKeyCase": 44,
+    "UIActions": 30,
+    "LatinAbbreviations": 52,
+    "AllowsYouTo": 32,
+    "Wordiness": 21,
+    "CurlyQuotes": 23,
+    "NoteThat": 15,
+    "Please": 9,
+    "InclusiveLanguage": 1,
+    "Terminology": 1
+  },
+  "not_automatable": {
+    "Filler": "deleting 'simply' can leave a sentence that no longer parses; the fix is usually a rewrite",
+    "FirstPerson": "requires knowing whether 'we' means the product, the team, or the reader",
+    "Hedging": "requires deciding whether the step is required or optional - a judgement about the API, not the prose",
+    "SentenceLength": "splitting a sentence requires understanding it",
+    "Acronyms": "the expansion has to be written, and belongs at first use, which may be on another page",
+    "HeadingSentenceCase": "cannot distinguish a product name from a capitalised common noun without a maintained vocabulary",
+    "LinkText": "the replacement text is the destination's subject, which means reading the destination",
+    "EndpointInCode": "adding code spans changes rendering; safe in prose, unsafe inside tables and existing spans",
+    "HTTPMethodCase": "'get /path' is ambiguous between the HTTP method and the English verb",
+    "StatusCodeName": "requires mapping the numeric code to its canonical reason phrase in context"
+  }
+}

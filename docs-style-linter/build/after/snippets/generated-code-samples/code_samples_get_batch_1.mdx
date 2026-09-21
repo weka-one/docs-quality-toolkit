@@ -1,0 +1,36 @@
+<CodeGroup>
+
+```bash cURL
+curl \
+  -X GET 'http://MEILISEARCH_URL/batches/BATCH_UID' \
+  -H 'Authorization: Bearer API_KEY'
+```
+
+```javascript JS
+client.batches.getBatch(BATCH_UID);
+```
+
+```python Python
+client.get_batch(BATCH_UID)
+```
+
+```php PHP
+$client->getBatch(BATCH_UID);
+```
+
+```ruby Ruby
+client.batch(BATCH_UID)
+```
+
+```go Go
+client.GetBatch(BATCH_UID);
+```
+
+```rust Rust
+let uid: u32 = 42;
+let batch: meilisearch_sdk::batches::Batch = client
+  .get_batch(uid)
+  .await
+  .unwrap();
+```
+</CodeGroup>

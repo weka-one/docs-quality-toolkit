@@ -1,0 +1,72 @@
+{
+  "before": {
+    "target": "../corpus/meilisearch-docs",
+    "files": 553,
+    "words": 155629,
+    "files_with_alerts": 177,
+    "total": 589,
+    "per_1k_words": 3.78,
+    "by_severity": {
+      "error": 83,
+      "warning": 236,
+      "suggestion": 270
+    },
+    "by_rule": {
+      "Acronyms": 139,
+      "HeadingSentenceCase": 75,
+      "LatinAbbreviations": 52,
+      "ApiKeyCase": 49,
+      "Hedging": 40,
+      "Wordiness": 38,
+      "UIActions": 30,
+      "Filler": 30,
+      "AllowsYouTo": 30,
+      "FirstPerson": 25,
+      "CurlyQuotes": 22,
+      "Please": 19,
+      "SentenceLength": 18,
+      "NoteThat": 18,
+      "LinkText": 2,
+      "InclusiveLanguage": 1,
+      "Terminology": 1
+    },
+    "by_area": {
+      "resources": 256,
+      "capabilities": 196,
+      "getting_started": 124,
+      "reference": 13
+    }
+  },
+  "after": {
+    "target": "build/after",
+    "files": 553,
+    "words": 155508,
+    "files_with_alerts": 142,
+    "total": 364,
+    "per_1k_words": 2.34,
+    "by_severity": {
+      "error": 7,
+      "warning": 132,
+      "suggestion": 225
+    },
+    "by_rule": {
+      "Acronyms": 139,
+      "HeadingSentenceCase": 75,
+      "Hedging": 40,
+      "Filler": 30,
+      "FirstPerson": 25,
+      "SentenceLength": 18,
+      "Wordiness": 17,
+      "Please": 10,
+      "ApiKeyCase": 5,
+      "NoteThat": 3,
+      "LinkText": 2
+    },
+    "by_area": {
+      "resources": 186,
+      "capabilities": 116,
+      "getting_started": 57,
+      "reference": 5
+    }
+  }
+}

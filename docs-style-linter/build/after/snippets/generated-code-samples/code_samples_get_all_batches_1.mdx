@@ -1,0 +1,35 @@
+<CodeGroup>
+
+```bash cURL
+curl \
+  -X GET 'http://MEILISEARCH_URL/batches' \
+  -H 'Authorization: Bearer API_KEY'
+```
+
+```javascript JS
+client.batches.getBatches();
+```
+
+```python Python
+client.get_batches()
+```
+
+```php PHP
+$client->getBatches();
+```
+
+```ruby Ruby
+client.batches
+```
+
+```go Go
+client.GetBatches();
+```
+
+```rust Rust
+let mut query = meilisearch_sdk::batches::BatchesQuery::new(&client);
+query.with_limit(20);
+let batches: meilisearch_sdk::batches::BatchesResults =
+  client.get_batches_with(&query).await.unwrap();
+```
+</CodeGroup>

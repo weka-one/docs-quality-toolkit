@@ -1,0 +1,48 @@
+name: Docs style
+
+# Demonstrates the action on this repository's own vendored corpus. A docs team
+# adopting it would point `paths` at their docs directory and turn on
+# `changed-only`.
+
+on:
+  pull_request:
+    paths:
+      - "corpus/**"
+      - "docs-style-linter/**"
+      - ".github/workflows/docs-style.yml"
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  security-events: write   # required to upload SARIF
+  pull-requests: write     # required for the sticky summary comment
+
+jobs:
+  style:
+    name: Lint documentation prose
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # The action's changed-only mode needs the merge base, which a
+          # depth-1 checkout does not have.
+          fetch-depth: 0
+
+      - name: Lint
+        id: vale
+        uses: ./docs-style-linter
+        with:
+          paths: corpus/meilisearch-docs
+          config: docs-style-linter/.vale.ini
+          fail-on: error
+          changed-only: ${{ github.event_name == 'pull_request' }}
+          sarif: true
+          comment: ${{ github.event_name == 'pull_request' }}
+
+      - name: Report totals
+        if: always()
+        run: |
+          echo "total alerts: ${{ steps.vale.outputs.total }}"
+          echo "errors:       ${{ steps.vale.outputs.errors }}"

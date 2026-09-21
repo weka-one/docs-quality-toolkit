@@ -1,0 +1,26 @@
+<CodeGroup>
+
+```bash cURL
+curl \
+  -X POST 'MEILISEARCH_URL/multi-search' \
+  -H 'Authorization: Bearer API_KEY' \
+  -H 'Content-Type: application/json' \
+  --data-binary '{
+    "federation": {},
+    "queries": [
+      {
+        "indexUid": "chats",
+        "q": "natasha"
+      },
+      {
+        "indexUid": "profiles",
+        "q": "natasha"
+      },
+      {
+        "indexUid": "tickets",
+        "q": "natasha"
+      }
+    ]
+  }'
+```
+</CodeGroup>

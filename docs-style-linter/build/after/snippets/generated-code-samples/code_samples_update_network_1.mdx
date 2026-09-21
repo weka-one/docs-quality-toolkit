@@ -1,0 +1,106 @@
+<CodeGroup>
+
+```bash cURL
+curl \
+  -X PATCH 'MEILISEARCH_URL/network' \
+  -H 'Authorization: Bearer API_KEY' \
+  -H 'Content-Type: application/json' \
+  --data-binary '{
+    "self": "ms-00",
+    "remotes": {
+      "ms-00": {
+        "url": "http://INSTANCE_URL",
+        "searchApiKey": "INSTANCE_API_KEY"
+      },
+      "ms-01": {
+        "url": "http://ANOTHER_INSTANCE_URL",
+        "searchApiKey": "ANOTHER_INSTANCE_API_KEY"
+      }
+    }
+  }'
+```
+
+```javascript JS
+client.initializeNetwork({
+  self: 'https://instance1.meilisearch.com',
+  remotes: {
+    instance2: {
+      url: 'https://instance2.meilisearch.com',
+      searchApiKey: 'SEARCH_API_KEY',
+      writeApiKey: 'WRITE_API_KEY'
+    }
+  }
+})
+```
+
+```python Python
+client.add_or_update_networks({
+    "remotes": {
+        "MEILISEARCH_URL": {
+            "searchApiKey": "masterKey"
+        }
+    },
+    "leader": None
+})
+```
+
+```php PHP
+$client->updateNetwork([
+  'self' => 'ms-00',
+  'leader' => 'ms-00',
+  'remotes' => [
+    'ms-00' => [
+      'url' => 'http://INSTANCE_URL',
+      'searchApiKey' => 'INSTANCE_API_KEY',
+      'writeApiKey' => 'INSTANCE_WRITE_API_KEY'
+    ],
+    'ms-01' => [
+      'url' => 'http://ANOTHER_INSTANCE_URL',
+      'searchApiKey' => 'ANOTHER_INSTANCE_API_KEY',
+      'writeApiKey' => 'ANOTHER_INSTANCE_WRITE_API_KEY'
+    ]
+  ]
+]);
+```
+
+```go Go
+client.UpdateNetwork(&meilisearch.UpdateNetworkRequest{
+  Self: meilisearch.String("ms-00"),
+  Leader: meilisearch.String("ms-00"),
+  Remotes: meilisearch.NewOpt(map[string]meilisearch.Opt[meilisearch.UpdateRemote]{
+    "ms-00": meilisearch.NewOpt(meilisearch.UpdateRemote{
+      URL:          meilisearch.String("https://meilisearch.com"),
+      SearchAPIKey: meilisearch.String("ReadKey"),
+      WriteAPIKey:  meilisearch.String("WriteKey"),
+    }),
+  }),
+  Shards: meilisearch.NewOpt(map[string]meilisearch.Opt[meilisearch.UpdateRemoteShard]{
+    "ms-00": meilisearch.NewOpt(meilisearch.UpdateRemoteShard{
+      Remotes: meilisearch.NewOpt([]string{"ms-00"}),
+    }),
+  }),
+})
+```
+
+```rust Rust
+let mut remotes = std::collections::HashMap::new();
+remotes.insert(String::from("ms-01"), Some(meilisearch_sdk::network::RemoteConfig {
+  url: "https://ms-01.enterprise.meilisearch.com".to_string(),
+  search_api_key: "SEARCH_API_KEY".to_string(),
+  write_api_key: Some("WRITE_API_KEY".to_string()),
+}));
+// Remove ms-00 from the topology
+remotes.insert(String::from("ms-00"), None);
+
+let update = meilisearch_sdk::network::NetworkUpdate {
+  leader: Some("ms-01".to_string()),
+  remotes: Some(remotes),
+  ..meilisearch_sdk::network::NetworkUpdate::default()
+};
+
+let task: TaskInfo = client
+  .update_network_state(&update)
+  .await
+  .unwrap();
+```
+</CodeGroup>

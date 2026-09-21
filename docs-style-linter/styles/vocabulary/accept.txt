@@ -1,0 +1,233 @@
+# Accepted vocabulary: proper nouns and initialisms that are correct as written.
+#
+# NOT Vale's `Vocab` mechanism, deliberately. Vale's accept.txt is a *global
+# alert filter*: any alert whose match overlaps an accepted term is dropped,
+# across every rule. Listing `API` there silently disabled the whole ApiKeyCase
+# rule -- 49 real violations in this corpus stopped being reported, with no
+# warning and no error. The fixture suite caught it; a production adoption
+# would not have.
+#
+# So this file is consumed by tools/sync_vocab.py instead, which writes the
+# terms into the `exceptions` list of the two rules that actually need them.
+# Per-rule exceptions are scoped; a global suppression list is not.
+#
+# This file is the single source of truth for "words that are already spelled
+# and capitalised correctly". `tools/sync_vocab.py` propagates it into the
+# `exceptions` list of HeadingSentenceCase (so a product name in a heading is
+# not mistaken for title case) and of Acronyms (a term in the accepted
+# vocabulary is, by definition, one readers are expected to know).
+#
+# Maintaining this list *is* the adoption work. Measured on the vendored
+# corpus, an empty vocabulary produced 167 HeadingSentenceCase alerts, almost
+# all of them product names. A docs team's first week with this linter is spent
+# here, not in the rule files.
+#
+# Deliberately excluded: generic English words that happen to appear inside a
+# product name ("Search", "Cloud", "Index", "Server", "Desktop"). Exempting
+# those would silence real title-case violations such as "Configure Your Search
+# Settings".
+
+# --- Boolean and filter-expression keywords ---
+# Uppercase in prose because they are operator literals, not initialisms.
+AND
+NOT
+XOR
+ASC
+DESC
+NULL
+TRUE
+FALSE
+
+# --- Initialisms ---
+AI
+API
+APIs
+CLI
+CORS
+CPU
+CRUD
+CSS
+CSV
+DNS
+GPU
+HTML
+HTTP
+HTTPS
+ID
+IDs
+IDE
+IP
+JSON
+JWT
+LLM
+LLMs
+MCP
+MFA
+NDJSON
+OAuth
+OS
+PDF
+RAG
+RAM
+REST
+RFC
+SaaS
+SDK
+SDKs
+SEO
+SLA
+SQL
+SSH
+SSL
+SSO
+TLS
+TTL
+UI
+UID
+UIDs
+URI
+URL
+URLs
+UTC
+UUID
+UX
+VM
+XML
+YAML
+
+# --- HTTP methods (RFC 9110) ---
+GET
+POST
+PUT
+PATCH
+DELETE
+HEAD
+OPTIONS
+
+# --- General computing initialisms ---
+# Assumed known to any developer reading a platform API reference. Terms left
+# OUT of this list are the point: ION, BGE, HNSW and GIN stay flagged because
+# they are genuinely domain-specific and genuinely undefined on the pages that
+# use them. That residual is the rule doing its job, not noise.
+ACL
+AMQP
+ARM
+ASCII
+AWS
+BUSL
+CDC
+CDN
+CIDR
+CRM
+CSV
+DSL
+ETL
+FIFO
+FTP
+FTS
+GCP
+GPL
+HDD
+IAM
+IMAP
+ISO
+JPEG
+LIFO
+LRU
+LTS
+MIT
+MVP
+NET
+OCSP
+ORM
+PNG
+QPS
+RPC
+SAML
+SFTP
+SKU
+SMTP
+SSD
+SSPL
+SVG
+TAR
+TPS
+TSV
+UNIX
+UTF
+VPC
+WAL
+WIP
+ZIP
+
+# --- Languages, runtimes, and formats ---
+Dart
+Deno
+Docker
+Flutter
+Go
+Java
+JavaScript
+Kotlin
+Kubernetes
+Markdown
+Node.js
+PHP
+Python
+Ruby
+Rust
+Swift
+TypeScript
+
+# --- Frameworks and libraries ---
+Angular
+Astro
+Django
+Eloquent
+Flask
+Gatsby
+InstantSearch
+Laravel
+Next.js
+Nuxt
+Rails
+React
+Scout
+Strapi
+Svelte
+Symfony
+Vue
+Vuepress
+
+# --- Platforms, services, and engines ---
+Algolia
+Arroy
+Atlas
+Bitbucket
+Cloudflare
+DigitalOcean
+DiskANN
+Elasticsearch
+Encrypt
+Firebase
+GitHub
+GitLab
+Hannoy
+Heroku
+Kafka
+Kestra
+LMDB
+Meilisearch
+MongoDB
+Netlify
+OpenSearch
+Pinecone
+PostGIS
+PostgreSQL
+Postman
+Qdrant
+Redis
+Snowflake
+Supabase
+Typesense
+Vercel

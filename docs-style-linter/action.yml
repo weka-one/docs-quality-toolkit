@@ -1,0 +1,194 @@
+name: "Docs style linter"
+description: >-
+  Lint documentation prose against the TikTokDocs Vale package, annotate the
+  pull request, and upload SARIF for code scanning.
+author: "wesley.y.kao@gmail.com"
+
+branding:
+  icon: check-square
+  color: gray-dark
+
+inputs:
+  paths:
+    description: "Space-separated files or directories to lint."
+    required: false
+    default: "docs"
+  config:
+    description: "Path to .vale.ini."
+    required: false
+    default: "docs-style-linter/.vale.ini"
+  fail-on:
+    description: >-
+      Minimum severity that fails the job: error, warning, suggestion, or never.
+      Defaults to `error`, which is the only level the rule package treats as
+      non-negotiable.
+    required: false
+    default: "error"
+  changed-only:
+    description: >-
+      Lint only files changed in this pull request. Strongly recommended when
+      adopting the linter on an existing corpus: a team that opens the linter on
+      50,000 historical alerts turns it off the same afternoon. Gate the diff,
+      pay down the backlog separately.
+    required: false
+    default: "false"
+  vale-version:
+    description: "Vale release to install."
+    required: false
+    default: "3.9.6"
+  sarif:
+    description: "Write and upload a SARIF report for code scanning."
+    required: false
+    default: "true"
+  comment:
+    description: "Post or update a single summary comment on the pull request."
+    required: false
+    default: "false"
+
+outputs:
+  total:
+    description: "Total number of alerts."
+    value: ${{ steps.lint.outputs.total }}
+  errors:
+    description: "Number of error-level alerts."
+    value: ${{ steps.lint.outputs.errors }}
+  report-path:
+    description: "Path to the generated Markdown report."
+    value: ${{ steps.lint.outputs.report-path }}
+
+runs:
+  using: composite
+  steps:
+    - name: Install Vale
+      shell: bash
+      env:
+        VALE_VERSION: ${{ inputs.vale-version }}
+      run: |
+        set -euo pipefail
+        # Checksums are pinned rather than trusted from the download. A linter
+        # runs on every pull request, so its binary is a supply-chain surface.
+        case "$(uname -s)/$(uname -m)" in
+          Linux/x86_64)   ASSET="Linux_64-bit"  ; SHA="dd8519d9bdf381a3b1a30f1df7f6e589b69ec1e38a495e4bd9af8e450703dde0" ;;
+          Linux/aarch64)  ASSET="Linux_arm64"   ; SHA="d3da89ad03978db78b1d20bb44440e6942f2c391503786ef0f15ce188640b8da" ;;
+          Darwin/x86_64)  ASSET="macOS_64-bit"  ; SHA="b08e27d90fb3d0c7089faa074cbd82a30cc113cb061364e7c8b9df581e005903" ;;
+          Darwin/arm64)   ASSET="macOS_arm64"   ; SHA="121ec76e2d862cb145416b132e4321cb352de8cf69ad81d4fdb91068b1f40024" ;;
+          *) echo "::error::unsupported runner $(uname -s)/$(uname -m)"; exit 1 ;;
+        esac
+        if [ "$VALE_VERSION" != "3.9.6" ]; then
+          echo "::warning::vale-version is pinned to 3.9.6 in this action's checksum table; \
+        requested ${VALE_VERSION} will be downloaded without verification."
+          SHA=""
+        fi
+        TARBALL="vale_${VALE_VERSION}_${ASSET}.tar.gz"
+        URL="https://github.com/errata-ai/vale/releases/download/v${VALE_VERSION}/${TARBALL}"
+        TMP="$(mktemp -d)"
+        curl -sSLf --retry 3 --retry-delay 2 "$URL" -o "$TMP/$TARBALL"
+        if [ -n "$SHA" ]; then
+          echo "${SHA}  ${TMP}/${TARBALL}" | sha256sum -c -
+        fi
+        tar -xzf "$TMP/$TARBALL" -C "$TMP" vale
+        mkdir -p "$HOME/.local/bin"
+        install -m 0755 "$TMP/vale" "$HOME/.local/bin/vale"
+        echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+        rm -rf "$TMP"
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: "3.11"
+
+    - name: Install report dependencies
+      shell: bash
+      run: python -m pip install --quiet --disable-pip-version-check pyyaml
+
+    - name: Resolve target paths
+      id: targets
+      shell: bash
+      env:
+        PATHS: ${{ inputs.paths }}
+        CHANGED_ONLY: ${{ inputs.changed-only }}
+        BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+      run: |
+        set -euo pipefail
+        if [ "$CHANGED_ONLY" != "true" ] || [ -z "${BASE_SHA:-}" ]; then
+          echo "targets=${PATHS}" >> "$GITHUB_OUTPUT"
+          exit 0
+        fi
+        # Only files that still exist: a pull request that deletes a page must
+        # not fail the lint on a path that is no longer there.
+        MERGE_BASE="$(git merge-base "$BASE_SHA" "$HEAD_SHA")"
+        FILES="$(git diff --name-only --diff-filter=d "$MERGE_BASE" "$HEAD_SHA" \
+                  | grep -E '\.(md|mdx)$' || true)"
+        if [ -z "$FILES" ]; then
+          echo "no-docs-changed=true" >> "$GITHUB_OUTPUT"
+        fi
+        echo "targets=$(echo "$FILES" | tr '\n' ' ')" >> "$GITHUB_OUTPUT"
+
+    - name: Lint
+      id: lint
+      if: steps.targets.outputs.no-docs-changed != 'true'
+      shell: bash
+      env:
+        CONFIG: ${{ inputs.config }}
+        TARGETS: ${{ steps.targets.outputs.targets }}
+        FAIL_ON: ${{ inputs.fail-on }}
+        ACTION_PATH: ${{ github.action_path }}
+      run: |
+        set -uo pipefail
+        mkdir -p .vale-reports
+
+        # Inline annotations, so a reviewer sees each alert on the diff line it
+        # belongs to rather than having to open a log.
+        vale --config="$CONFIG" --output=JSON --no-exit $TARGETS \
+          > .vale-reports/vale.json || true
+        python "$ACTION_PATH/tools/annotate.py" .vale-reports/vale.json
+
+        python "$ACTION_PATH/tools/report.py" \
+          --from-json .vale-reports/vale.json \
+          --out-json .vale-reports/report.json \
+          --out-md .vale-reports/report.md \
+          > /dev/null 2>&1 || true
+
+        python - <<'PY' >> "$GITHUB_OUTPUT"
+        import json, pathlib
+        data = json.loads(pathlib.Path(".vale-reports/vale.json").read_text() or "{}")
+        alerts = [a for v in data.values() for a in v]
+        print(f"total={len(alerts)}")
+        print(f"errors={sum(1 for a in alerts if a['Severity'] == 'error')}")
+        print("report-path=.vale-reports/report.md")
+        PY
+
+        {
+          echo "## Documentation style report"
+          echo
+          python "$ACTION_PATH/tools/summarise.py" .vale-reports/vale.json
+        } >> "$GITHUB_STEP_SUMMARY"
+
+        python "$ACTION_PATH/tools/gate.py" .vale-reports/vale.json --fail-on "$FAIL_ON"
+
+    - name: Generate SARIF
+      if: inputs.sarif == 'true' && always() && steps.targets.outputs.no-docs-changed != 'true'
+      shell: bash
+      env:
+        ACTION_PATH: ${{ github.action_path }}
+      run: |
+        python "$ACTION_PATH/tools/sarif.py" \
+          --from-json .vale-reports/vale.json \
+          --styles "$ACTION_PATH/styles/TikTokDocs" \
+          --out .vale-reports/vale.sarif \
+          --repo-root "$PWD"
+
+    - name: Upload SARIF
+      if: inputs.sarif == 'true' && always() && steps.targets.outputs.no-docs-changed != 'true'
+      uses: github/codeql-action/upload-sarif@v3
+      with:
+        sarif_file: .vale-reports/vale.sarif
+        category: docs-style
+
+    - name: Comment on the pull request
+      if: inputs.comment == 'true' && github.event_name == 'pull_request' && always()
+      uses: marocchino/sticky-pull-request-comment@v2
+      with:
+        header: docs-style-linter
+        path: .vale-reports/report.md

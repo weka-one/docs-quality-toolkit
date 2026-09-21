@@ -1,0 +1,967 @@
+{
+  "$schema": "https://json.schemastore.org/sarif-2.1.0.json",
+  "version": "2.1.0",
+  "runs": [
+    {
+      "tool": {
+        "driver": {
+          "name": "Vale (TikTokDocs style package)",
+          "informationUri": "https://vale.sh",
+          "rules": [
+            {
+              "id": "TikTokDocs.Acronyms",
+              "name": "Acronyms",
+              "shortDescription": {
+                "text": "'\u2026' is used without being defined on this page."
+              },
+              "fullDescription": {
+                "text": "Source: Google developer documentation style guide, \"Abbreviations\".\nRationale: an undefined initialism is invisible to a newcomer and unsearchable.\nThe exceptions list is the set assumed known to any developer reading a\nplatform API reference \u2014 it is deliberately generous, because a noisy version\nof this rule gets switched off."
+              },
+              "defaultConfiguration": {
+                "level": "note"
+              },
+              "properties": {
+                "tags": [
+                  "documentation",
+                  "style"
+                ],
+                "extends": "conditional"
+              },
+              "helpUri": "https://developers.google.com/style/abbreviations",
+              "help": {
+                "text": "Source: Google developer documentation style guide, \"Abbreviations\".\nRationale: an undefined initialism is invisible to a newcomer and unsearchable.\nThe exceptions list is the set assumed known to any developer reading a\nplatform API reference \u2014 it is deliberately generous, because a noisy version\nof this rule gets switched off.\n\nReference: https://developers.google.com/style/abbreviations"
+              }
+            },
+            {
+              "id": "TikTokDocs.AllowsYouTo",
+              "name": "AllowsYouTo",
+              "shortDescription": {
+                "text": "Use '\u2026' instead of '\u2026' \u2014 describe what the reader does, not what the API permits."
+              },
+              "fullDescription": {
+                "text": "Source: Google developer documentation style guide, \"Word list\" (allow).\nRationale: \"allows you to\" describes the product's permission model rather\nthan the reader's capability, and it is three words where one will do."
+              },
+              "defaultConfiguration": {
+                "level": "note"
+              },
+              "properties": {
+                "tags": [
+                  "documentation",
+                  "style"
+                ],
+                "extends": "substitution"
+              },
+              "helpUri": "https://developers.google.com/style/word-list#allow",
+              "help": {
+                "text": "Source: Google developer documentation style guide, \"Word list\" (allow).\nRationale: \"allows you to\" describes the product's permission model rather\nthan the reader's capability, and it is three words where one will do.\n\nReference: https://developers.google.com/style/word-list#allow"
+              }
+            },
+            {
+              "id": "TikTokDocs.ApiKeyCase",
+              "name": "ApiKeyCase",
+              "shortDescription": {
+                "text": "Use '\u2026' instead of '\u2026' \u2014 'key' is a common noun and stays lowercase."
+              },
+              "fullDescription": {
+                "text": "Source: Google developer documentation style guide, \"Capitalization\" \u2014\nsentence case for common nouns, even when they contain an initialism.\nRationale: \"API key\" is a common noun, not a product name. The corpus this\nlinter was tuned against contained both spellings on the same page."
+              },
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "properties": {
+                "tags": [
+                  "documentation",
+                  "style"
+                ],
+                "extends": "substitution"
+              },
+              "helpUri": "https://developers.google.com/style/capitalization",
+              "help": {
+                "text": "Source: Google developer documentation style guide, \"Capitalization\" \u2014\nsentence case for common nouns, even when they contain an initialism.\nRationale: \"API key\" is a common noun, not a product name. The corpus this\nlinter was tuned against contained both spellings on the same page.\n\nReference: https://developers.google.com/style/capitalization"
+              }
+            },
+            {
+              "id": "TikTokDocs.CurlyQuotes",
+              "name": "CurlyQuotes",
+              "shortDescription": {
+                "text": "Replace the curly quote in '\u2026' with a straight quote."
+              },
+              "fullDescription": {
+                "text": "Source: Google developer documentation style guide, \"Quotation marks\".\nRationale: curly quotes inside or adjacent to code are copied by readers and\nfail to parse. Keeping the whole corpus on straight quotes removes the need\nfor authors to judge which context they are in."
+              },
+              "defaultConfiguration": {
+                "level": "warning"
+              },
+              "properties": {
+                "tags": [
+                  "documentation",
+                  "style"
+                ],
+                "extends": "existence"
+              },
+              "helpUri": "https://developers.google.com/style/quotation-marks",
+              "help": {
+                "text": "Source: Google developer documentation style guide, \"Quotation marks\".\nRationale: curly quotes inside or adjacent to code are copied by readers and\nfail to parse. Keeping the whole corpus on straight quotes removes the need\nfor authors to judge which context they are in.\n\nReference: https://developers.google.com/style/quotation-marks"
+              }
+            },
+            {
+              "id": "TikTokDocs.EndpointInCode",
+              "name": "EndpointInCode",
+              "shortDescription": {
+                "text": "Wrap the endpoint path '\u2026' in a code span."
+              },
+              "fullDescription": {
+                "text": "Source: Google developer documentation style guide, \"Code in text\".\nRationale: an endpoint path is code. Leaving it as prose loses the monospace\ncue, and lets typography engines turn hyphens into en dashes when the page is\nrendered to PDF."
+              },
+              "defaultConfiguration": {
+                "level": "warning"
+              },
+              "properties": {
+                "tags": [
+                  "documentation",
+                  "style"
+                ],
+                "extends": "existence"
+              },
+              "helpUri": "https://developers.google.com/style/code-in-text",
+              "help": {
+                "text": "Source: Google developer documentation style guide, \"Code in text\".\nRationale: an endpoint path is code. Leaving it as prose loses the monospace\ncue, and lets typography engines turn hyphens into en dashes when the page is\nrendered to PDF.\n\nReference: https://developers.google.com/style/code-in-text"
+              }
+            },
+            {
+              "id": "TikTokDocs.Filler",
+              "name": "Filler",
+              "shortDescription": {
+                "text": "Remove '\u2026'. If the step is easy, showing it is enough; saying so tells a stuck reader they are the problem."
+              },
+              "fullDescription": {
+                "text": "Source: Google developer documentation style guide, \"Write inclusive\ndocumentation\" / \"Tone and content\"; Microsoft Writing Style Guide, \"Brevity\".\nRationale: minimising words tell a reader their difficulty is unusual. If a\nstep is genuinely trivial, the prose should demonstrate it, not assert it."
+              },
+              "defaultConfiguration": {
+                "level": "warning"
+              },
+              "properties": {
+                "tags": [
+                  "documentation",
+                  "style"
+                ],
+                "extends": "existence"
+              },
+              "helpUri": "https://developers.google.com/style/tone",
+              "help": {
+                "text": "Source: Google developer documentation style guide, \"Write inclusive\ndocumentation\" / \"Tone and content\"; Microsoft Writing Style Guide, \"Brevity\".\nRationale: minimising words tell a reader their difficulty is unusual. If a\nstep is genuinely trivial, the prose should demonstrate it, not assert it.\n\nReference: https://developers.google.com/style/tone"
+              }
+            },
+            {
+              "id": "TikTokDocs.FirstPerson",
+              "name": "FirstPerson",
+              "shortDescription": {
+                "text": "Avoid first person ('\u2026'). Name the product or use second person."
+              },
+              "fullDescription": {
+                "text": "Source: Google developer documentation style guide, \"First person\".\nRationale: reference documentation describes a product, not a team. First\nperson also becomes wrong the moment the doc is syndicated or white-labelled."
+              },
+              "defaultConfiguration": {
+                "level": "note"
+              },
+              "properties": {
+                "tags": [
+                  "documentation",
+                  "style"
+                ],
+                "extends": "existence"
+              },
+              "helpUri": "https://developers.google.com/style/person",
+              "help": {
+                "text": "Source: Google developer documentation style guide, \"First person\".\nRationale: reference documentation describes a product, not a team. First\nperson also becomes wrong the moment the doc is syndicated or white-labelled.\n\nReference: https://developers.google.com/style/person"
+              }
+            },
+            {
+              "id": "TikTokDocs.GenderNeutral",
+              "name": "GenderNeutral",
+              "shortDescription": {
+                "text": "Use '\u2026' instead of '\u2026'."
+              },
+              "fullDescription": {
+                "text": "Source: Google developer documentation style guide, \"Pronouns\"; Microsoft\nWriting Style Guide, \"Bias-free communication\".\nRationale: the reader's gender is never known and never relevant to an API\ncall. Singular \"they\" is the lowest-friction fix."
+              },
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "properties": {
+                "tags": [
+                  "documentation",
+                  "style"
+                ],
+                "extends": "substitution"
+              },
+              "helpUri": "https://developers.google.com/style/pronouns",
+              "help": {
+                "text": "Source: Google developer documentation style guide, \"Pronouns\"; Microsoft\nWriting Style Guide, \"Bias-free communication\".\nRationale: the reader's gender is never known and never relevant to an API\ncall. Singular \"they\" is the lowest-friction fix.\n\nReference: https://developers.google.com/style/pronouns"
+              }
+            },
+            {
+              "id": "TikTokDocs.HTTPMethodCase",
+              "name": "HTTPMethodCase",
+              "shortDescription": {
+                "text": "Write the HTTP method in uppercase: '\u2026'."
+              },
+              "fullDescription": {
+                "text": "Source: RFC 9110 \u00a79 \u2014 HTTP method names are case-sensitive and uppercase.\nRationale: a lowercase method in prose is copied into code by readers, and\nsome servers reject it. This rule is a regression guard: a well-maintained\ncorpus scores zero, and stays there."
+              },
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "properties": {
+                "tags": [
+                  "documentation",
+                  "style"
+                ],
+                "extends": "existence"
+              },
+              "helpUri": "https://www.rfc-editor.org/rfc/rfc9110#name-methods",
+              "help": {
+                "text": "Source: RFC 9110 \u00a79 \u2014 HTTP method names are case-sensitive and uppercase.\nRationale: a lowercase method in prose is copied into code by readers, and\nsome servers reject it. This rule is a regression guard: a well-maintained\ncorpus scores zero, and stays there.\n\nReference: https://www.rfc-editor.org/rfc/rfc9110#name-methods"
+              }
+            },
+            {
+              "id": "TikTokDocs.HeadingPunctuation",
+              "name": "HeadingPunctuation",
+              "shortDescription": {
+                "text": "Remove the trailing punctuation from the heading '\u2026'."
+              },
+              "fullDescription": {
+                "text": "Source: Google developer documentation style guide, \"Headings and titles\".\nRationale: headings are labels, not sentences. Trailing periods also leak into\ngenerated tables of contents and <title> tags."
+              },
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "properties": {
+                "tags": [
+                  "documentation",
+                  "style"
+                ],
+                "extends": "existence"
+              },
+              "helpUri": "https://developers.google.com/style/headings",
+              "help": {
+                "text": "Source: Google developer documentation style guide, \"Headings and titles\".\nRationale: headings are labels, not sentences. Trailing periods also leak into\ngenerated tables of contents and <title> tags.\n\nReference: https://developers.google.com/style/headings"
+              }
+            },
+            {
+              "id": "TikTokDocs.HeadingSentenceCase",
+              "name": "HeadingSentenceCase",
+              "shortDescription": {
+                "text": "Use sentence case for the heading '\u2026'."
+              },
+              "fullDescription": {
+                "text": "Source: Google developer documentation style guide, \"Capitalization in\nheadings\".\nRationale: sentence case is faster to scan and removes per-word judgement\ncalls from authors. Product names and initialisms are exempted below."
+              },
+              "defaultConfiguration": {
+                "level": "warning"
+              },
+              "properties": {
+                "tags": [
+                  "documentation",
+                  "style"
+                ],
+                "extends": "capitalization"
+              },
+              "helpUri": "https://developers.google.com/style/capitalization#capitalization-in-titles-and-headings",
+              "help": {
+                "text": "Source: Google developer documentation style guide, \"Capitalization in\nheadings\".\nRationale: sentence case is faster to scan and removes per-word judgement\ncalls from authors. Product names and initialisms are exempted below.\n\nReference: https://developers.google.com/style/capitalization#capitalization-in-titles-and-headings"
+              }
+            },
+            {
+              "id": "TikTokDocs.Hedging",
+              "name": "Hedging",
+              "shortDescription": {
+                "text": "'\u2026' is ambiguous \u2014 say whether the step is required (imperative) or optional."
+              },
+              "fullDescription": {
+                "text": "Source: Microsoft Writing Style Guide, \"Word choice\"; RFC 2119 keyword\ndiscipline applied to prose.\nRationale: \"should\" leaves a reader unable to tell a requirement from advice.\nUse the imperative for required steps and \"we recommend\"-free phrasing for\noptional ones."
+              },
+              "defaultConfiguration": {
+                "level": "note"
+              },
+              "properties": {
+                "tags": [
+                  "documentation",
+                  "style"
+                ],
+                "extends": "existence"
+              }
+            },
+            {
+              "id": "TikTokDocs.InclusiveLanguage",
+              "name": "InclusiveLanguage",
+              "shortDescription": {
+                "text": "Use '\u2026' instead of '\u2026'."
+              },
+              "fullDescription": {
+                "text": "Source: Google developer documentation style guide, \"Word list\";\nMicrosoft Writing Style Guide, \"Bias-free communication\"; IETF\ndraft-knodel-terminology.\nRationale: each replacement is also more precise than the term it replaces \u2014\n\"allowlist\" says what the list does, \"whitelist\" does not."
+              },
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "properties": {
+                "tags": [
+                  "documentation",
+                  "style"
+                ],
+                "extends": "substitution"
+              },
+              "helpUri": "https://developers.google.com/style/inclusive-documentation",
+              "help": {
+                "text": "Source: Google developer documentation style guide, \"Word list\";\nMicrosoft Writing Style Guide, \"Bias-free communication\"; IETF\ndraft-knodel-terminology.\nRationale: each replacement is also more precise than the term it replaces \u2014\n\"allowlist\" says what the list does, \"whitelist\" does not.\n\nReference: https://developers.google.com/style/inclusive-documentation"
+              }
+            },
+            {
+              "id": "TikTokDocs.LatinAbbreviations",
+              "name": "LatinAbbreviations",
+              "shortDescription": {
+                "text": "Use '\u2026' instead of '\u2026'."
+              },
+              "fullDescription": {
+                "text": "Source: Google developer documentation style guide, \"Latin abbreviations\";\nMicrosoft Writing Style Guide, \"Abbreviations\".\nRationale: Latin abbreviations are routinely mistranslated and are read\nincorrectly by screen readers (\"e.g.\" as \"egg\")."
+              },
+              "defaultConfiguration": {
+                "level": "warning"
+              },
+              "properties": {
+                "tags": [
+                  "documentation",
+                  "style"
+                ],
+                "extends": "substitution"
+              },
+              "helpUri": "https://developers.google.com/style/abbreviations#latin-abbreviations",
+              "help": {
+                "text": "Source: Google developer documentation style guide, \"Latin abbreviations\";\nMicrosoft Writing Style Guide, \"Abbreviations\".\nRationale: Latin abbreviations are routinely mistranslated and are read\nincorrectly by screen readers (\"e.g.\" as \"egg\").\n\nReference: https://developers.google.com/style/abbreviations#latin-abbreviations"
+              }
+            },
+            {
+              "id": "TikTokDocs.LinkText",
+              "name": "LinkText",
+              "shortDescription": {
+                "text": "Replace the non-descriptive link text in '\u2026' with the destination's subject."
+              },
+              "fullDescription": {
+                "text": "Source: WCAG 2.2 SC 2.4.4 (Link Purpose in Context); Google developer\ndocumentation style guide, \"Link text\".\nRationale: screen-reader users navigate by pulling up a list of links. A page\nof \"here\" and \"read more\" is unusable in that mode."
+              },
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "properties": {
+                "tags": [
+                  "documentation",
+                  "style"
+                ],
+                "extends": "existence"
+              },
+              "helpUri": "https://www.w3.org/WAI/WCAG22/Understanding/link-purpose-in-context.html",
+              "help": {
+                "text": "Source: WCAG 2.2 SC 2.4.4 (Link Purpose in Context); Google developer\ndocumentation style guide, \"Link text\".\nRationale: screen-reader users navigate by pulling up a list of links. A page\nof \"here\" and \"read more\" is unusable in that mode.\n\nReference: https://www.w3.org/WAI/WCAG22/Understanding/link-purpose-in-context.html"
+              }
+            },
+            {
+              "id": "TikTokDocs.NoteThat",
+              "name": "NoteThat",
+              "shortDescription": {
+                "text": "Delete '\u2026' and state the fact directly, or move it into a callout."
+              },
+              "fullDescription": {
+                "text": "Source: Google developer documentation style guide, \"Notes and other\nnotices\".\nRationale: \"note that\" is a filler stem. Either the information matters, in\nwhich case state it directly, or it belongs in a callout component."
+              },
+              "defaultConfiguration": {
+                "level": "note"
+              },
+              "properties": {
+                "tags": [
+                  "documentation",
+                  "style"
+                ],
+                "extends": "existence"
+              },
+              "helpUri": "https://developers.google.com/style/notices",
+              "help": {
+                "text": "Source: Google developer documentation style guide, \"Notes and other\nnotices\".\nRationale: \"note that\" is a filler stem. Either the information matters, in\nwhich case state it directly, or it belongs in a callout component.\n\nReference: https://developers.google.com/style/notices"
+              }
+            },
+            {
+              "id": "TikTokDocs.Please",
+              "name": "Please",
+              "shortDescription": {
+                "text": "Drop 'please' from instructions \u2014 a documented step is not a request."
+              },
+              "fullDescription": {
+                "text": "Source: Google developer documentation style guide, \"Second person\";\nMicrosoft Writing Style Guide, \"Instructional text\".\nRationale: instructions are not requests. \"Please\" adds a word without adding\ninformation and reads as uncertainty about whether the step is required."
+              },
+              "defaultConfiguration": {
+                "level": "warning"
+              },
+              "properties": {
+                "tags": [
+                  "documentation",
+                  "style"
+                ],
+                "extends": "existence"
+              },
+              "helpUri": "https://developers.google.com/style/procedures",
+              "help": {
+                "text": "Source: Google developer documentation style guide, \"Second person\";\nMicrosoft Writing Style Guide, \"Instructional text\".\nRationale: instructions are not requests. \"Please\" adds a word without adding\ninformation and reads as uncertainty about whether the step is required.\n\nReference: https://developers.google.com/style/procedures"
+              }
+            },
+            {
+              "id": "TikTokDocs.SentenceLength",
+              "name": "SentenceLength",
+              "shortDescription": {
+                "text": "This sentence runs past 40 words; consider splitting it."
+              },
+              "fullDescription": {
+                "text": "Source: Microsoft Writing Style Guide, \"Readability\"; Google developer\ndocumentation style guide, \"Write short sentences\".\nRationale: kept at `suggestion` deliberately. Long sentences are a smell, not\na defect, and a rule that blocks CI on them trains authors to game the\nlinter. The value is in the trend line, which `tools/report.py` tracks."
+              },
+              "defaultConfiguration": {
+                "level": "note"
+              },
+              "properties": {
+                "tags": [
+                  "documentation",
+                  "style"
+                ],
+                "extends": "occurrence"
+              },
+              "helpUri": "https://learn.microsoft.com/style-guide/scannable-content/readability",
+              "help": {
+                "text": "Source: Microsoft Writing Style Guide, \"Readability\"; Google developer\ndocumentation style guide, \"Write short sentences\".\nRationale: kept at `suggestion` deliberately. Long sentences are a smell, not\na defect, and a rule that blocks CI on them trains authors to game the\nlinter. The value is in the trend line, which `tools/report.py` tracks.\n\nReference: https://learn.microsoft.com/style-guide/scannable-content/readability"
+              }
+            },
+            {
+              "id": "TikTokDocs.StatusCodeName",
+              "name": "StatusCodeName",
+              "shortDescription": {
+                "text": "Capitalise the HTTP reason phrase in '\u2026' (for example, '404 Not Found')."
+              },
+              "fullDescription": {
+                "text": "Source: RFC 9110 \u00a715 \u2014 reason phrases are title case.\nRationale: \"404 Not Found\" is a citation of the spec. Lowercasing it makes the\nphrase look like commentary rather than the literal server response."
+              },
+              "defaultConfiguration": {
+                "level": "warning"
+              },
+              "properties": {
+                "tags": [
+                  "documentation",
+                  "style"
+                ],
+                "extends": "existence"
+              },
+              "helpUri": "https://www.rfc-editor.org/rfc/rfc9110#name-status-codes",
+              "help": {
+                "text": "Source: RFC 9110 \u00a715 \u2014 reason phrases are title case.\nRationale: \"404 Not Found\" is a citation of the spec. Lowercasing it makes the\nphrase look like commentary rather than the literal server response.\n\nReference: https://www.rfc-editor.org/rfc/rfc9110#name-status-codes"
+              }
+            },
+            {
+              "id": "TikTokDocs.Terminology",
+              "name": "Terminology",
+              "shortDescription": {
+                "text": "Use '\u2026' instead of '\u2026'."
+              },
+              "fullDescription": {
+                "text": "Source: Google developer documentation style guide, \"Word list\"; vendor\ntrademark guidance (Oracle, GitHub, Apple, OpenJS Foundation).\nRationale: inconsistent product casing is the single most common defect in\nlarge doc sets and the cheapest to catch mechanically. It also breaks\nsite-search exact matching."
+              },
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "properties": {
+                "tags": [
+                  "documentation",
+                  "style"
+                ],
+                "extends": "substitution"
+              },
+              "helpUri": "https://developers.google.com/style/word-list",
+              "help": {
+                "text": "Source: Google developer documentation style guide, \"Word list\"; vendor\ntrademark guidance (Oracle, GitHub, Apple, OpenJS Foundation).\nRationale: inconsistent product casing is the single most common defect in\nlarge doc sets and the cheapest to catch mechanically. It also breaks\nsite-search exact matching.\n\nReference: https://developers.google.com/style/word-list"
+              }
+            },
+            {
+              "id": "TikTokDocs.UIActions",
+              "name": "UIActions",
+              "shortDescription": {
+                "text": "Use '\u2026' instead of '\u2026'."
+              },
+              "fullDescription": {
+                "text": "Source: Google developer documentation style guide, \"Clickable elements\";\nMicrosoft Writing Style Guide, \"Describing interactions with UI\".\nRationale: the object of the verb is the control, not a location. \"Click on\"\nalso does not survive rewriting for touch or keyboard interaction."
+              },
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "properties": {
+                "tags": [
+                  "documentation",
+                  "style"
+                ],
+                "extends": "substitution"
+              },
+              "helpUri": "https://developers.google.com/style/word-list#click",
+              "help": {
+                "text": "Source: Google developer documentation style guide, \"Clickable elements\";\nMicrosoft Writing Style Guide, \"Describing interactions with UI\".\nRationale: the object of the verb is the control, not a location. \"Click on\"\nalso does not survive rewriting for touch or keyboard interaction.\n\nReference: https://developers.google.com/style/word-list#click"
+              }
+            },
+            {
+              "id": "TikTokDocs.Wordiness",
+              "name": "Wordiness",
+              "shortDescription": {
+                "text": "Use '\u2026' instead of '\u2026'."
+              },
+              "fullDescription": {
+                "text": "Source: Google developer documentation style guide, \"Word list\"; Microsoft\nWriting Style Guide, \"Brevity\".\nRationale: each of these has a shorter exact synonym. Shorter prose also\nlowers translation cost, which matters for a platform localised into 30+\nlocales."
+              },
+              "defaultConfiguration": {
+                "level": "warning"
+              },
+              "properties": {
+                "tags": [
+                  "documentation",
+                  "style"
+                ],
+                "extends": "substitution"
+              },
+              "helpUri": "https://developers.google.com/style/word-list",
+              "help": {
+                "text": "Source: Google developer documentation style guide, \"Word list\"; Microsoft\nWriting Style Guide, \"Brevity\".\nRationale: each of these has a shorter exact synonym. Shorter prose also\nlowers translation cost, which matters for a platform localised into 30+\nlocales.\n\nReference: https://developers.google.com/style/word-list"
+              }
+            }
+          ]
+        }
+      },
+      "results": [
+        {
+          "ruleId": "TikTokDocs.FirstPerson",
+          "level": "note",
+          "message": {
+            "text": "Avoid first person ('we recommend'). Name the product or use second person."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "corpus/meilisearch-docs/reference/api/authorization.mdx"
+                },
+                "region": {
+                  "startLine": 17,
+                  "startColumn": 107,
+                  "endColumn": 119,
+                  "snippet": {
+                    "text": "we recommend"
+                  }
+                }
+              }
+            }
+          ],
+          "ruleIndex": 6
+        },
+        {
+          "ruleId": "TikTokDocs.Acronyms",
+          "level": "note",
+          "message": {
+            "text": "'UID' is used without being defined on this page."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "corpus/meilisearch-docs/reference/api/headers.mdx"
+                },
+                "region": {
+                  "startLine": 82,
+                  "startColumn": 107,
+                  "endColumn": 110,
+                  "snippet": {
+                    "text": "UID"
+                  }
+                }
+              }
+            }
+          ],
+          "ruleIndex": 0
+        },
+        {
+          "ruleId": "TikTokDocs.LatinAbbreviations",
+          "level": "warning",
+          "message": {
+            "text": "Use 'and so on' instead of 'etc.'."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "corpus/meilisearch-docs/reference/api/pagination.mdx"
+                },
+                "region": {
+                  "startLine": 7,
+                  "startColumn": 130,
+                  "endColumn": 134,
+                  "snippet": {
+                    "text": "etc."
+                  }
+                }
+              }
+            }
+          ],
+          "ruleIndex": 13
+        },
+        {
+          "ruleId": "TikTokDocs.AllowsYouTo",
+          "level": "note",
+          "message": {
+            "text": "Use 'lets you' instead of 'allows you to' \u2014 describe what the reader does, not what the API permits."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "corpus/meilisearch-docs/reference/api/pagination.mdx"
+                },
+                "region": {
+                  "startLine": 7,
+                  "startColumn": 140,
+                  "endColumn": 153,
+                  "snippet": {
+                    "text": "allows you to"
+                  }
+                }
+              }
+            }
+          ],
+          "ruleIndex": 1
+        },
+        {
+          "ruleId": "TikTokDocs.Acronyms",
+          "level": "note",
+          "message": {
+            "text": "'PATCH' is used without being defined on this page."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "corpus/meilisearch-docs/reference/api/requests.mdx"
+                },
+                "region": {
+                  "startLine": 13,
+                  "startColumn": 56,
+                  "endColumn": 61,
+                  "snippet": {
+                    "text": "PATCH"
+                  }
+                }
+              }
+            }
+          ],
+          "ruleIndex": 0
+        },
+        {
+          "ruleId": "TikTokDocs.Acronyms",
+          "level": "note",
+          "message": {
+            "text": "'PATCH' is used without being defined on this page."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "corpus/meilisearch-docs/reference/api/requests.mdx"
+                },
+                "region": {
+                  "startLine": 29,
+                  "startColumn": 74,
+                  "endColumn": 79,
+                  "snippet": {
+                    "text": "PATCH"
+                  }
+                }
+              }
+            }
+          ],
+          "ruleIndex": 0
+        },
+        {
+          "ruleId": "TikTokDocs.Please",
+          "level": "warning",
+          "message": {
+            "text": "Drop 'please' from instructions \u2014 a documented step is not a request."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "corpus/meilisearch-docs/reference/errors/error_codes.mdx"
+                },
+                "region": {
+                  "startLine": 30,
+                  "startColumn": 37,
+                  "endColumn": 43,
+                  "snippet": {
+                    "text": "Please"
+                  }
+                }
+              }
+            }
+          ],
+          "ruleIndex": 16
+        },
+        {
+          "ruleId": "TikTokDocs.Acronyms",
+          "level": "note",
+          "message": {
+            "text": "'RHAI' is used without being defined on this page."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "corpus/meilisearch-docs/reference/errors/error_codes.mdx"
+                },
+                "region": {
+                  "startLine": 66,
+                  "startColumn": 115,
+                  "endColumn": 119,
+                  "snippet": {
+                    "text": "RHAI"
+                  }
+                }
+              }
+            }
+          ],
+          "ruleIndex": 0
+        },
+        {
+          "ruleId": "TikTokDocs.Acronyms",
+          "level": "note",
+          "message": {
+            "text": "'ASCII' is used without being defined on this page."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "corpus/meilisearch-docs/reference/errors/error_codes.mdx"
+                },
+                "region": {
+                  "startLine": 298,
+                  "startColumn": 137,
+                  "endColumn": 142,
+                  "snippet": {
+                    "text": "ASCII"
+                  }
+                }
+              }
+            }
+          ],
+          "ruleIndex": 0
+        },
+        {
+          "ruleId": "TikTokDocs.Please",
+          "level": "warning",
+          "message": {
+            "text": "Drop 'please' from instructions \u2014 a documented step is not a request."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "corpus/meilisearch-docs/reference/errors/error_codes.mdx"
+                },
+                "region": {
+                  "startLine": 434,
+                  "startColumn": 56,
+                  "endColumn": 62,
+                  "snippet": {
+                    "text": "please"
+                  }
+                }
+              }
+            }
+          ],
+          "ruleIndex": 16
+        },
+        {
+          "ruleId": "TikTokDocs.Please",
+          "level": "warning",
+          "message": {
+            "text": "Drop 'please' from instructions \u2014 a documented step is not a request."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "corpus/meilisearch-docs/reference/errors/error_codes.mdx"
+                },
+                "region": {
+                  "startLine": 1010,
+                  "startColumn": 39,
+                  "endColumn": 45,
+                  "snippet": {
+                    "text": "Please"
+                  }
+                }
+              }
+            }
+          ],
+          "ruleIndex": 16
+        },
+        {
+          "ruleId": "TikTokDocs.Please",
+          "level": "warning",
+          "message": {
+            "text": "Drop 'please' from instructions \u2014 a documented step is not a request."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "corpus/meilisearch-docs/reference/errors/error_codes.mdx"
+                },
+                "region": {
+                  "startLine": 1014,
+                  "startColumn": 37,
+                  "endColumn": 43,
+                  "snippet": {
+                    "text": "Please"
+                  }
+                }
+              }
+            }
+          ],
+          "ruleIndex": 16
+        },
+        {
+          "ruleId": "TikTokDocs.CurlyQuotes",
+          "level": "warning",
+          "message": {
+            "text": "Replace the curly quote in '\u2019' with a straight quote."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "corpus/meilisearch-docs/reference/errors/error_codes.mdx"
+                },
+                "region": {
+                  "startLine": 1039,
+                  "startColumn": 29,
+                  "endColumn": 30,
+                  "snippet": {
+                    "text": "\u2019"
+                  }
+                }
+              }
+            }
+          ],
+          "ruleIndex": 3
+        },
+        {
+          "ruleId": "TikTokDocs.CurlyQuotes",
+          "level": "warning",
+          "message": {
+            "text": "Replace the curly quote in '\u2019' with a straight quote."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "corpus/meilisearch-docs/reference/errors/error_codes.mdx"
+                },
+                "region": {
+                  "startLine": 1187,
+                  "startColumn": 89,
+                  "endColumn": 90,
+                  "snippet": {
+                    "text": "\u2019"
+                  }
+                }
+              }
+            }
+          ],
+          "ruleIndex": 3
+        },
+        {
+          "ruleId": "TikTokDocs.Please",
+          "level": "warning",
+          "message": {
+            "text": "Drop 'please' from instructions \u2014 a documented step is not a request."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "corpus/meilisearch-docs/reference/errors/error_codes.mdx"
+                },
+                "region": {
+                  "startLine": 1215,
+                  "startColumn": 40,
+                  "endColumn": 46,
+                  "snippet": {
+                    "text": "Please"
+                  }
+                }
+              }
+            }
+          ],
+          "ruleIndex": 16
+        },
+        {
+          "ruleId": "TikTokDocs.Acronyms",
+          "level": "note",
+          "message": {
+            "text": "'TEST' is used without being defined on this page."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "corpus/meilisearch-docs/reference/errors/overview.mdx"
+                },
+                "region": {
+                  "startLine": 52,
+                  "startColumn": 1,
+                  "endColumn": 5,
+                  "snippet": {
+                    "text": "TEST"
+                  }
+                }
+              }
+            }
+          ],
+          "ruleIndex": 0
+        },
+        {
+          "ruleId": "TikTokDocs.Acronyms",
+          "level": "note",
+          "message": {
+            "text": "'FIELD' is used without being defined on this page."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "corpus/meilisearch-docs/reference/errors/overview.mdx"
+                },
+                "region": {
+                  "startLine": 52,
+                  "startColumn": 15,
+                  "endColumn": 20,
+                  "snippet": {
+                    "text": "FIELD"
+                  }
+                }
+              }
+            }
+          ],
+          "ruleIndex": 0
+        }
+      ]
+    }
+  ]
+}

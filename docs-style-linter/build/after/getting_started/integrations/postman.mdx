@@ -1,0 +1,55 @@
+---
+title: Postman collection for Meilisearch
+sidebarTitle: Postman
+description: Import Meilisearch's OpenAPI specification into Postman to test and debug the API with a ready-made collection.
+---
+
+Postman is a platform that lets you create, organize, and reuse HTTP requests. You can import the Meilisearch OpenAPI specification directly into Postman to get a complete, up-to-date collection of all API routes.
+
+If you don't have Postman already, you can [download it here](https://www.postman.com/downloads/). It's free and available on many OS distributions.
+
+## Prerequisites
+
+Download the Meilisearch OpenAPI specification file from the [latest Meilisearch release on GitHub](https://github.com/meilisearch/meilisearch/releases/latest). Scroll down to the **Assets** section of the release and download `meilisearch-openapi.json`. Save it somewhere on your computer.
+
+## Import the OpenAPI specification
+
+Click the three-dot menu (**...**) at the top of the sidebar, then select **Import**.
+
+<Frame>
+  <img src="/assets/images/postman/import_menu.png" alt="The three-dot menu in the Postman sidebar with the 'Import' option highlighted" />
+</Frame>
+
+In the import dialog, drag and drop the OpenAPI specification file or click **files** to select it from your computer.
+
+<Frame>
+  <img src="/assets/images/postman/import_dialog.png" alt="The Postman import dialog with a drop zone for files" />
+</Frame>
+
+Postman detects the file format and asks how to import it. Select **Postman Collection** to create a collection with all Meilisearch API routes, then click **Import**.
+
+<Frame>
+  <img src="/assets/images/postman/import_postman_collection.png" alt="The import specification dialog with 'Postman Collection' selected" />
+</Frame>
+
+<Note>
+You can also select **OpenAPI 3.1 Specification with a Postman Collection** if you want to keep the raw specification alongside the collection.
+
+<Frame>
+  <img src="/assets/images/postman/import_openapi.png" alt="The import specification dialog with 'OpenAPI 3.1 Specification with a Postman Collection' selected" />
+</Frame>
+</Note>
+
+## Configure authentication
+
+After importing, you need to configure your API key so Postman can authenticate requests to your Meilisearch instance.
+
+Individual requests use **bearer token** authentication. You can verify this by selecting any request and checking the **Authorization** tab. The token field references `{{bearerToken}}`, which Postman resolves from your global variables.
+
+<Frame>
+  <img src="/assets/images/postman/collection_overview.png" alt="The Postman collection showing all Meilisearch API routes with the Authorization tab open and Bearer Token configured" />
+</Frame>
+
+## Start using the collection
+
+You can now select any route from the sidebar, adjust parameters as needed, and click **Send** to make requests to your Meilisearch instance.
