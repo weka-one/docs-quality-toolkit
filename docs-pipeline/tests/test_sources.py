@@ -294,3 +294,67 @@ def test_include_patterns_narrow_the_crawl(tmp_path):
         opener=opener_for({"https://docs.example/robots.txt": "User-agent: *\n"}),
     )
     assert source.urls() == ["https://docs.example/doc/a"]
+
+
+# --- JSON island recovery ---------------------------------------------------
+
+def _tt4d_shaped_page(prose: str) -> str:
+    import json
+    router = {"loaderData": {"page": {"data": {"article": {
+        "content": prose, "id": "7300000000000000000"}}}},
+        "assets": ["https://cdn.example/" + "ab" * 32 + ".js"] * 10}
+    return ("<html><head>" + '<script src="/a.js"></script>' * 20 + "</head><body>"
+            '<div id="root"></div>'
+            f"<script>window._ROUTER_DATA={json.dumps(router)}</script></body></html>")
+
+
+PROSE = (
+    "# Query Creator Info\n\nYou must register an app before you can request a "
+    "client key. The endpoint returns the creator's open ID and display name, "
+    "and you can pass additional fields in the same request.\n"
+)
+
+
+def test_crawl_recovers_text_from_a_json_island():
+    """The page renders in the browser, but its prose ships inline as JSON."""
+    page = _tt4d_shaped_page(PROSE)
+    source = SiteCrawlSource(
+        {"urls": ["https://docs.example/doc/a"],
+         "sitemap_url": "https://docs.example/s.xml", "delay_seconds": 0},
+        opener=opener_for({
+            "https://docs.example/robots.txt": "User-agent: *\n",
+            "https://docs.example/doc/a": page,
+        }),
+    )
+    pages = list(source.pages())
+    assert len(pages) == 1
+    assert "Query Creator Info" in pages[0].text
+    assert "register an app" in pages[0].text
+    # The decoy CDN URLs must not come through as content.
+    assert "cdn.example" not in pages[0].text
+
+
+def test_server_rendered_html_still_wins_when_it_has_more_text():
+    html = "<html><body><h1>Real page</h1><p>" + "word " * 400 + "</p></body></html>"
+    source = SiteCrawlSource(
+        {"urls": ["https://docs.example/doc/b"],
+         "sitemap_url": "https://docs.example/s.xml", "delay_seconds": 0},
+        opener=opener_for({
+            "https://docs.example/robots.txt": "User-agent: *\n",
+            "https://docs.example/doc/b": html,
+        }),
+    )
+    assert "Real page" in list(source.pages())[0].text
+
+
+def test_extraction_can_be_turned_off():
+    page = _tt4d_shaped_page(PROSE)
+    source = SiteCrawlSource(
+        {"urls": ["https://docs.example/doc/a"], "extract_json": False,
+         "sitemap_url": "https://docs.example/s.xml", "delay_seconds": 0},
+        opener=opener_for({
+            "https://docs.example/robots.txt": "User-agent: *\n",
+            "https://docs.example/doc/a": page,
+        }),
+    )
+    assert "register an app" not in list(source.pages())[0].text

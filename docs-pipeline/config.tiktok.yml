@@ -36,6 +36,12 @@ source:
   # per line; `#` comments allowed. This wins over discover_from.
   # urls_file: tt4d-urls.txt
 
+  # These pages render in the browser, but every page's prose ships inline as
+  # JSON under `_ROUTER_DATA`. The crawler reads whichever source yields more
+  # text - the HTML or the JSON island - so this needs no configuring. Set it
+  # to false to force plain HTML reduction.
+  # extract_json: false
+
   # Seconds between requests. The crawler raises this automatically if
   # robots.txt asks for a slower pace.
   delay_seconds: 1.5

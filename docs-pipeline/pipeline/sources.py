@@ -259,6 +259,28 @@ class SiteCrawlSource:
         except Exception:
             return True
 
+    def _to_text(self, raw: str) -> str:
+        """Plain HTML reduction, or the JSON island when that carries more.
+
+        A site can render in the browser and still ship every page's content as
+        JSON inline. Rather than make the operator know which, take whichever
+        yields more readable text: on a server-rendered page the HTML wins, on
+        an app shell the island does, and neither needs configuring.
+        """
+        from_html = html_to_markdown(raw)
+        if self.config.get("extract_json") is False:
+            return from_html
+        try:
+            from .json_island import recover
+        except ImportError:
+            return from_html
+        try:
+            from_json, _ = recover(raw)
+        except Exception:
+            return from_html
+        words = lambda t: len(re.findall(r"\b\w+\b", t))
+        return from_json if words(from_json) > words(from_html) else from_html
+
     def _get(self, url: str) -> str:
         request = urllib.request.Request(url, headers={"User-Agent": self.user_agent})
         with self._opener(request, timeout=self.config.get("timeout", 60)) as response:
@@ -400,7 +422,7 @@ class SiteCrawlSource:
             except Exception as exc:       # one bad page must not end the run
                 yield Page(path=url, text="", title="", url=url, revision=f"error: {exc}")
                 continue
-            markdown = html_to_markdown(raw)
+            markdown = self._to_text(raw)
             path = urllib.parse.urlparse(url).path.strip("/") or "index"
             yield Page(path=path, text=markdown, title=_first_heading(markdown), url=url)
 
