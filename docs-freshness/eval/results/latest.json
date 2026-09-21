@@ -1,0 +1,539 @@
+[
+  {
+    "arm": "naive",
+    "corpus": {
+      "tp": 21,
+      "fp": 39,
+      "fn": 0,
+      "precision": 0.35,
+      "recall": 1.0,
+      "f1": 0.5185
+    },
+    "mutated": {
+      "tp": 20,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    },
+    "per_detector": {
+      "missing_auth": {
+        "tp": 15,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "unknown_endpoint": {
+        "tp": 16,
+        "fp": 39,
+        "fn": 0,
+        "precision": 0.2909,
+        "recall": 1.0,
+        "f1": 0.4507
+      },
+      "unknown_enum_value": {
+        "tp": 4,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "unknown_parameter": {
+        "tp": 6,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "pages": {
+      "corpus": 26,
+      "mutated": 20
+    },
+    "by_source": {
+      "adjudicated": {
+        "tp": 19,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "control": {
+        "tp": 0,
+        "fp": 39,
+        "fn": 0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0
+      },
+      "probe": {
+        "tp": 2,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "curve": [
+      {
+        "threshold": 0.0,
+        "reported": 60,
+        "tp": 21,
+        "fp": 39,
+        "precision": 0.35,
+        "recall": 1.0
+      },
+      {
+        "threshold": 0.35,
+        "reported": 60,
+        "tp": 21,
+        "fp": 39,
+        "precision": 0.35,
+        "recall": 1.0
+      },
+      {
+        "threshold": 0.45,
+        "reported": 20,
+        "tp": 16,
+        "fp": 4,
+        "precision": 0.8,
+        "recall": 0.7619
+      },
+      {
+        "threshold": 0.6,
+        "reported": 16,
+        "tp": 16,
+        "fp": 0,
+        "precision": 1.0,
+        "recall": 0.7619
+      },
+      {
+        "threshold": 0.7,
+        "reported": 5,
+        "tp": 5,
+        "fp": 0,
+        "precision": 1.0,
+        "recall": 0.2381
+      },
+      {
+        "threshold": 0.8,
+        "reported": 4,
+        "tp": 4,
+        "fp": 0,
+        "precision": 1.0,
+        "recall": 0.1905
+      },
+      {
+        "threshold": 0.9,
+        "reported": 3,
+        "tp": 3,
+        "fp": 0,
+        "precision": 1.0,
+        "recall": 0.1429
+      }
+    ],
+    "base_scoping": false,
+    "ambiguous_true_positives": 5,
+    "misses": [],
+    "false_alarms": [
+      "resources/self_hosting/configuration/overview.mdx: unknown_endpoint GET /meilisearch/meilisearch/latest/config.toml",
+      "resources/self_hosting/deployment/aws.mdx: unknown_endpoint GET /meilisearch/meilisearch/latest/config.toml",
+      "resources/self_hosting/deployment/digitalocean.mdx: unknown_endpoint GET /meilisearch/meilisearch/latest/config.toml",
+      "resources/self_hosting/deployment/gcp.mdx: unknown_endpoint GET /meilisearch/meilisearch/latest/config.toml",
+      "resources/self_hosting/deployment/running_production.mdx: unknown_endpoint GET /meilisearch/meilisearch/latest/config.toml",
+      "resources/migration/updating.mdx: unknown_endpoint GET /meilisearch/meilisearch/releases/download/MEILISEARCH_VERSION/meilisearch-linux-amd64",
+      "resources/migration/updating.mdx: unknown_endpoint GET /meilisearch/meilisearch/releases/download/{meilisearch_version}/meilisearch-linux-amd64",
+      "resources/self_hosting/getting_started/install_locally.mdx: unknown_endpoint GET /meilisearch/meilisearch/releases/download/{meilisearch_version}/{meilisearch_os}",
+      "resources/migration/elasticsearch_migration.mdx: unknown_endpoint POST /_bulk",
+      "resources/migration/elasticsearch_migration.mdx: unknown_endpoint GET /_tasks/{task_id}",
+      "resources/migration/elasticsearch_migration.mdx: unknown_endpoint GET /my-index",
+      "resources/migration/elasticsearch_migration.mdx: unknown_endpoint GET /my-index/_doc/{id}",
+      "resources/migration/elasticsearch_migration.mdx: unknown_endpoint POST /my-index/_doc",
+      "resources/migration/elasticsearch_migration.mdx: unknown_endpoint POST /my-index/_delete_by_query",
+      "resources/migration/elasticsearch_migration.mdx: unknown_endpoint PUT /my-index",
+      "resources/migration/elasticsearch_migration.mdx: unknown_endpoint GET /_cluster/health",
+      "resources/migration/elasticsearch_migration.mdx: unknown_endpoint POST /_security/api_key",
+      "resources/migration/elasticsearch_migration.mdx: unknown_endpoint PUT /my-index/_settings",
+      "resources/migration/elasticsearch_migration.mdx: unknown_endpoint GET /_cat/indices",
+      "resources/migration/elasticsearch_migration.mdx: unknown_endpoint POST /my-index/_search",
+      "resources/migration/elasticsearch_migration.mdx: unknown_endpoint DELETE /my-index/_doc/{id}",
+      "resources/migration/elasticsearch_migration.mdx: unknown_endpoint GET /my-index/_settings",
+      "resources/migration/elasticsearch_migration.mdx: unknown_endpoint POST /_msearch",
+      "resources/migration/elasticsearch_migration.mdx: unknown_endpoint DELETE /my-index",
+      "resources/migration/qdrant_migration.mdx: unknown_endpoint GET /collections/{name}",
+      "resources/migration/qdrant_migration.mdx: unknown_endpoint PUT /collections/{name}",
+      "resources/migration/qdrant_migration.mdx: unknown_endpoint GET /collections/{name}/points/{id}",
+      "resources/migration/qdrant_migration.mdx: unknown_endpoint PUT /collections/{name}/index",
+      "resources/migration/qdrant_migration.mdx: unknown_endpoint POST /collections/{name}/points/scroll",
+      "resources/migration/qdrant_migration.mdx: unknown_endpoint POST /collections/{name}/points/search/batch",
+      "resources/migration/qdrant_migration.mdx: unknown_endpoint POST /collections/{name}/points/search",
+      "resources/migration/qdrant_migration.mdx: unknown_endpoint PUT /collections/{name}/points",
+      "resources/migration/qdrant_migration.mdx: unknown_endpoint GET /healthz",
+      "resources/migration/qdrant_migration.mdx: unknown_endpoint GET /collections",
+      "resources/migration/qdrant_migration.mdx: unknown_endpoint DELETE /collections/{name}",
+      "resources/migration/qdrant_migration.mdx: unknown_endpoint POST /collections/{name}/snapshots",
+      "resources/migration/qdrant_migration.mdx: unknown_endpoint POST /collections/{name}/points/delete",
+      "capabilities/full_text_search/overview.mdx: unknown_endpoint GET /search",
+      "capabilities/analytics/advanced/migrate_analytics.mdx: unknown_endpoint POST /events"
+    ]
+  },
+  {
+    "arm": "none",
+    "corpus": {
+      "tp": 21,
+      "fp": 30,
+      "fn": 0,
+      "precision": 0.4118,
+      "recall": 1.0,
+      "f1": 0.5833
+    },
+    "mutated": {
+      "tp": 20,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    },
+    "per_detector": {
+      "missing_auth": {
+        "tp": 15,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "unknown_endpoint": {
+        "tp": 16,
+        "fp": 30,
+        "fn": 0,
+        "precision": 0.3478,
+        "recall": 1.0,
+        "f1": 0.5161
+      },
+      "unknown_enum_value": {
+        "tp": 4,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "unknown_parameter": {
+        "tp": 6,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "pages": {
+      "corpus": 26,
+      "mutated": 20
+    },
+    "by_source": {
+      "adjudicated": {
+        "tp": 19,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "control": {
+        "tp": 0,
+        "fp": 30,
+        "fn": 0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0
+      },
+      "probe": {
+        "tp": 2,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "curve": [
+      {
+        "threshold": 0.0,
+        "reported": 51,
+        "tp": 21,
+        "fp": 30,
+        "precision": 0.4118,
+        "recall": 1.0
+      },
+      {
+        "threshold": 0.35,
+        "reported": 51,
+        "tp": 21,
+        "fp": 30,
+        "precision": 0.4118,
+        "recall": 1.0
+      },
+      {
+        "threshold": 0.45,
+        "reported": 20,
+        "tp": 16,
+        "fp": 4,
+        "precision": 0.8,
+        "recall": 0.7619
+      },
+      {
+        "threshold": 0.6,
+        "reported": 16,
+        "tp": 16,
+        "fp": 0,
+        "precision": 1.0,
+        "recall": 0.7619
+      },
+      {
+        "threshold": 0.7,
+        "reported": 5,
+        "tp": 5,
+        "fp": 0,
+        "precision": 1.0,
+        "recall": 0.2381
+      },
+      {
+        "threshold": 0.8,
+        "reported": 4,
+        "tp": 4,
+        "fp": 0,
+        "precision": 1.0,
+        "recall": 0.1905
+      },
+      {
+        "threshold": 0.9,
+        "reported": 3,
+        "tp": 3,
+        "fp": 0,
+        "precision": 1.0,
+        "recall": 0.1429
+      }
+    ],
+    "base_scoping": true,
+    "ambiguous_true_positives": 5,
+    "misses": [],
+    "false_alarms": [
+      "resources/migration/elasticsearch_migration.mdx: unknown_endpoint POST /_bulk",
+      "resources/migration/elasticsearch_migration.mdx: unknown_endpoint GET /_tasks/{task_id}",
+      "resources/migration/elasticsearch_migration.mdx: unknown_endpoint GET /my-index",
+      "resources/migration/elasticsearch_migration.mdx: unknown_endpoint GET /my-index/_doc/{id}",
+      "resources/migration/elasticsearch_migration.mdx: unknown_endpoint POST /my-index/_doc",
+      "resources/migration/elasticsearch_migration.mdx: unknown_endpoint POST /my-index/_delete_by_query",
+      "resources/migration/elasticsearch_migration.mdx: unknown_endpoint PUT /my-index",
+      "resources/migration/elasticsearch_migration.mdx: unknown_endpoint GET /_cluster/health",
+      "resources/migration/elasticsearch_migration.mdx: unknown_endpoint POST /_security/api_key",
+      "resources/migration/elasticsearch_migration.mdx: unknown_endpoint PUT /my-index/_settings",
+      "resources/migration/elasticsearch_migration.mdx: unknown_endpoint GET /_cat/indices",
+      "resources/migration/elasticsearch_migration.mdx: unknown_endpoint POST /my-index/_search",
+      "resources/migration/elasticsearch_migration.mdx: unknown_endpoint DELETE /my-index/_doc/{id}",
+      "resources/migration/elasticsearch_migration.mdx: unknown_endpoint GET /my-index/_settings",
+      "resources/migration/elasticsearch_migration.mdx: unknown_endpoint POST /_msearch",
+      "resources/migration/elasticsearch_migration.mdx: unknown_endpoint DELETE /my-index",
+      "resources/migration/qdrant_migration.mdx: unknown_endpoint GET /collections/{name}",
+      "resources/migration/qdrant_migration.mdx: unknown_endpoint PUT /collections/{name}",
+      "resources/migration/qdrant_migration.mdx: unknown_endpoint GET /collections/{name}/points/{id}",
+      "resources/migration/qdrant_migration.mdx: unknown_endpoint PUT /collections/{name}/index",
+      "resources/migration/qdrant_migration.mdx: unknown_endpoint POST /collections/{name}/points/scroll",
+      "resources/migration/qdrant_migration.mdx: unknown_endpoint POST /collections/{name}/points/search/batch",
+      "resources/migration/qdrant_migration.mdx: unknown_endpoint POST /collections/{name}/points/search",
+      "resources/migration/qdrant_migration.mdx: unknown_endpoint PUT /collections/{name}/points",
+      "resources/migration/qdrant_migration.mdx: unknown_endpoint GET /healthz",
+      "resources/migration/qdrant_migration.mdx: unknown_endpoint GET /collections",
+      "resources/migration/qdrant_migration.mdx: unknown_endpoint DELETE /collections/{name}",
+      "resources/migration/qdrant_migration.mdx: unknown_endpoint POST /collections/{name}/snapshots",
+      "resources/migration/qdrant_migration.mdx: unknown_endpoint POST /collections/{name}/points/delete",
+      "capabilities/full_text_search/overview.mdx: unknown_endpoint GET /search"
+    ]
+  },
+  {
+    "arm": "heuristic",
+    "corpus": {
+      "tp": 21,
+      "fp": 30,
+      "fn": 0,
+      "precision": 0.4118,
+      "recall": 1.0,
+      "f1": 0.5833
+    },
+    "mutated": {
+      "tp": 20,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    },
+    "per_detector": {
+      "missing_auth": {
+        "tp": 15,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "unknown_endpoint": {
+        "tp": 16,
+        "fp": 30,
+        "fn": 0,
+        "precision": 0.3478,
+        "recall": 1.0,
+        "f1": 0.5161
+      },
+      "unknown_enum_value": {
+        "tp": 4,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "unknown_parameter": {
+        "tp": 6,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "pages": {
+      "corpus": 26,
+      "mutated": 20
+    },
+    "by_source": {
+      "adjudicated": {
+        "tp": 19,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "control": {
+        "tp": 0,
+        "fp": 30,
+        "fn": 0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0
+      },
+      "probe": {
+        "tp": 2,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "curve": [
+      {
+        "threshold": 0.0,
+        "reported": 51,
+        "tp": 21,
+        "fp": 30,
+        "precision": 0.4118,
+        "recall": 1.0
+      },
+      {
+        "threshold": 0.35,
+        "reported": 51,
+        "tp": 21,
+        "fp": 30,
+        "precision": 0.4118,
+        "recall": 1.0
+      },
+      {
+        "threshold": 0.45,
+        "reported": 20,
+        "tp": 16,
+        "fp": 4,
+        "precision": 0.8,
+        "recall": 0.7619
+      },
+      {
+        "threshold": 0.6,
+        "reported": 16,
+        "tp": 16,
+        "fp": 0,
+        "precision": 1.0,
+        "recall": 0.7619
+      },
+      {
+        "threshold": 0.7,
+        "reported": 5,
+        "tp": 5,
+        "fp": 0,
+        "precision": 1.0,
+        "recall": 0.2381
+      },
+      {
+        "threshold": 0.8,
+        "reported": 4,
+        "tp": 4,
+        "fp": 0,
+        "precision": 1.0,
+        "recall": 0.1905
+      },
+      {
+        "threshold": 0.9,
+        "reported": 3,
+        "tp": 3,
+        "fp": 0,
+        "precision": 1.0,
+        "recall": 0.1429
+      }
+    ],
+    "base_scoping": true,
+    "ambiguous_true_positives": 5,
+    "misses": [],
+    "false_alarms": [
+      "resources/migration/elasticsearch_migration.mdx: unknown_endpoint POST /_bulk",
+      "resources/migration/elasticsearch_migration.mdx: unknown_endpoint GET /_tasks/{task_id}",
+      "resources/migration/elasticsearch_migration.mdx: unknown_endpoint GET /my-index",
+      "resources/migration/elasticsearch_migration.mdx: unknown_endpoint GET /my-index/_doc/{id}",
+      "resources/migration/elasticsearch_migration.mdx: unknown_endpoint POST /my-index/_doc",
+      "resources/migration/elasticsearch_migration.mdx: unknown_endpoint POST /my-index/_delete_by_query",
+      "resources/migration/elasticsearch_migration.mdx: unknown_endpoint PUT /my-index",
+      "resources/migration/elasticsearch_migration.mdx: unknown_endpoint GET /_cluster/health",
+      "resources/migration/elasticsearch_migration.mdx: unknown_endpoint POST /_security/api_key",
+      "resources/migration/elasticsearch_migration.mdx: unknown_endpoint PUT /my-index/_settings",
+      "resources/migration/elasticsearch_migration.mdx: unknown_endpoint GET /_cat/indices",
+      "resources/migration/elasticsearch_migration.mdx: unknown_endpoint POST /my-index/_search",
+      "resources/migration/elasticsearch_migration.mdx: unknown_endpoint DELETE /my-index/_doc/{id}",
+      "resources/migration/elasticsearch_migration.mdx: unknown_endpoint GET /my-index/_settings",
+      "resources/migration/elasticsearch_migration.mdx: unknown_endpoint POST /_msearch",
+      "resources/migration/elasticsearch_migration.mdx: unknown_endpoint DELETE /my-index",
+      "resources/migration/qdrant_migration.mdx: unknown_endpoint GET /collections/{name}",
+      "resources/migration/qdrant_migration.mdx: unknown_endpoint PUT /collections/{name}",
+      "resources/migration/qdrant_migration.mdx: unknown_endpoint GET /collections/{name}/points/{id}",
+      "resources/migration/qdrant_migration.mdx: unknown_endpoint PUT /collections/{name}/index",
+      "resources/migration/qdrant_migration.mdx: unknown_endpoint POST /collections/{name}/points/scroll",
+      "resources/migration/qdrant_migration.mdx: unknown_endpoint POST /collections/{name}/points/search/batch",
+      "resources/migration/qdrant_migration.mdx: unknown_endpoint POST /collections/{name}/points/search",
+      "resources/migration/qdrant_migration.mdx: unknown_endpoint PUT /collections/{name}/points",
+      "resources/migration/qdrant_migration.mdx: unknown_endpoint GET /healthz",
+      "resources/migration/qdrant_migration.mdx: unknown_endpoint GET /collections",
+      "resources/migration/qdrant_migration.mdx: unknown_endpoint DELETE /collections/{name}",
+      "resources/migration/qdrant_migration.mdx: unknown_endpoint POST /collections/{name}/snapshots",
+      "resources/migration/qdrant_migration.mdx: unknown_endpoint POST /collections/{name}/points/delete",
+      "capabilities/full_text_search/overview.mdx: unknown_endpoint GET /search"
+    ]
+  }
+]

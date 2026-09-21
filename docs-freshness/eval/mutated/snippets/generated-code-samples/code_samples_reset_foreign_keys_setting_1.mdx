@@ -1,0 +1,20 @@
+<CodeGroup>
+
+```bash cURL
+curl \
+  -X POST 'MEILISEARCH_URL/indexes/books/settings/foreign-keys' \
+  -H 'Authorization: Bearer API_KEY'
+```
+
+```javascript JS
+client.index('books').resetForeignKeys()
+```
+
+```python Python
+client.index('books').reset_foreign_keys()
+```
+
+```go Go
+client.Index("books").ResetForeignKeys()
+```
+</CodeGroup>

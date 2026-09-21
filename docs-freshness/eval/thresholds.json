@@ -1,0 +1,21 @@
+{
+  "_comment": [
+    "Floors asserted by CI (eval/harness.py --check-thresholds). Regenerate the",
+    "numbers with `make eval`; raise a floor only when an improvement is real and",
+    "you intend to keep it.",
+    "",
+    "`gated` is the shipping configuration: the CLI's default --min-confidence 0.6.",
+    "`corpus` reports everything including the review queue, so its precision is",
+    "deliberately much lower - that tier is a queue, not an assertion.",
+    "`probe` is the only non-circular corpus recall figure."
+  ],
+  "none": {
+    "gated": { "precision": 1.0, "recall": 0.7 },
+    "probe": { "recall": 1.0 },
+    "mutated": { "recall": 1.0 }
+  },
+  "heuristic": {
+    "gated": { "precision": 1.0 },
+    "mutated": { "recall": 1.0 }
+  }
+}
