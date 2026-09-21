@@ -194,6 +194,9 @@ def html_to_markdown(source: str) -> str:
     return re.sub(r"\n{3,}", "\n\n", text).strip() + "\n"
 
 
+_LINK_RE = re.compile(r'(?i)<a\b[^>]*href=["\']([^"\'#]+)')
+
+
 class SiteCrawlSource:
     """Fetch the published site and reduce each page to Markdown.
 
@@ -286,6 +289,22 @@ class SiteCrawlSource:
         words = lambda t: len(re.findall(r"\b\w+\b", t))
         return from_json if words(from_json) > words(from_html) else from_html
 
+    def _page_links(self, url: str) -> list:
+        """Every link on `url`, absolute, with fragments dropped.
+
+        Split out from the crawl itself because *finding* pages and *reading*
+        them are separate problems on a site that builds its pages in the
+        browser. Reading was the obvious one; finding is the one that bites
+        quietly, because an app shell contains no links either, and a crawl that
+        discovers nothing looks like a site with no documentation rather than
+        like a bug.
+        """
+        raw = self._get(url)
+        return [
+            urllib.parse.urljoin(url, href).split("#")[0].rstrip("/")
+            for href in _LINK_RE.findall(raw)
+        ]
+
     def _get(self, url: str) -> str:
         request = urllib.request.Request(url, headers={"User-Agent": self.user_agent})
         with self._opener(request, timeout=self.config.get("timeout", 60)) as response:
@@ -358,7 +377,6 @@ class SiteCrawlSource:
 
         host = urllib.parse.urlparse(seed).netloc
         seen, found, frontier = {seed}, [], [(seed, 0)]
-        link_re = re.compile(r'(?i)<a\b[^>]*href=["\']([^"\'#]+)')
 
         while frontier and len(found) < budget:
             url, depth = frontier.pop(0)
@@ -366,14 +384,13 @@ class SiteCrawlSource:
                 self.skipped_by_robots += 1
                 continue
             try:
-                html = self._get(url)
+                links = self._page_links(url)
             except Exception:
                 continue
             found.append(url)
             if depth >= max_depth:
                 continue
-            for href in link_re.findall(html):
-                target = urllib.parse.urljoin(url, href).split("#")[0].rstrip("/")
+            for target in links:
                 if not target or target in seen:
                     continue
                 if urllib.parse.urlparse(target).netloc != host:

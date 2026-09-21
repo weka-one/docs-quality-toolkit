@@ -81,17 +81,29 @@ things follow from that:
   navigation and which is the article, so `MAIN_SELECTORS` can return the body
   and leave the site furniture out — which is the failure the JSON mining hit.
 
-The cost is time: roughly 1–3 seconds a page against a few milliseconds. Two
-things keep that workable over a whole documentation set — one browser for the
-entire batch rather than one per page, and images, fonts and video refused
-before they are fetched. Measured at 0.65s per page over a local batch of
-eight; on a real site expect network latency plus whatever `delay_seconds`
-politeness requires. A 500-page set is a run of roughly half an hour, which is
-a nightly job, not an interactive one.
+Finding pages needs the browser too, and that half is easier to miss. An app
+shell has no anchors in it either, so a crawler that rendered only what it
+*read* would discover nothing and report a site with no documentation rather
+than a site it cannot see. Discovery renders as well, and takes links as the
+browser resolved them rather than by pattern-matching `href` attributes.
+Discovery and reading share one visit per page.
 
-Everything about *which* pages to visit is inherited unchanged from
+Everything about *which* pages to visit is otherwise inherited unchanged from
 `SiteCrawlSource`: sitemap or link discovery, `robots.txt`, the crawl delay,
-the host restriction. Only the fetch differs.
+the host restriction.
+
+The cost is time: roughly a second a page against a few milliseconds. Three
+things keep that workable over a whole documentation set — one browser for the
+entire batch rather than one per page, images, fonts and video refused before
+they are fetched, and a wait that ends when the text stops changing rather than
+when a character threshold is met. That last one is not a micro-optimisation:
+waiting for a threshold meant every page under it sat out the full timeout, and
+a four-page crawl containing one hub page took 35 seconds. It now takes 3.6.
+
+Measured at 0.90s per page over a local four-page crawl including discovery. On
+a real site, add network latency and whatever `delay_seconds` politeness
+requires. A 500-page set is a run of roughly half an hour — a nightly job, not
+an interactive one.
 
 ```
 make browser                                   install it, once

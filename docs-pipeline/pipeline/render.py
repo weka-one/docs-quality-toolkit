@@ -31,6 +31,7 @@ exists to fix.
 """
 from __future__ import annotations
 
+import collections
 import os
 import pathlib
 import re
@@ -74,6 +75,29 @@ CHROME_SELECTOR = (
 
 #: How little text means the page never really arrived.
 MIN_CONTENT_CHARS = 200
+
+#: How long the text must hold steady before a short page is taken at its word.
+STABLE_MS = 500
+
+WAIT_FOR_TEXT_JS = """
+async (args) => {
+  const { min, stableMs, maxMs } = args;
+  const started = Date.now();
+  let previous = -1, changedAt = Date.now();
+  while (Date.now() - started < maxMs) {
+    const len = ((document.body && document.body.innerText) || '').trim().length;
+    // Enough text to be a page: done, however long it took to get here.
+    if (len >= min) return 'filled';
+    if (len !== previous) { previous = len; changedAt = Date.now(); }
+    // Some text, and it has stopped changing: this page is simply short.
+    // Waiting out the full timeout on every short page is what makes a batch
+    // run take hours, and a hub page of links is short by design.
+    else if (len > 0 && Date.now() - changedAt > stableMs) return 'settled';
+    await new Promise((r) => setTimeout(r, 100));
+  }
+  return 'timeout';
+}
+"""
 
 PICK_MAIN_JS = """
 (args) => {
@@ -163,12 +187,17 @@ class Renderer:
     def __init__(
         self,
         timeout_ms: int = 30000,
+        content_timeout_ms: int = 8000,
         settle_ms: int = 400,
         user_agent: str = "",
         block_resources: bool = True,
         browser_path: str = "",
     ):
         self.timeout_ms = timeout_ms
+        # Capped well below the navigation timeout on purpose: this is the wait
+        # for text to appear on a page that has already loaded, and the common
+        # reason it never appears is that the page is short, not that it is slow.
+        self.content_timeout_ms = min(content_timeout_ms, timeout_ms)
         self.settle_ms = settle_ms
         self.user_agent = user_agent
         self.block_resources = block_resources
@@ -224,19 +253,33 @@ class Renderer:
 
     def content_html(self, url: str) -> tuple[str, str]:
         """Load `url`, wait for it to assemble, return (content HTML, how found)."""
+        visited = self.visit(url)
+        return visited["html"], visited["via"]
+
+    def visit(self, url: str) -> dict:
+        """Load `url` once and take everything wanted from it.
+
+        Content and links come back together because a crawl needs both and a
+        page load is the expensive part. Discovering links by one visit and
+        reading text by another would double the cost of every run.
+        """
         if self._context is None:
             raise SourceError("Renderer must be used as a context manager.")
         page = self._context.new_page()
         try:
             page.goto(url, wait_until="domcontentloaded", timeout=self.timeout_ms)
-            # An app shell arrives empty and fills in a moment later. Wait for the
-            # text to appear rather than for a fixed period, so a fast page stays
-            # fast and a slow one still works.
+            # An app shell arrives empty and fills in a moment later, so wait for
+            # the text rather than for a fixed period. The wait ends as soon as
+            # there is enough text, or as soon as what text there is stops
+            # changing - otherwise every short page costs a full timeout.
             try:
-                page.wait_for_function(
-                    "min => document.body && document.body.innerText.trim().length >= min",
-                    arg=MIN_CONTENT_CHARS,
-                    timeout=self.timeout_ms,
+                page.evaluate(
+                    WAIT_FOR_TEXT_JS,
+                    {
+                        "min": MIN_CONTENT_CHARS,
+                        "stableMs": STABLE_MS,
+                        "maxMs": self.content_timeout_ms,
+                    },
                 )
             except Exception:
                 pass          # a genuinely short page is still a page
@@ -250,7 +293,16 @@ class Renderer:
                     "minChars": MIN_CONTENT_CHARS,
                 },
             )
-            return result.get("html", ""), result.get("via", "")
+            # `a.href` is already absolute and resolved against any <base>,
+            # which is a real gain over pattern-matching href attributes.
+            links = page.evaluate(
+                "() => Array.from(document.querySelectorAll('a[href]')).map(a => a.href)"
+            )
+            return {
+                "html": result.get("html", ""),
+                "via": result.get("via", ""),
+                "links": [str(u).split("#")[0].rstrip("/") for u in links],
+            }
         finally:
             try:
                 page.close()
@@ -268,14 +320,49 @@ class RenderedCrawlSource(SiteCrawlSource):
 
     name = "rendered-crawl"
 
+    #: Visits held for reuse between discovery and reading. Bounded, because a
+    #: deep crawl can walk far more pages than it ends up keeping.
+    CACHE_LIMIT = 300
+
     def __init__(self, config: dict, renderer=None):
         super().__init__(config)
         self._renderer = renderer
+        self._active = None
+        self._cache: "collections.OrderedDict[str, dict]" = collections.OrderedDict()
         self.picked_via: dict[str, str] = {}
+
+    def _visit(self, url: str) -> dict:
+        """Render `url`, or hand back the visit already made to it.
+
+        Discovery walks the same pages the run then reads. Without this the
+        browser would load every page twice.
+        """
+        if url in self._cache:
+            self._cache.move_to_end(url)
+            return self._cache[url]
+        if self._active is None:
+            raise SourceError("Renderer must be open before visiting pages.")
+        visited = self._active.visit(url)
+        self._cache[url] = visited
+        while len(self._cache) > self.CACHE_LIMIT:
+            self._cache.popitem(last=False)
+        return visited
+
+    def _page_links(self, url: str) -> list:
+        """Links as the browser resolved them, not as the shell HTML lists them.
+
+        This is the half of the problem that rendering the content alone does
+        not solve: on a site that builds its pages in the browser, a plain fetch
+        of the seed page contains no anchors either, so a crawl that only
+        rendered what it read would discover nothing and report a site with no
+        documentation.
+        """
+        return self._visit(url)["links"]
 
     def _make_renderer(self):
         return Renderer(
             timeout_ms=int(self.config.get("timeout", 30)) * 1000,
+            content_timeout_ms=int(self.config.get("content_timeout_ms", 8000)),
             settle_ms=int(self.config.get("settle_ms", 400)),
             user_agent=self.user_agent,
             block_resources=self.config.get("block_resources", True),
@@ -284,36 +371,46 @@ class RenderedCrawlSource(SiteCrawlSource):
 
     def pages(self) -> Iterator[Page]:
         import contextlib
-        import time
 
-        urls = self.urls()
-        if not urls:
-            return
-        # An injected renderer is already open; ours is opened for this batch.
+        # The browser opens before the page list is worked out, because working
+        # it out may itself need rendering. An injected renderer is already
+        # open; ours is opened for this batch and closed after it.
         opened = self._renderer or self._make_renderer()
         manager = contextlib.nullcontext(opened) if self._renderer else opened
         with manager as renderer:
-            for i, url in enumerate(urls):
-                if i:
-                    time.sleep(self.delay)
-                try:
-                    raw, via = renderer.content_html(url)
-                except SourceError:
-                    raise
-                except Exception as exc:    # one bad page must not end the run
-                    yield Page(
-                        path=_url_path(url), text="", title="",
-                        url=url, revision=f"error: {exc}",
-                    )
-                    continue
-                self.picked_via[url] = via
-                markdown = html_to_markdown(raw)
+            self._active = renderer
+            try:
+                yield from self._walk(self.urls())
+            finally:
+                self._active = None
+                self._cache.clear()
+
+    def _walk(self, urls) -> Iterator[Page]:
+        import time
+
+        for i, url in enumerate(urls):
+            # A page already visited during discovery costs nothing to read
+            # again, so it does not owe the site another pause.
+            if i and url not in self._cache:
+                time.sleep(self.delay)
+            try:
+                visited = self._visit(url)
+            except SourceError:
+                raise
+            except Exception as exc:        # one bad page must not end the run
                 yield Page(
-                    path=_url_path(url),
-                    text=markdown,
-                    title=_first_heading(markdown),
-                    url=url,
+                    path=_url_path(url), text="", title="",
+                    url=url, revision=f"error: {exc}",
                 )
+                continue
+            self.picked_via[url] = visited["via"]
+            markdown = html_to_markdown(visited["html"])
+            yield Page(
+                path=_url_path(url),
+                text=markdown,
+                title=_first_heading(markdown),
+                url=url,
+            )
 
 
 def _url_path(url: str) -> str:
