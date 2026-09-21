@@ -1,0 +1,55 @@
+# Documentation monitor configuration.
+#
+# The pipeline exists because the docs it is aimed at live in a CMS, not in
+# Git. There is no pull request to gate and no merge base to diff, so the model
+# is a scheduled run that pulls the current content, checks it, and reports the
+# delta since the last run.
+#
+# Copy this file to config.yml and edit. The committed demo run uses
+# config.demo.yml, which points at the vendored corpus.
+
+source:
+  # filesystem | cms-api | site-crawl
+  type: cms-api
+
+  # --- cms-api ---
+  # Nothing about any specific CMS is hardcoded. Describe its list endpoint and
+  # where the fields live in its JSON, and the adapter does the rest.
+  list_url: https://cms.internal.example/api/v1/docs?page_size=100
+  auth_header: Authorization
+  auth_env: DOCS_CMS_TOKEN        # read from the environment, never committed
+  auth_format: "Bearer {token}"
+  fields:
+    items: results                # JSON path to the array of records
+    next: links.next              # JSON path to the next-page URL, "" if none
+    id: slug                      # becomes the page path in every report
+    title: attributes.title
+    body: attributes.body_markdown
+    url: attributes.public_url    # so a finding links to the live page
+    revision: attributes.updated_at
+
+  # --- site-crawl (fallback when the CMS has no usable read API) ---
+  # sitemap_url: https://developers.example.com/sitemap.xml
+  # delay_seconds: 1.0
+  # exclude_patterns: ["/blog/", "/changelog/"]
+  # limit: 0
+
+checks:
+  style:
+    enabled: true
+    vale_config: ../docs-style-linter/.vale.ini
+  structure:
+    enabled: true
+    policy: ../docs-style-linter/config/tiktok.yml
+  freshness:
+    enabled: true
+    spec: ../spec/meilisearch-openapi.json
+    min_confidence: 0.6
+
+report:
+  out: reports
+  history: history
+  # Fail the scheduled run when this many new error-level findings appear
+  # since the previous run. A monitor that fails on the standing backlog is a
+  # monitor nobody looks at; one that fails on regressions is useful.
+  fail_on_new_errors: 1

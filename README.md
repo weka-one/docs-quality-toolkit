@@ -8,6 +8,7 @@ both built and measured against a **real** 553-page documentation corpus and a
 | --- | --- |
 | [**docs-style-linter/**](docs-style-linter/) | 22 Vale rules, a composite GitHub Action, and the measurement to show whether they work. **589 → 364 alerts (−38%)**, error-level **−92%**, with a proof that no code sample was modified. |
 | [**docs-freshness/**](docs-freshness/) | Finds documentation that has drifted from the API it describes, plus an evaluation harness over **46 labelled pages** reporting precision and recall per detector. Found six genuine defects in published docs. |
+| [**docs-pipeline/**](docs-pipeline/) | Runs all of the above against docs that **do not live in Git** — a CMS API, an export, or the published site — on a schedule, and reports what changed since the last run. |
 
 ## Why the corpus is borrowed
 
@@ -69,12 +70,26 @@ The linter found 49 occurrences of `API Key` against 240 of the correct
 ```bash
 cd docs-style-linter && make install-vale && make report
 cd docs-freshness    && make install && make test && make eval
+cd docs-pipeline     && make install && make test && make demo
 ```
 
 CI: [`.github/workflows/ci.yml`](.github/workflows/ci.yml) runs both test
 suites, re-derives both sets of metrics, and fails if the committed reports
 drift. [`.github/workflows/docs-style.yml`](.github/workflows/docs-style.yml)
 demonstrates the linter action on pull requests.
+
+## When the docs are not in Git
+
+The linter's GitHub Action assumes docs-as-code: a pull request to annotate and
+a merge base to diff. That assumption does not survive a docs set whose system
+of record is a CMS.
+
+[`docs-pipeline/`](docs-pipeline/) replaces the delivery layer without touching
+the checks. Content comes from a CMS API, a filesystem export, or a crawl of
+the published site; the run is scheduled rather than triggered by a diff; and
+it fails on **new** error-level findings rather than on the standing backlog,
+because a job that fails every morning over work nobody has started is a job
+everyone mutes.
 
 ## Known limits
 
