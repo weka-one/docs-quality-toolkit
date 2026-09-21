@@ -11,6 +11,14 @@
 
 const PROJECTS = [
   {
+    slug: "tiktok-minis",
+    title: "Documentation as the onboarding path for a developer platform",
+    nav: "TikTok Minis",
+    org: "TikTok · TikTok for Developers",
+    deck: "The public documentation set for TikTok Minis and Mini Games — the self-service path that replaced manual developer onboarding during a seven-market expansion.",
+    tags: ["Developer documentation", "Onboarding", "Compliance & KYB", "Monetization APIs"]
+  },
+  {
     slug: "docs-platform-migration",
     title: "Rebuilding a documentation platform and its information architecture",
     nav: "Platform migration",

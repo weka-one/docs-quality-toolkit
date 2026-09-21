@@ -239,8 +239,17 @@ for (const m of navTargets) {
    assets/data.js holds reader-facing copy too, so the same rules
    apply to its string literals — minus the ones that are URLs.
    --------------------------------------------------------------- */
+/* Not every string is prose: slugs and URLs are identifiers, and a slug
+   like "tiktok-minis" is correct lowercase. Skip those fields by the key
+   that precedes them, and skip anything shaped like a URL. */
+const IDENTIFIER_FIELDS = new Set(["slug", "url", "resumeUrl"]);
+
 lintProse(dataPath, dataSrc, [...dataSrc.matchAll(/"((?:[^"\\]|\\.)*)"/g)]
-  .filter((m) => !/^(?:https?:)?\/\//.test(m[1]))
+  .filter((m) => {
+    if (/^(?:https?:)?\/\//.test(m[1])) return false;
+    const key = dataSrc.slice(0, m.index).match(/(\w+)\s*:\s*$/)?.[1];
+    return !(key && IDENTIFIER_FIELDS.has(key));
+  })
   .map((m) => ({ text: m[1], at: m.index + 1 })));
 
 /* ---------------------------------------------------------------

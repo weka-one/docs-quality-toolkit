@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Documentation as the onboarding path for a developer platform — Wesley Kao</title>
+<meta name="description" content="Authoring the public documentation for TikTok Minis and Mini Games: the self-service onboarding path that took biweekly app launches from under 10 to over 200.">
+<meta property="og:title" content="Documentation as the onboarding path for a developer platform">
+<meta property="og:description" content="The public documentation set for TikTok Minis and Mini Games, and the onboarding funnel it replaced.">
+<meta property="og:type" content="article">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=Newsreader:opsz,wght@6..72,300;6..72,400;6..72,500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/site.css">
+</head>
+<body data-base="../" data-page="tiktok-minis">
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="rail"></header>
+
+<main id="main">
+  <article class="case">
+    <a class="case__back" href="index.html">&larr; Portfolio</a>
+    <p class="case__kicker">TikTok · TikTok for Developers · 2025–present</p>
+    <h1 class="case__title">Documentation as the onboarding path for a developer platform</h1>
+    <p class="case__deck">The public documentation set for TikTok Minis and Mini Games — the self-service path that replaced manual developer onboarding during a seven-market expansion.</p>
+
+    <dl class="meta">
+      <div><dt>Role</dt><dd>Sole author of the public documentation set</dd></div>
+      <div><dt>Surface</dt><dd>TikTok Minis, Mini Games, Mini Dramas, Monetization</dd></div>
+      <div><dt>Worked with</dt><dd>Product, engineering, compliance, business development</dd></div>
+      <div><dt>Read it</dt><dd><a href="https://developers.tiktok.com/doc/tiktok-minis-develop-your-mini-app">Published on TikTok for Developers</a></dd></div>
+    </dl>
+
+    <dl class="stats">
+      <div><dt>359</dt><dd>developers screened across 29 countries through the documented intake process</dd></div>
+      <div><dt>&lt;10 &rarr; 200+</dt><dd>app launches per two-week cycle after onboarding moved to self-service</dd></div>
+      <div><dt>4&times;</dt><dd>reduction in developer onboarding time</dd></div>
+      <div><dt>&gt;100%</dt><dd>average ROAS increase for in-app ads in Q4</dd></div>
+    </dl>
+
+    <div class="prose">
+
+      <h2>Onboarding that could not scale</h2>
+      <p>TikTok Minis is a platform for third-party developers building games, short-form drama apps, and booking integrations that run inside TikTok. Growing it means onboarding developers who are outside the company, in markets across the world, in time zones nobody is awake for.</p>
+      <p>When onboarding is manual, each of those developers costs a person. A partner manager walks them through integration, answers the same questions that were answered last week, and chases the same compliance paperwork. That model produced fewer than 10 app launches per two-week cycle, and it had a ceiling set by headcount rather than by demand. Meanwhile the business was expanding into seven new markets.</p>
+      <p>Documentation was the only thing that could absorb that load. Not as a reference for people who already knew the platform — as the onboarding path itself.</p>
+
+      <h2>What I owned</h2>
+      <p>I authored and published the entire public documentation set for TikTok Minis and Mini Games: the introduction and platform concepts, the Mini Games and Mini Dramas build guides, and the monetization documentation. Every public page a developer reads on their way from "interested" to "launched" came through me.</p>
+      <p>That scope is unusual and it mattered. A single author across the whole funnel means the integration guide and the monetization guide assume the same prior knowledge, use the same terms for the same things, and hand off to each other in the order a developer actually hits them. Documentation written by the team that owns each feature tends not to do that.</p>
+
+      <div class="pull">
+        <p>The test of onboarding documentation is not whether it is accurate. It is whether a developer in a market you have never visited, working from a time zone where nobody is online to ask, can get to a launched app without talking to anyone.</p>
+      </div>
+
+      <h2>The integration workflow</h2>
+      <p>The core work was documenting the integration workflow end to end so it could be followed without a partner manager in the loop. Once that existed, intake stopped being a conversation and became a process: 359 developers were screened across 29 countries, and biweekly launches moved from fewer than 10 to more than 200.</p>
+      <p>Onboarding time dropped by a factor of four. The mechanism is not mysterious — the questions that used to be asked in a thread were answered on a page, once, in the place the developer was already looking.</p>
+
+      <h2>Compliance and KYB</h2>
+      <p>Scaling a developer platform into new markets raises a problem that is the opposite of a growth problem: every additional developer is an additional entity you have to know something about. I wrote the end-to-end compliance and Know Your Business processes.</p>
+      <p>This is the least glamorous documentation I have written and probably the highest-stakes. A build guide that is wrong costs a developer an afternoon. A KYB process that is wrong or out of date costs the platform its standing in a market. Writing it as a documented process rather than institutional knowledge is what let the catalog scale past a thousand mini games without loosening the standard applied to each one.</p>
+
+      <h2>Monetization</h2>
+      <p>The last stretch of the funnel is a developer making money, which on this platform means in-app purchases and in-app ads. I wrote the monetization documentation covering both, including the <a href="https://developers.tiktok.com/doc/tiktok-minis-in-app-ads">in-app ads configuration guide</a>.</p>
+      <p>Ad monetization documentation has a property most developer documentation does not: the difference between a correct and an incorrect implementation shows up directly in the developer's revenue. Documenting the monetization APIs well enough that developers configured them properly contributed to an average ROAS increase for in-app ads of more than 100% in Q4.</p>
+
+      <h2>What I would do differently</h2>
+      <p>If documentation is the onboarding funnel, it should be instrumented like one, and this was not. We could see the top and the bottom — developers screened, apps launched — and nothing in between. When a developer stalled, no data told us which page lost them. I was reasoning about drop-off from support questions and intuition, which are the two worst available signals.</p>
+      <p>The version I would build now treats each documented step as a funnel stage and joins page analytics to the onboarding milestones the platform already tracks, so "developers stop after the capability configuration page" is a finding rather than a hunch.</p>
+      <p>The second thing is specific to the compliance material. KYB and compliance content goes stale in a way that is genuinely dangerous — a requirement changes in one market and the page keeps saying the old thing, confidently, to everyone. Those pages needed a named owner and a scheduled re-review with an explicit expiry, enforced by tooling rather than by someone remembering. Ordinary build guides can tolerate being reviewed when someone notices they are wrong. Regulatory content cannot, and I treated both the same way.</p>
+
+    </div>
+
+    <nav class="pager" id="pager" aria-label="More projects"></nav>
+  </article>
+
+  <footer>Built by hand with HTML, CSS, and a little JavaScript.</footer>
+</main>
+
+<script src="../assets/data.js"></script>
+<script src="../assets/site.js"></script>
+</body>
+</html>
