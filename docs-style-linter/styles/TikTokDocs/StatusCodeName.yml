@@ -1,0 +1,11 @@
+# Source: RFC 9110 §15 — reason phrases are title case.
+# Rationale: "404 Not Found" is a citation of the spec. Lowercasing it makes the
+# phrase look like commentary rather than the literal server response.
+extends: existence
+message: "Capitalise the HTTP reason phrase in '%s' (for example, '404 Not Found')."
+link: https://www.rfc-editor.org/rfc/rfc9110#name-status-codes
+level: warning
+ignorecase: false
+nonword: true
+tokens:
+  - '\b[1-5]\d{2}\s+(?:ok|created|accepted|no content|moved permanently|found|not modified|bad request|unauthorized|forbidden|not found|method not allowed|conflict|gone|payload too large|unprocessable entity|too many requests|internal server error|bad gateway|service unavailable|gateway timeout)\b'

@@ -1,0 +1,29 @@
+# Source: Google developer documentation style guide, "Word list"; Microsoft
+# Writing Style Guide, "Brevity".
+# Rationale: each of these has a shorter exact synonym. Shorter prose also
+# lowers translation cost, which matters for a platform localised into 30+
+# locales.
+extends: substitution
+message: "Use '%s' instead of '%s'."
+link: https://developers.google.com/style/word-list
+level: warning
+ignorecase: true
+swap:
+  'in order to': to
+  'in order for': for
+  'at this point in time': now
+  'at the present time': now
+  'due to the fact that': because
+  'in the event that': if
+  'for the purpose of': for
+  'prior to': before
+  'subsequent to': after
+  'in the case of': for
+  'a (?:large )?number of': many
+  'the majority of': most
+  'utilize[sd]?': use
+  'leverage[sd]?': use
+  'is able to': can
+  'are able to': can
+  'has the ability to': can
+  'make use of': use

@@ -1,0 +1,17 @@
+# Source: Google developer documentation style guide, "Pronouns"; Microsoft
+# Writing Style Guide, "Bias-free communication".
+# Rationale: the reader's gender is never known and never relevant to an API
+# call. Singular "they" is the lowest-friction fix.
+extends: substitution
+message: "Use '%s' instead of '%s'."
+link: https://developers.google.com/style/pronouns
+level: error
+ignorecase: true
+swap:
+  'he/she': they
+  's/he': they
+  'his/her': their
+  'him/her': them
+  '\(s\)he': they
+  'his or her': their
+  'he or she': they

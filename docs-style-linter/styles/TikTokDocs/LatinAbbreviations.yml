@@ -1,0 +1,16 @@
+# Source: Google developer documentation style guide, "Latin abbreviations";
+# Microsoft Writing Style Guide, "Abbreviations".
+# Rationale: Latin abbreviations are routinely mistranslated and are read
+# incorrectly by screen readers ("e.g." as "egg").
+extends: substitution
+message: "Use '%s' instead of '%s'."
+link: https://developers.google.com/style/abbreviations#latin-abbreviations
+level: warning
+ignorecase: false
+nonword: true
+swap:
+  '\be\.g\.(?:,)?': for example
+  '\bi\.e\.(?:,)?': that is
+  '\betc\.': and so on
+  '\bvs\.': versus
+  '\bN\.B\.': note

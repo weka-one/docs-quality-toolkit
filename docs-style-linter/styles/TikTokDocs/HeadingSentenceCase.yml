@@ -1,0 +1,45 @@
+# Source: Google developer documentation style guide, "Capitalization in
+# headings".
+# Rationale: sentence case is faster to scan and removes per-word judgement
+# calls from authors. Product names and initialisms are exempted below.
+extends: capitalization
+message: "Use sentence case for the heading '%s'."
+link: https://developers.google.com/style/capitalization#capitalization-in-titles-and-headings
+level: warning
+scope: heading
+match: $sentence
+exceptions:
+  - "API"
+  - "APIs"
+  - "CLI"
+  - "CORS"
+  - "CSV"
+  - "Docker"
+  - "GitHub"
+  - "GraphQL"
+  - "HTTP"
+  - "HTTPS"
+  - "JSON"
+  - "JWT"
+  - "Kubernetes"
+  - "Linux"
+  - "Markdown"
+  - "Meilisearch"
+  - "NDJSON"
+  - "Node.js"
+  - "OAuth"
+  - "Python"
+  - "React"
+  - "REST"
+  - "Ruby"
+  - "Rust"
+  - "SDK"
+  - "SDKs"
+  - "SQL"
+  - "Swift"
+  - "TypeScript"
+  - "URL"
+  - "UUID"
+  - "Vue"
+  - "Windows"
+  - "YAML"

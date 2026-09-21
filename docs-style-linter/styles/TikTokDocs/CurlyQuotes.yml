@@ -1,0 +1,11 @@
+# Source: Google developer documentation style guide, "Quotation marks".
+# Rationale: curly quotes inside or adjacent to code are copied by readers and
+# fail to parse. Keeping the whole corpus on straight quotes removes the need
+# for authors to judge which context they are in.
+extends: existence
+message: "Replace the curly quote in '%s' with a straight quote."
+link: https://developers.google.com/style/quotation-marks
+level: warning
+nonword: true
+tokens:
+  - '[\x{201C}\x{201D}\x{2018}\x{2019}]'

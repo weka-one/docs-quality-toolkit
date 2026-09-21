@@ -1,0 +1,21 @@
+# Source: Google developer documentation style guide, "Word list";
+# Microsoft Writing Style Guide, "Bias-free communication"; IETF
+# draft-knodel-terminology.
+# Rationale: each replacement is also more precise than the term it replaces —
+# "allowlist" says what the list does, "whitelist" does not.
+extends: substitution
+message: "Use '%s' instead of '%s'."
+link: https://developers.google.com/style/inclusive-documentation
+level: error
+ignorecase: true
+swap:
+  'white[- ]?list(s|ed|ing)?': allowlist
+  'black[- ]?list(s|ed|ing)?': blocklist
+  'master/slave': primary/replica
+  'slave (node|server|database)': 'replica'
+  'sanity check': consistency check
+  'dummy (value|data|variable)': placeholder value
+  'grandfathered': legacy
+  'crazy': unexpected
+  'insane': unexpected
+  'blind(ly)? (call|invoke|retry)': unconditional

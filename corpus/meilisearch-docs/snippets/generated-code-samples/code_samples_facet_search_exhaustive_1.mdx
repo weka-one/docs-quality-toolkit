@@ -1,0 +1,14 @@
+<CodeGroup>
+
+```bash cURL
+curl \
+  -X POST 'MEILISEARCH_URL/indexes/books/facet-search' \
+  -H 'Authorization: Bearer API_KEY' \
+  -H 'Content-Type: application/json' \
+  --data-binary '{
+    "facetName": "genres",
+    "facetQuery": "c",
+    "exhaustiveFacetCount": true
+  }'
+```
+</CodeGroup>

@@ -1,0 +1,14 @@
+# Source: Google developer documentation style guide, "Word list" (allow).
+# Rationale: "allows you to" describes the product's permission model rather
+# than the reader's capability, and it is three words where one will do.
+extends: substitution
+message: "Use '%s' instead of '%s' — describe what the reader does, not what the API permits."
+link: https://developers.google.com/style/word-list#allow
+level: suggestion
+ignorecase: true
+swap:
+  'allows you to': lets you
+  'allow you to': let you
+  'enables you to': lets you
+  'permits you to': lets you
+  'gives you the ability to': lets you

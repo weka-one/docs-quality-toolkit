@@ -1,0 +1,11 @@
+# Source: Google developer documentation style guide, "Second person";
+# Microsoft Writing Style Guide, "Instructional text".
+# Rationale: instructions are not requests. "Please" adds a word without adding
+# information and reads as uncertainty about whether the step is required.
+extends: existence
+message: "Drop 'please' from instructions — a documented step is not a request."
+link: https://developers.google.com/style/procedures
+level: warning
+ignorecase: true
+tokens:
+  - "please"

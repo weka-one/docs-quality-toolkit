@@ -1,0 +1,13 @@
+# Source: RFC 9110 §9 — HTTP method names are case-sensitive and uppercase.
+# Rationale: a lowercase method in prose is copied into code by readers, and
+# some servers reject it. This rule is a regression guard: a well-maintained
+# corpus scores zero, and stays there.
+extends: existence
+message: "Write the HTTP method in uppercase: '%s'."
+link: https://www.rfc-editor.org/rfc/rfc9110#name-methods
+level: error
+ignorecase: false
+nonword: true
+tokens:
+  - '\b(get|post|put|patch|delete|head|options)\s+/[A-Za-z0-9{]'
+  - '\b(?:a|an|the)\s+(get|post|put|patch|delete)\s+request\b'

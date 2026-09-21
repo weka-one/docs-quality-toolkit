@@ -1,0 +1,34 @@
+<CodeGroup>
+
+```bash cURL
+curl \
+  -X PATCH 'MEILISEARCH_URL/experimental-features/' \
+  -H 'Authorization: Bearer API_KEY' \
+  -H 'Content-Type: application/json'  \
+  --data-binary '{
+    "metrics": true
+  }'
+```
+
+```python Python
+client.update_experimental_features({"metrics": True})
+```
+
+```ruby Ruby
+client.update_experimental_features(metrics: true)
+```
+
+```go Go
+client.ExperimentalFeatures().SetMetrics(true).Update()
+```
+
+```rust Rust
+let client = Client::new("MEILISEARCH_URL", Some("apiKey"));
+let features = ExperimentalFeatures::new(&client);
+features.set_metrics(true)
+let res = features
+  .update()
+  .await
+  .unwrap();
+```
+</CodeGroup>

@@ -1,0 +1,12 @@
+# Source: Google developer documentation style guide, "Code in text".
+# Rationale: an endpoint path is code. Leaving it as prose loses the monospace
+# cue, and lets typography engines turn hyphens into en dashes when the page is
+# rendered to PDF.
+extends: existence
+message: "Wrap the endpoint path '%s' in a code span."
+link: https://developers.google.com/style/code-in-text
+level: warning
+nonword: true
+scope: text
+tokens:
+  - '(?:^|\s)/(?:v\d+/)?[a-z][a-z0-9-]{2,}(?:/\{?[a-zA-Z_][a-zA-Z0-9_-]*\}?)+'

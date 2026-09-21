@@ -1,0 +1,35 @@
+# Source: Google developer documentation style guide, "Word list"; vendor
+# trademark guidance (Oracle, GitHub, Apple, OpenJS Foundation).
+# Rationale: inconsistent product casing is the single most common defect in
+# large doc sets and the cheapest to catch mechanically. It also breaks
+# site-search exact matching.
+extends: substitution
+message: "Use '%s' instead of '%s'."
+link: https://developers.google.com/style/word-list
+level: error
+ignorecase: false
+swap:
+  'Javascript|JavaScipt|Java Script': JavaScript
+  'Typescript|TypeScipt': TypeScript
+  'NodeJS|Node\.JS|node\.js': Node.js
+  'Github|GitHUB': GitHub
+  'Json|JSon': JSON
+  'Yaml(?: |$)': YAML
+  'Url(?:s)?(?: |$)': URL
+  'Uri(?: |$)': URI
+  'Http(?:s)?(?: |$)': HTTP
+  'Sdk(?:s)?(?: |$)': SDK
+  'Api(?:s)?(?: |$)': API
+  'Cli(?: |$)': CLI
+  'Uuid(?: |$)': UUID
+  'Jwt(?: |$)': JWT
+  # Anchored alternatives only: an unanchored 'OAuth 2' matches inside the
+  # correct 'OAuth 2.0', and RE2 has no lookahead to exclude it.
+  '\bOauth\b|\boauth\b|\bOAuth2(?:\.0)?\b': OAuth 2.0
+  'web hook(s)?': webhook
+  'web site(s)?': website
+  'e-mail(s)?': email
+  'data base(s)?': database
+  'MacOS|Mac OS X|Mac OS': macOS
+  'IOS(?: |$)|Ios(?: |$)': iOS
+  'internet explorer': Internet Explorer

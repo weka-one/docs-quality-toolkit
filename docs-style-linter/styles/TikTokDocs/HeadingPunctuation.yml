@@ -1,0 +1,11 @@
+# Source: Google developer documentation style guide, "Headings and titles".
+# Rationale: headings are labels, not sentences. Trailing periods also leak into
+# generated tables of contents and <title> tags.
+extends: existence
+message: "Remove the trailing punctuation from the heading '%s'."
+link: https://developers.google.com/style/headings
+level: error
+nonword: true
+scope: heading
+tokens:
+  - '[.!;:]\s*$'

@@ -1,0 +1,16 @@
+# Source: Google developer documentation style guide, "First person".
+# Rationale: reference documentation describes a product, not a team. First
+# person also becomes wrong the moment the doc is syndicated or white-labelled.
+extends: existence
+message: "Avoid first person ('%s'). Name the product or use second person."
+link: https://developers.google.com/style/person
+level: suggestion
+ignorecase: true
+tokens:
+  - "we'll"
+  - "we've"
+  - "we're"
+  - "let's"
+  - 'we recommend'
+  - 'our recommendation'
+  - 'in our experience'

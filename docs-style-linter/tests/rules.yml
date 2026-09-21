@@ -1,0 +1,219 @@
+# Fixture suite for the TikTokDocs Vale package.
+#
+# Every rule must prove two things: it fires on prose that violates it, and it
+# stays silent on prose that does not. The `good` cases matter more than the
+# `bad` ones — a rule with no negative cases is indistinguishable from a rule
+# that flags everything.
+#
+# Run with: make test   (tools/ruletest.py)
+#
+# Each snippet is materialised as its own .mdx file so that page-scoped checks
+# (Acronyms) and heading-scoped checks cannot leak across cases.
+#
+# Three categories:
+#   bad       - must produce an alert
+#   good      - must produce no alert
+#   known_fp  - a documented false positive. The rule fires and we have decided
+#               to live with it. The runner asserts these still fire; if one
+#               stops, the limitation has been fixed and the case should be
+#               promoted to `good`. Recording these keeps the rule set honest:
+#               a linter with no known false positives has not been measured.
+
+TikTokDocs.Filler:
+  bad:
+    - "Simply run the command to start the server."
+    - "You can easily add a document to the index."
+    - "Obviously, the token expires after an hour."
+  good:
+    - "Run the command to start the server."
+    - "The token expires after an hour."
+
+TikTokDocs.Please:
+  bad:
+    - "Please run the migration before you upgrade."
+  good:
+    - "Run the migration before you upgrade."
+    - "The endpoint returns a pleasing summary of the index."
+
+TikTokDocs.FirstPerson:
+  bad:
+    - "We recommend batching documents in groups of 1000."
+    - "We'll cover pagination in the next section."
+  good:
+    - "Batch documents in groups of 1000."
+    - "The next section covers pagination."
+
+TikTokDocs.Hedging:
+  bad:
+    - "You should set a master key before exposing the instance."
+    - "It is recommended that you rotate the key every 90 days."
+  good:
+    - "Set a master key before exposing the instance."
+    - "Rotate the key every 90 days."
+
+TikTokDocs.NoteThat:
+  bad:
+    - "Note that the task queue processes updates asynchronously."
+    - "Keep in mind that the index name is case-sensitive."
+  good:
+    - "The task queue processes updates asynchronously."
+    - "The index name is case-sensitive."
+
+TikTokDocs.Wordiness:
+  bad:
+    - "In order to search, you first create an index."
+    - "Utilize the batch endpoint for large payloads."
+    - "Prior to indexing, validate the schema."
+    - "The client is able to retry failed requests."
+  good:
+    - "To search, you first create an index."
+    - "Use the batch endpoint for large payloads."
+    - "Before indexing, validate the schema."
+    - "The client can retry failed requests."
+
+TikTokDocs.AllowsYouTo:
+  bad:
+    - "Faceted search allows you to group results by attribute."
+    - "The SDK enables you to stream large payloads."
+  good:
+    - "Faceted search lets you group results by attribute."
+    - "The SDK streams large payloads."
+
+TikTokDocs.LatinAbbreviations:
+  bad:
+    - "Pass a filter, e.g. a genre or a release year."
+    - "Use a typed client, i.e. one generated from the schema."
+    - "Send documents as JSON, NDJSON, etc."
+  good:
+    - "Pass a filter, for example a genre or a release year."
+    - "Use a typed client, that is, one generated from the schema."
+    - "Send documents as JSON, NDJSON, and so on."
+
+TikTokDocs.UIActions:
+  bad:
+    - "Click on the Create project button."
+    - "Tap on Settings to open the panel."
+  good:
+    - "Click Create project."
+    - "Tap Settings to open the panel."
+
+TikTokDocs.InclusiveLanguage:
+  bad:
+    - "Add the address to the whitelist."
+    - "Run a sanity check before deploying."
+    - "The master/slave topology replicates writes."
+  good:
+    - "Add the address to the allowlist."
+    - "Run a consistency check before deploying."
+    - "The primary/replica topology replicates writes."
+
+TikTokDocs.GenderNeutral:
+  bad:
+    - "Each developer manages his/her own API keys."
+    - "Ask the user whether he or she granted the scope."
+  good:
+    - "Each developer manages their own API keys."
+    - "Ask the user whether they granted the scope."
+
+TikTokDocs.Terminology:
+  bad:
+    - "The Javascript client ships with TypeScript types."
+    - "Send the payload as Json over Https."
+    - "Configure the web hook in the dashboard."
+    - "Authenticate with OAuth2 before calling the endpoint."
+  good:
+    - "The JavaScript client ships with TypeScript types."
+    - "Send the payload as JSON over HTTPS."
+    - "Configure the webhook in the dashboard."
+    - "Authenticate with OAuth 2.0 before calling the endpoint."
+
+TikTokDocs.ApiKeyCase:
+  bad:
+    - "Copy the API Key from the dashboard."
+    - "Your Access Token expires in one hour."
+    - "Regenerate the Api key if it leaks."
+  good:
+    - "Copy the API key from the dashboard."
+    - "Your access token expires in one hour."
+    - "Regenerate the API key if it leaks."
+
+TikTokDocs.HTTPMethodCase:
+  bad:
+    - "Send a get /indexes request to list every index."
+    - "Issue a post request to create the index."
+  good:
+    - "Send a GET /indexes request to list every index."
+    - "Issue a POST request to create the index."
+  known_fp:
+    - text: "The client will get /indexes wrong if you lowercase it in code samples."
+      why: >-
+        'get' here is the English verb, not the HTTP method, but it is still
+        followed by a path. Separating the two needs part-of-speech tagging,
+        which Vale does not do. Accepted: the rule is an error-level regression
+        guard and the corpus contains zero real instances, so the cost of a rare
+        false positive is lower than the cost of a lowercase verb reaching a
+        reader who copies it.
+
+TikTokDocs.EndpointInCode:
+  bad:
+    - "Call /indexes/movies/documents to add records."
+    - "The route /v1/tasks/cancel stops a running task."
+  good:
+    - "Call `/indexes/movies/documents` to add records."
+    - "The route `/v1/tasks/cancel` stops a running task."
+
+TikTokDocs.StatusCodeName:
+  bad:
+    - "A missing index returns 404 not found."
+    - "An expired key returns 401 unauthorized."
+  good:
+    - "A missing index returns 404 Not Found."
+    - "An expired key returns 401 Unauthorized."
+
+TikTokDocs.CurlyQuotes:
+  bad:
+    - "Set the index’s primary key before indexing."
+    - "The docs call this a “searchable attribute”."
+  good:
+    - "Set the index's primary key before indexing."
+    - "The docs call this a \"searchable attribute\"."
+
+TikTokDocs.LinkText:
+  bad:
+    - "For pagination rules, [click here](/reference/api/pagination)."
+    - "See [here](/reference/api/headers) for the header list."
+  good:
+    - "See the [pagination reference](/reference/api/pagination)."
+    - "See the [required headers](/reference/api/headers)."
+
+TikTokDocs.HeadingPunctuation:
+  bad:
+    - "## Create an index."
+    - "### Configure the client!"
+  good:
+    - "## Create an index"
+    - "### Configure the client"
+    - "## What is a task?"
+
+TikTokDocs.HeadingSentenceCase:
+  bad:
+    - "## Create An Index From The Dashboard"
+    - "### Configure Your Search Settings"
+  good:
+    - "## Create an index from the dashboard"
+    - "### Configure your search settings"
+    - "## Use the JSON API with Node.js"
+
+TikTokDocs.SentenceLength:
+  bad:
+    - "The search endpoint accepts a query string and a set of optional filters and a sort order and a pagination cursor and a list of attributes to retrieve and a list of attributes to highlight and a matching strategy, all of which interact in ways that are documented separately."
+  good:
+    - "The search endpoint accepts a query string and optional filters. Sorting, pagination, and highlighting are configured separately."
+
+TikTokDocs.Acronyms:
+  bad:
+    - "Route the request through the CDW before indexing."
+  good:
+    - "Route the request through the content delivery warehouse (CDW) before indexing."
+    - "The API returns JSON over HTTPS and the SDK wraps it."
+    - "Filter with AND and OR operators."

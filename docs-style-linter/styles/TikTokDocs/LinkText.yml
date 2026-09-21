@@ -1,0 +1,12 @@
+# Source: WCAG 2.2 SC 2.4.4 (Link Purpose in Context); Google developer
+# documentation style guide, "Link text".
+# Rationale: screen-reader users navigate by pulling up a list of links. A page
+# of "here" and "read more" is unusable in that mode.
+extends: existence
+message: "Replace the non-descriptive link text in '%s' with the destination's subject."
+link: https://www.w3.org/WAI/WCAG22/Understanding/link-purpose-in-context.html
+level: error
+nonword: true
+scope: raw
+tokens:
+  - '\[(?i:click here|here|this link|this page|read more|learn more|more|link|this)\]\('

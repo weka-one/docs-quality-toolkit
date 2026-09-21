@@ -1,0 +1,106 @@
+---
+title: Compact an index
+description: Reclaim disk space by compacting an index's internal data structures after heavy document updates or deletions.
+---
+
+When you add, update, or delete documents, Meilisearch's internal data structures may retain unused space from previous versions of the data. Compaction reclaims this space by reorganizing the index on disk.
+
+<Note>
+Compaction is never triggered automatically. Whether you use Meilisearch Cloud or self-host, you must trigger compaction yourself by calling [`POST /indexes/{index_uid}/compact`](/reference/api/indexes/compact-index) when needed. Compaction is a regular Meilisearch task: it goes through the task queue and delays tasks queued behind it, such as document indexing or settings updates, until it completes. You may want to build a pipeline that periodically checks fragmentation and compacts your indexes during low-traffic hours to avoid performance degradation.
+</Note>
+
+## When to compact
+
+- **After bulk deletions**: Removing a large number of documents leaves gaps in the internal storage.
+- **After many updates**: Repeatedly updating the same documents accumulates obsolete data.
+- **When disk usage seems high**: If an index uses more disk space than expected for its document count, compaction can help.
+
+You do not need to compact after every operation. It is most useful after large batch changes.
+
+### Estimating fragmentation
+
+Fragmentation is directly related to the number of indexing operations Meilisearch performs. Common indexing operations include adding and updating documents, as well as changes to index settings.
+
+To estimate a single index's fragmentation, query [`GET /indexes/{index_uid}/stats`](/reference/api/stats) and compare `indexSize` to `usedIndexSize`:
+
+- `indexSize`: the total size of that index's database on disk, in bytes
+- `usedIndexSize`: the portion of those pages actively holding data, in bytes
+
+The gap between the two is reclaimable space. Compaction targets one index at a time, so these per-index figures tell you which index is worth compacting. `GET /stats` reports the same two fields per index under `indexes`, alongside the instance-wide `databaseSize` and `usedDatabaseSize`.
+
+- If the ratio between `indexSize` and `usedIndexSize` is bigger than 30%, compacting that index may improve performance.
+- If you update documents in your indexes a few times per day, checking fragmentation and compacting your database once per week is a reasonable baseline.
+
+Tune this cadence based on your own indexing patterns: higher write volumes warrant more frequent compaction, while mostly read-only indexes rarely need it.
+
+## Compact an index
+
+Send a `POST` request to `/indexes/{index_uid}/compact`:
+
+<CodeGroup>
+
+```bash
+curl \
+  -X POST 'MEILISEARCH_URL/indexes/movies/compact' \
+  -H 'Authorization: Bearer MEILISEARCH_KEY'
+```
+
+</CodeGroup>
+
+Meilisearch returns a summarized task object:
+
+<CodeGroup>
+
+```json
+{
+  "taskUid": 87,
+  "indexUid": "movies",
+  "status": "enqueued",
+  "type": "indexCompaction",
+  "enqueuedAt": "2025-01-01T00:00:00.000000Z"
+}
+```
+
+</CodeGroup>
+
+## Monitor the compaction task
+
+Compaction runs [asynchronously](/capabilities/indexing/tasks_and_batches/async_operations). Check its progress with the task endpoint:
+
+<CodeGroup>
+
+```bash
+curl \
+  -X GET 'MEILISEARCH_URL/tasks/87' \
+  -H 'Authorization: Bearer MEILISEARCH_KEY'
+```
+
+</CodeGroup>
+
+## Disk space requirements
+
+Compaction requires temporary disk space roughly equal to the size of the index being compacted. Ensure your machine has sufficient free space before starting. If the disk fills up during compaction, the task fails and the index remains in its pre-compaction state.
+
+## How long compaction takes
+
+Compaction time depends on how fragmented the index is, not only on its size. Compaction works by relocating the index's data on disk into a compact, well-ordered layout. The more documents you add, update, or delete between compactions, the more the data drifts out of order, and the longer the next compaction takes to reorganize it.
+
+Because of this, compacting an index again shortly after a previous compaction is much faster, close to simply copying the index file, because its data is already well ordered on disk. If a first compaction on a large, heavily fragmented index takes a long time, expect later compactions on a regular schedule to be considerably cheaper.
+
+## Search availability during compaction
+
+Compaction does not block search. Your index remains fully searchable while the operation runs. New [indexing](/capabilities/indexing/overview) tasks will be queued and processed after compaction completes.
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Compact API reference" href="/reference/api/indexes/compact-index">
+    Full API reference for the compact endpoint
+  </Card>
+  <Card title="Monitor tasks" href="/capabilities/indexing/tasks_and_batches/monitor_tasks">
+    Track the status of asynchronous operations
+  </Card>
+  <Card title="Indexing best practices" href="/capabilities/indexing/advanced/indexing_best_practices">
+    Optimize your indexing workflow for production
+  </Card>
+</CardGroup>

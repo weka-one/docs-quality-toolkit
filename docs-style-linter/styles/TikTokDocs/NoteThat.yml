@@ -1,0 +1,15 @@
+# Source: Google developer documentation style guide, "Notes and other
+# notices".
+# Rationale: "note that" is a filler stem. Either the information matters, in
+# which case state it directly, or it belongs in a callout component.
+extends: existence
+message: "Delete '%s' and state the fact directly, or move it into a callout."
+link: https://developers.google.com/style/notices
+level: suggestion
+ignorecase: true
+tokens:
+  - "note that"
+  - "please note"
+  - "it should be noted"
+  - "keep in mind that"
+  - "bear in mind that"

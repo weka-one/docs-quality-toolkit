@@ -1,0 +1,15 @@
+# Source: Google developer documentation style guide, "Clickable elements";
+# Microsoft Writing Style Guide, "Describing interactions with UI".
+# Rationale: the object of the verb is the control, not a location. "Click on"
+# also does not survive rewriting for touch or keyboard interaction.
+extends: substitution
+message: "Use '%s' instead of '%s'."
+link: https://developers.google.com/style/word-list#click
+level: error
+ignorecase: true
+swap:
+  'click on': click
+  'tap on': tap
+  'press on': press
+  'click the button labeled': click
+  'right click': right-click

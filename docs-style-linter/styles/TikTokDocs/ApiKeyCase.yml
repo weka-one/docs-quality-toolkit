@@ -1,0 +1,20 @@
+# Source: Google developer documentation style guide, "Capitalization" —
+# sentence case for common nouns, even when they contain an initialism.
+# Rationale: "API key" is a common noun, not a product name. The corpus this
+# linter was tuned against contained both spellings on the same page.
+extends: substitution
+message: "Use '%s' instead of '%s' — 'key' is a common noun and stays lowercase."
+link: https://developers.google.com/style/capitalization
+level: error
+ignorecase: false
+swap:
+  'API Key(s)?': API key
+  'Api Key(s)?': API key
+  'Api key(s)?': API key
+  'api key(s)?': API key
+  'api Key(s)?': API key
+  'API KEY(S)?': API key
+  'Access Token(s)?': access token
+  'Refresh Token(s)?': refresh token
+  'Bearer Token(s)?': bearer token
+  'Client Secret(s)?': client secret

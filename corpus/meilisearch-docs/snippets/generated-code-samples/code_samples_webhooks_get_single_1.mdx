@@ -1,0 +1,28 @@
+<CodeGroup>
+
+```bash cURL
+curl \
+  -X GET 'MEILISEARCH_URL/webhooks/WEBHOOK_UUID' \
+  -H 'Authorization: Bearer API_KEY'
+```
+
+```javascript JS
+client.getWebhook(WEBHOOK_UUID)
+```
+
+```python Python
+client.get_webhook('WEBHOOK_UID')
+```
+
+```java Java
+client.getWebhook();
+```
+
+```go Go
+client.GetWebhook("WEBHOOK_UUID");
+```
+
+```rust Rust
+let webhook = client.get_webhook("WEBHOOK_UUID").await.unwrap();
+```
+</CodeGroup>

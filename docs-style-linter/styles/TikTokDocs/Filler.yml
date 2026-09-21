@@ -1,0 +1,19 @@
+# Source: Google developer documentation style guide, "Write inclusive
+# documentation" / "Tone and content"; Microsoft Writing Style Guide, "Brevity".
+# Rationale: minimising words tell a reader their difficulty is unusual. If a
+# step is genuinely trivial, the prose should demonstrate it, not assert it.
+extends: existence
+message: "Remove '%s'. If the step is easy, showing it is enough; saying so tells a stuck reader they are the problem."
+link: https://developers.google.com/style/tone
+level: warning
+ignorecase: true
+tokens:
+  - "simply"
+  - "easily"
+  - "obviously"
+  - "of course"
+  - "it is trivial"
+  - "it's trivial"
+  - "straightforward(?:ly)?"
+  - "needless to say"
+  - "as everyone knows"

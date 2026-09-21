@@ -1,0 +1,54 @@
+<CodeGroup>
+
+```bash cURL
+curl \
+  -X PUT 'MEILISEARCH_URL/indexes/books/settings/foreign-keys' \
+  -H 'Authorization: Bearer API_KEY' \
+  -H 'Content-Type: application/json' \
+  --data-binary '[
+    {
+      "foreignIndexUid": "authors",
+      "fieldName": "author"
+    },
+    {
+      "foreignIndexUid": "authors",
+      "fieldName": "related_authors"
+    }
+  ]'
+```
+
+```javascript JS
+client.index('books').updateForeignKeys([
+  {
+    foreignIndexUid: 'authors',
+    fieldName: 'author'
+  },
+  {
+    foreignIndexUid: 'authors',
+    fieldName: 'related_authors'
+  }
+])
+```
+
+```python Python
+client.index('books').update_foreign_keys([
+  {
+    'foreignIndexUid': 'authors',
+    'fieldName': 'author'
+  },
+  {
+    'foreignIndexUid': 'authors',
+    'fieldName': 'related_authors'
+  }
+])
+```
+
+```go Go
+client.Index("books").UpdateForeignKeys([]meilisearch.ForeignKey{
+  {
+    FieldName: "author",
+    ForeignIndexUid: "authors",
+  },
+})
+```
+</CodeGroup>

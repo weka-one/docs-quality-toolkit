@@ -1,0 +1,12 @@
+# Source: Microsoft Writing Style Guide, "Readability"; Google developer
+# documentation style guide, "Write short sentences".
+# Rationale: kept at `suggestion` deliberately. Long sentences are a smell, not
+# a defect, and a rule that blocks CI on them trains authors to game the
+# linter. The value is in the trend line, which `tools/report.py` tracks.
+extends: occurrence
+message: "This sentence runs past 40 words; consider splitting it."
+link: https://learn.microsoft.com/style-guide/scannable-content/readability
+level: suggestion
+scope: sentence
+max: 40
+token: '\b\w+\b'
