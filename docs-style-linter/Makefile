@@ -12,13 +12,20 @@ BUILD        ?= build/after
 POLICY       ?= config/evaluation-corpus.yml
 PY           ?= python3
 
-.PHONY: help test lint structure vocab vocab-check report sarif verify clean install-vale
+.PHONY: help doctor install install-vale test lint structure vocab vocab-check report sarif verify clean
 
 help:
 	@grep -E '^[a-z-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN{FS=":.*?## "}{printf "  %-14s %s\n", $$1, $$2}'
 
-install-vale: ## Install the pinned Vale release
-	go install github.com/errata-ai/vale/v3/cmd/vale@v$(VALE_VERSION)
+doctor: ## Check that everything needed is installed, and say what is missing
+	@$(PY) tools/doctor.py
+
+install: ## Install everything needed (Python packages and Vale)
+	$(PY) -m pip install -r requirements.txt
+	./tools/install_vale.sh
+
+install-vale: ## Install just the pinned Vale release (no Go or Homebrew needed)
+	./tools/install_vale.sh
 
 test: vocab-check ## Run the rule fixture suite
 	$(PY) tools/ruletest.py
