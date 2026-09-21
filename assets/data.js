@@ -15,7 +15,7 @@ const PROJECTS = [
     title: "Documentation as the onboarding path for a developer platform",
     nav: "TikTok Minis",
     org: "TikTok · TikTok for Developers",
-    deck: "The public documentation set for TikTok Minis and Mini Games — the self-service path that replaced manual developer onboarding during a seven-market expansion.",
+    deck: "108 pages covering TikTok Minis, Mini Games, Mini Dramas, and Monetization — the self-service path that replaced manual developer onboarding during a seven-market expansion.",
     tags: ["Developer documentation", "Onboarding", "Compliance & KYB", "Monetization APIs"]
   },
   {
@@ -143,7 +143,7 @@ const SITE = {
       title: "Senior Technical Writer",
       org: "TikTok",
       points: [
-        "Wrote 76 developer guides for TikTok mini apps, cutting partner onboarding time and supporting the launch of 50+ mini dramas and 250+ mini games.",
+        "Authored and published all 108 pages of public documentation for TikTok Minis and Mini Games, cutting developer onboarding time 4x and taking launches from under 10 to over 200 per two-week cycle.",
         "Published the monetization documentation behind roughly $100k in daily GMV from mini games through in-app purchases and ads.",
         "Delivered onboarding guides and API documentation for travel partners including Expedia and Booking.com launching hotel booking on TikTok.",
         "Shipped a quickstart guide, codebook, and 28 API reference pages for TikTok's research tools.",
