@@ -158,6 +158,17 @@ def main() -> int:
     # Offline mode: everything worth knowing about rendering can be answered
     # from a page already on disk, without touching the site again.
     if args.file:
+        if not args.file.is_file():
+            print(
+                f"\nNo file at {args.file}\n\n"
+                "If you saved it with --dump into a folder you have since replaced,\n"
+                "it is gone with the folder. Fetch the page again with one request:\n\n"
+                f"  curl -s https://developers.tiktok.com/doc/overview > ~/Desktop/page.html\n"
+                f"  python3 pipeline/probe.py --file ~/Desktop/page.html\n\n"
+                "Saving outside this folder keeps it through an update.\n",
+                file=sys.stderr,
+            )
+            return 1
         html = args.file.read_text(encoding="utf-8", errors="replace")
         text = html_to_markdown(html)
         words = len(re.findall(r"\b\w+\b", text))

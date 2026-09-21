@@ -276,7 +276,14 @@ class SiteCrawlSource:
         if self.config.get("urls"):
             return self._filter(list(self.config["urls"]))
         if self.config.get("urls_file"):
-            listed = pathlib.Path(self.config["urls_file"]).read_text(encoding="utf-8")
+            listing = pathlib.Path(self.config["urls_file"])
+            if not listing.is_file():
+                raise SourceError(
+                    f"urls_file points at {listing}, which does not exist.\n"
+                    "Create it with one URL per line, or remove urls_file from the\n"
+                    "config to fall back to discover_from or the sitemap."
+                )
+            listed = listing.read_text(encoding="utf-8")
             return self._filter([
                 line.strip() for line in listed.splitlines()
                 if line.strip() and not line.startswith("#")

@@ -184,7 +184,18 @@ def main() -> int:
     ap.add_argument("--label", help="label recorded with this run, shown on the dashboard")
     args = ap.parse_args()
 
-    config = yaml.safe_load(args.config.read_text())
+    if not args.config.is_file():
+        print(f"\nNo config file at {args.config}\n\n"
+              "Available configs in this folder:\n  " +
+              "\n  ".join(sorted(p.name for p in ROOT.glob("config*.yml")) or ["(none)"]) +
+              f"\n\nRun one with:  python3 pipeline/run.py --config <name>\n",
+              file=sys.stderr)
+        return 1
+    try:
+        config = yaml.safe_load(args.config.read_text())
+    except yaml.YAMLError as exc:
+        print(f"\n{args.config} is not valid YAML:\n  {exc}\n", file=sys.stderr)
+        return 1
     report_dir = ROOT / config["report"]["out"]
     history_dir = ROOT / config["report"]["history"]
     report_dir.mkdir(parents=True, exist_ok=True)
