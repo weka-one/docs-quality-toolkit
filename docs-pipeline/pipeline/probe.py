@@ -48,12 +48,15 @@ BLOCKED_MARKERS = re.compile(
 )
 SPA_ROOTS = re.compile(r'(?i)<div[^>]+id=["\'](root|__next|app|__nuxt|svelte)["\']')
 
-# Frameworks that server-render into a JSON island rather than into HTML. The
-# prose IS in the response, just not as text - which is a far easier problem
-# than a page that has to be executed to exist.
-EMBEDDED_DATA = re.compile(
-    r"(__NEXT_DATA__|self\.__next_f|__NUXT__|__remixContext"
-    r"|window\.__INITIAL_STATE__|window\.__APOLLO_STATE__|__sveltekit_)"
+SCRIPT_BLOCK = re.compile(r"(?is)<script\b([^>]*)>(.*?)</script>")
+STYLE_BLOCK = re.compile(r"(?is)<style\b[^>]*>(.*?)</style>")
+# The name a payload is parked under, whichever framework parked it there.
+PAYLOAD_NAME = re.compile(
+    r"""(?x)
+      id=["']([^"']+)["']                     # <script id="__NEXT_DATA__">
+    | (?:window|self|globalThis)\.([A-Za-z_$][\w$]*)\s*=   # window.SIGI_STATE =
+    | ^\s*(?:var|let|const)\s+([A-Za-z_$][\w$]*)\s*=       # var RENDER_DATA =
+    """
 )
 
 # Words of readable text per KB of HTML. A server-rendered documentation page
@@ -63,6 +66,43 @@ MIN_DENSITY = 4.0
 
 def density(html: str, words: int) -> float:
     return words / max(1.0, len(html) / 1024)
+
+
+def looks_like_json(text: str) -> bool:
+    stripped = text.strip()
+    if stripped[:1] in "{[":
+        return True
+    # A payload assigned to a variable: find the first { or [ after the =.
+    head = stripped[:400]
+    return bool(re.search(r"=\s*[{\[]", head))
+
+
+def inline_payloads(html: str) -> list[tuple[str, int, bool]]:
+    """Large inline scripts, with whatever name they are parked under.
+
+    Guessing framework names does not scale: the first version of this probe
+    matched __NEXT_DATA__, __NUXT__ and a few others, and missed the site it
+    was pointed at. Measuring the bytes works whatever the framework is called.
+    """
+    payloads = []
+    for attrs, body in SCRIPT_BLOCK.findall(html):
+        if not body.strip():
+            continue        # <script src=...>, no inline content
+        match = PAYLOAD_NAME.search(attrs) or PAYLOAD_NAME.search(body[:400])
+        name = next((g for g in (match.groups() if match else ()) if g), "(anonymous)")
+        payloads.append((name, len(body), looks_like_json(body)))
+    return sorted(payloads, key=lambda p: -p[1])
+
+
+def byte_budget(html: str) -> dict:
+    script_bytes = sum(len(b) for _, b in SCRIPT_BLOCK.findall(html))
+    style_bytes = sum(len(b) for b in STYLE_BLOCK.findall(html))
+    return {
+        "total": len(html),
+        "inline_script": script_bytes,
+        "inline_style": style_bytes,
+        "markup": max(0, len(html) - script_bytes - style_bytes),
+    }
 
 
 def diagnose(html: str, words: int) -> str:
@@ -77,7 +117,10 @@ def diagnose(html: str, words: int) -> str:
         return "blocked"
     if words >= 150 and density(html, words) >= MIN_DENSITY:
         return "ok"
-    if EMBEDDED_DATA.search(html):
+    # A big JSON payload sitting inline means the prose shipped with the page,
+    # just not as HTML. Detected by size and shape, not by framework name.
+    payloads = inline_payloads(html)
+    if payloads and payloads[0][1] >= 20_000 and payloads[0][2]:
         return "embedded"
     bundles = len(re.findall(r'(?i)<script[^>]+src=', html))
     if SPA_ROOTS.search(html) or bundles >= 3:
@@ -102,13 +145,54 @@ def fetch(url: str, timeout: int = 30) -> tuple[int, str]:
 
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("base", help="site root, e.g. https://developers.tiktok.com")
+    ap.add_argument("base", nargs="?", default="",
+                    help="site root, e.g. https://developers.tiktok.com")
+    ap.add_argument("--file", type=pathlib.Path,
+                    help="analyse a saved HTML file instead of fetching (no network)")
     ap.add_argument("--page", default="", help="a documentation page path to sample")
     ap.add_argument("--delay", type=float, default=1.0)
     ap.add_argument("--dump", type=pathlib.Path,
                     help="save the sampled page's HTML here, for working out how to read it")
     args = ap.parse_args()
 
+    # Offline mode: everything worth knowing about rendering can be answered
+    # from a page already on disk, without touching the site again.
+    if args.file:
+        html = args.file.read_text(encoding="utf-8", errors="replace")
+        text = html_to_markdown(html)
+        words = len(re.findall(r"\b\w+\b", text))
+        budget = byte_budget(html)
+        verdict = diagnose(html, words)
+        print(f"\nReading {args.file} ({len(html):,} bytes)\n" + "=" * 60)
+        print(f"\n  {words:,} words of readable text ({density(html, words):.1f} per KB)")
+        print(f"  bytes: {budget['inline_script']:,} inline script, "
+              f"{budget['inline_style']:,} inline style, {budget['markup']:,} markup")
+        payloads = inline_payloads(html)
+        if payloads:
+            print("\n  largest inline scripts:")
+            for name, size, jsonish in payloads[:5]:
+                print(f"    {size:>9,} bytes  {name}  "
+                      f"({'JSON-shaped' if jsonish else 'code'})")
+        else:
+            print("\n  no inline scripts with content")
+        print("\n" + "=" * 60)
+        if verdict == "embedded":
+            top = payloads[0]
+            print(f"The prose shipped with the page, inside `{top[0]}` "
+                  f"({top[1]:,} bytes).")
+            print("No browser needed - an extractor that reads that payload is enough.")
+        elif verdict == "ok":
+            print("The text is in the HTML. Plain fetching works.")
+        elif verdict == "blocked":
+            print("This looks like a stub from a bot check or proxy, not the real page.")
+        else:
+            print("No sizeable inline payload: the page really is built in the browser.")
+            print("Getting the source text out of the CMS is the right path.")
+        print()
+        return 0
+
+    if not args.base:
+        ap.error("give a site root, or --file to analyse a saved page")
     base = args.base.rstrip("/")
     print(f"\nProbing {base}\n" + "=" * 60)
 
@@ -169,9 +253,18 @@ def main() -> int:
         words = len(re.findall(r"\b\w+\b", text))
         scripts = len(re.findall(r"(?i)<script", html))
         print(f"  {sample_url}")
+        budget = byte_budget(html)
         print(f"  {len(html):,} bytes of HTML, {scripts} script tags")
         print(f"  reduces to {words:,} words of readable text "
               f"({density(html, words):.1f} words per KB)")
+        print(f"  where the bytes are: {budget['inline_script']:,} in inline scripts, "
+              f"{budget['inline_style']:,} in inline styles, {budget['markup']:,} in markup")
+        payloads = inline_payloads(html)
+        if payloads:
+            print("  largest inline scripts:")
+            for name, size, jsonish in payloads[:3]:
+                kind = "JSON-shaped" if jsonish else "code"
+                print(f"    {size:>9,} bytes  {name}  ({kind})")
         verdict = diagnose(html, words)
         rendered_ok = verdict == "ok"
         if verdict == "ok":
@@ -216,6 +309,17 @@ def main() -> int:
         print("Pages are readable, but no sitemap was found.")
         print("Options: ask whether one exists at a non-standard address, or give the")
         print("crawler a list of URLs instead of a sitemap.")
+    elif verdict == "spa":
+        print("No sitemap, and the pages are assembled in the browser.")
+        print("Page discovery is solvable - the crawler can follow links from a seed")
+        print("page (discover_from) or take a list of URLs. Rendering is the blocker.")
+        print("\nOptions, best first:")
+        print("  1. Ask whoever runs the CMS for an export or a read API. The source")
+        print("     text is what you want to check anyway.")
+        print("  2. Render each page with a headless browser before checking it.")
+        print("\nBefore either, check the byte breakdown above: if most of the page")
+        print("is one large JSON-shaped inline script, the prose shipped with the")
+        print("page and an extractor is enough.")
     else:
         print("Neither a sitemap nor readable page text. This site cannot be checked")
         print("by fetching it. Get the source text out of the CMS instead.")
