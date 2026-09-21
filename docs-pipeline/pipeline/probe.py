@@ -143,6 +143,71 @@ def fetch(url: str, timeout: int = 30) -> tuple[int, str]:
         return 0, f"{type(exc).__name__}: {exc}"
 
 
+def _analyse_page(args, base: str) -> tuple[bool, str]:
+    """Fetch one page and report what is actually in it."""
+    import time
+
+    print("\npage content")
+    sample = args.page or "/"
+    sample_url = f"{base}/{sample.lstrip('/')}" if sample.strip("/") else base
+    time.sleep(args.delay)
+    status, html = fetch(sample_url)
+
+    if args.dump and status == 200:
+        args.dump.parent.mkdir(parents=True, exist_ok=True)
+        args.dump.write_text(html, encoding="utf-8")
+        print(f"  saved the HTML to {args.dump} ({len(html):,} bytes)")
+    if status != 200:
+        print(f"  {sample_url} returned HTTP {status}")
+        return False, "blocked"
+
+    text = html_to_markdown(html)
+    words = len(re.findall(r"\b\w+\b", text))
+    scripts = len(re.findall(r"(?i)<script", html))
+    budget = byte_budget(html)
+    print(f"  {sample_url}")
+    print(f"  {len(html):,} bytes of HTML, {scripts} script tags")
+    print(f"  reduces to {words:,} words of readable text "
+          f"({density(html, words):.1f} words per KB)")
+    print(f"  where the bytes are: {budget['inline_script']:,} in inline scripts, "
+          f"{budget['inline_style']:,} in inline styles, {budget['markup']:,} in markup")
+    payloads = inline_payloads(html)
+    if payloads:
+        print("  largest inline scripts:")
+        for name, size, jsonish in payloads[:5]:
+            print(f"    {size:>9,} bytes  {name}  ({'JSON-shaped' if jsonish else 'code'})")
+    else:
+        print("  no inline scripts with content")
+
+    verdict = diagnose(html, words)
+    if verdict == "ok":
+        print("  -> the text is in the HTML; plain fetching works")
+    elif verdict == "embedded":
+        print("  -> little readable text, but a large JSON payload ships with the page")
+    elif verdict == "spa":
+        print("  -> an app shell with script bundles and no data payload")
+    else:
+        print("  -> a stub, not the real page")
+    return verdict == "ok", verdict
+
+
+def _page_section(args, base: str, one_request: bool = False) -> int:
+    rendered_ok, verdict = _analyse_page(args, base)
+    print("\n" + "=" * 60)
+    if verdict == "ok":
+        print("The text is in the HTML. Plain fetching works.")
+    elif verdict == "embedded":
+        print("The prose shipped with the page, inside a JSON payload.")
+        print("No browser needed - an extractor that reads it is enough.")
+    elif verdict == "spa":
+        print("The page really is built in the browser: no data payload to read.")
+        print("Getting the source text out of the CMS is the right path.")
+    else:
+        print("That was not the real page. Check the URL in a browser first.")
+    print()
+    return 0
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("base", nargs="?", default="",
@@ -151,6 +216,8 @@ def main() -> int:
                     help="analyse a saved HTML file instead of fetching (no network)")
     ap.add_argument("--page", default="", help="a documentation page path to sample")
     ap.add_argument("--delay", type=float, default=1.0)
+    ap.add_argument("--page-only", action="store_true",
+                    help="skip robots.txt and the sitemap scan; fetch and analyse one page")
     ap.add_argument("--dump", type=pathlib.Path,
                     help="save the sampled page's HTML here, for working out how to read it")
     args = ap.parse_args()
@@ -170,6 +237,17 @@ def main() -> int:
             )
             return 1
         html = args.file.read_text(encoding="utf-8", errors="replace")
+        if not html.strip():
+            print(
+                f"\n{args.file} is empty ({args.file.stat().st_size} bytes).\n\n"
+                "The download produced nothing, so there is nothing to analyse. Use\n"
+                "the probe's own fetcher instead of curl - it already pulled this\n"
+                "page successfully:\n\n"
+                "  python3 pipeline/probe.py https://developers.tiktok.com \\\n"
+                "      --page /doc/overview --page-only --dump ~/Desktop/page.html\n",
+                file=sys.stderr,
+            )
+            return 1
         text = html_to_markdown(html)
         words = len(re.findall(r"\b\w+\b", text))
         budget = byte_budget(html)
@@ -206,6 +284,12 @@ def main() -> int:
         ap.error("give a site root, or --file to analyse a saved page")
     base = args.base.rstrip("/")
     print(f"\nProbing {base}\n" + "=" * 60)
+
+    declared: list[str] = []
+    found = None
+    if args.page_only:
+        print("\n(skipping robots.txt and the sitemap scan)")
+        return _page_section(args, base, one_request=True)
 
     # --- robots.txt -------------------------------------------------------
     print("\nrobots.txt")
@@ -246,51 +330,7 @@ def main() -> int:
         else:
             print(f"  --  {url} (HTTP {status})")
 
-    # --- can a page be read without a browser? ---------------------------
-    print("\npage content")
-    sample = args.page or "/"
-    sample_url = f"{base}/{sample.lstrip('/')}" if sample.strip("/") else base
-    time.sleep(args.delay)
-    status, html = fetch(sample_url)
-    if args.dump and status == 200:
-        args.dump.write_text(html, encoding="utf-8")
-        print(f"  saved the HTML to {args.dump} ({len(html):,} bytes)")
-    if status != 200:
-        print(f"  {sample_url} returned HTTP {status}")
-        verdict = "blocked"
-        rendered_ok = False
-    else:
-        text = html_to_markdown(html)
-        words = len(re.findall(r"\b\w+\b", text))
-        scripts = len(re.findall(r"(?i)<script", html))
-        print(f"  {sample_url}")
-        budget = byte_budget(html)
-        print(f"  {len(html):,} bytes of HTML, {scripts} script tags")
-        print(f"  reduces to {words:,} words of readable text "
-              f"({density(html, words):.1f} words per KB)")
-        print(f"  where the bytes are: {budget['inline_script']:,} in inline scripts, "
-              f"{budget['inline_style']:,} in inline styles, {budget['markup']:,} in markup")
-        payloads = inline_payloads(html)
-        if payloads:
-            print("  largest inline scripts:")
-            for name, size, jsonish in payloads[:3]:
-                kind = "JSON-shaped" if jsonish else "code"
-                print(f"    {size:>9,} bytes  {name}  ({kind})")
-        verdict = diagnose(html, words)
-        rendered_ok = verdict == "ok"
-        if verdict == "ok":
-            print("  -> the text is in the HTML; plain fetching works")
-        elif verdict == "embedded":
-            print("  -> little readable text, but the page carries a JSON data island")
-            print("     (Next.js, Nuxt, Remix or similar). The prose IS in the")
-            print("     response, just not as HTML text.")
-        elif verdict == "spa":
-            print("  -> almost no text, but the page carries an app shell and script")
-            print("     bundles. It is assembled in the browser by JavaScript.")
-        else:
-            print("  -> almost no text, and no app shell either. Something between")
-            print("     you and the site returned a stub: a bot check, a corporate")
-            print("     proxy, or a firewall. This is NOT a JavaScript problem.")
+    rendered_ok, verdict = _analyse_page(args, base)
 
     # --- verdict ----------------------------------------------------------
     print("\n" + "=" * 60)
