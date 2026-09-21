@@ -8,7 +8,7 @@ score well against that linter, which makes the resulting metrics worthless.
 
 | Path | Contents | Provenance |
 | --- | --- | --- |
-| `meilisearch-docs/` | 553 `.mdx` pages, ~271,000 words | [`meilisearch/documentation`](https://github.com/meilisearch/documentation) @ `7b72487` (2026-09-16) |
+| `meilisearch-docs/` | 553 `.mdx` pages, 252,652 words (155,629 excluding code and frontmatter) | [`meilisearch/documentation`](https://github.com/meilisearch/documentation) @ `7b72487` (2026-09-16) |
 | `../spec/meilisearch-openapi.json` | OpenAPI 3.1, 72 paths | Official release asset, [`meilisearch/meilisearch` v1.54.0](https://github.com/meilisearch/meilisearch/releases/tag/v1.54.0) |
 
 ## Why this corpus

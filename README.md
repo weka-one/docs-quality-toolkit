@@ -14,7 +14,7 @@ both built and measured against a **real** 553-page documentation corpus and a
 A linter measured against documentation written by the author of that linter
 always scores well, and the number means nothing. Both projects run against
 [`meilisearch/documentation`](https://github.com/meilisearch/documentation)
-(MIT, pinned at `7b72487`): 553 pages, 271k words, real API reference tables,
+(MIT, pinned at `7b72487`): 553 pages, 155,629 prose words, real API reference tables,
 error-code listings, and 257 multi-language code samples.
 
 The freshness checker diffs against the official `meilisearch-openapi.json`
