@@ -28,17 +28,17 @@ Corpus: **553 pages, 155,629 prose words**.
 | `ApiKeyCase` | 49 | 5 | -44 (-90%) |
 | `Hedging` | 40 | 40 | 0 |
 | `Wordiness` | 38 | 17 | -21 (-55%) |
-| `UIActions` | 30 | 0 | -30 (-100%) |
-| `Filler` | 30 | 30 | 0 |
 | `AllowsYouTo` | 30 | 0 | -30 (-100%) |
+| `Filler` | 30 | 30 | 0 |
+| `UIActions` | 30 | 0 | -30 (-100%) |
 | `FirstPerson` | 25 | 25 | 0 |
 | `CurlyQuotes` | 22 | 0 | -22 (-100%) |
 | `Please` | 19 | 10 | -9 (-47%) |
 | `NoteThat` | 18 | 3 | -15 (-83%) |
 | `SentenceLength` | 18 | 18 | 0 |
 | `LinkText` | 2 | 2 | 0 |
-| `Terminology` | 1 | 0 | -1 (-100%) |
 | `InclusiveLanguage` | 1 | 0 | -1 (-100%) |
+| `Terminology` | 1 | 0 | -1 (-100%) |
 
 ## By documentation area
 

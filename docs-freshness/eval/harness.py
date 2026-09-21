@@ -192,18 +192,18 @@ def evaluate(arm: str, cache: pathlib.Path | None = None) -> dict:
         for key, conf in confidence_of.items():
             curve_points.append((conf, key in expected))
 
-        for key in produced & expected:
+        for key in sorted(produced & expected):
             corpus_score.tp += 1
             per_detector[key[0]].tp += 1
             by_source[expected_source[key]].tp += 1
             if key in ambiguous:
                 ambiguous_tp += 1
-        for key in produced - expected:
+        for key in sorted(produced - expected):
             corpus_score.fp += 1
             per_detector[key[0]].fp += 1
             by_source["|".join(record["sources"])].fp += 1
             false_alarms.append(f"{page}: {key[0]} {key[1]}")
-        for key in expected - produced:
+        for key in sorted(expected - produced):
             corpus_score.fn += 1
             per_detector[key[0]].fn += 1
             by_source[expected_source[key]].fn += 1
@@ -231,7 +231,7 @@ def evaluate(arm: str, cache: pathlib.Path | None = None) -> dict:
             mutated_score.fn += 1
             per_detector[wanted].fn += 1
             misses.append(f"{page}: [mutation {mutation['name']}] expected {wanted}")
-        for det, ev in produced:
+        for det, ev in sorted(produced):
             if det != wanted:
                 mutated_score.fp += 1
                 per_detector[det].fp += 1
@@ -252,8 +252,8 @@ def evaluate(arm: str, cache: pathlib.Path | None = None) -> dict:
                       if abs(r["threshold"] - 0.6) < 1e-9),
         "base_scoping": ARMS[arm]["base_scoping"],
         "ambiguous_true_positives": ambiguous_tp,
-        "misses": misses,
-        "false_alarms": false_alarms,
+        "misses": sorted(misses),
+        "false_alarms": sorted(false_alarms),
     }
     if isinstance(adjudicator, llm.RecordedAdjudicator):
         result["cache"] = {"hits": adjudicator.hits, "misses": adjudicator.misses}

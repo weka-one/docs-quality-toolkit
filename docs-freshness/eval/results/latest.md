@@ -47,49 +47,49 @@ Findings below the gate are not discarded - they go to the review queue
 
 ## False positives
 
-- resources/migration/elasticsearch_migration.mdx: unknown_endpoint POST /_bulk
+- capabilities/full_text_search/overview.mdx: unknown_endpoint GET /search
+- resources/migration/elasticsearch_migration.mdx: unknown_endpoint DELETE /my-index
+- resources/migration/elasticsearch_migration.mdx: unknown_endpoint DELETE /my-index/_doc/{id}
+- resources/migration/elasticsearch_migration.mdx: unknown_endpoint GET /_cat/indices
+- resources/migration/elasticsearch_migration.mdx: unknown_endpoint GET /_cluster/health
 - resources/migration/elasticsearch_migration.mdx: unknown_endpoint GET /_tasks/{task_id}
 - resources/migration/elasticsearch_migration.mdx: unknown_endpoint GET /my-index
 - resources/migration/elasticsearch_migration.mdx: unknown_endpoint GET /my-index/_doc/{id}
-- resources/migration/elasticsearch_migration.mdx: unknown_endpoint POST /my-index/_doc
-- resources/migration/elasticsearch_migration.mdx: unknown_endpoint POST /my-index/_delete_by_query
-- resources/migration/elasticsearch_migration.mdx: unknown_endpoint PUT /my-index
-- resources/migration/elasticsearch_migration.mdx: unknown_endpoint GET /_cluster/health
-- resources/migration/elasticsearch_migration.mdx: unknown_endpoint POST /_security/api_key
-- resources/migration/elasticsearch_migration.mdx: unknown_endpoint PUT /my-index/_settings
-- resources/migration/elasticsearch_migration.mdx: unknown_endpoint GET /_cat/indices
-- resources/migration/elasticsearch_migration.mdx: unknown_endpoint POST /my-index/_search
-- resources/migration/elasticsearch_migration.mdx: unknown_endpoint DELETE /my-index/_doc/{id}
 - resources/migration/elasticsearch_migration.mdx: unknown_endpoint GET /my-index/_settings
+- resources/migration/elasticsearch_migration.mdx: unknown_endpoint POST /_bulk
 - resources/migration/elasticsearch_migration.mdx: unknown_endpoint POST /_msearch
-- resources/migration/elasticsearch_migration.mdx: unknown_endpoint DELETE /my-index
-- resources/migration/qdrant_migration.mdx: unknown_endpoint GET /collections/{name}
-- resources/migration/qdrant_migration.mdx: unknown_endpoint PUT /collections/{name}
-- resources/migration/qdrant_migration.mdx: unknown_endpoint GET /collections/{name}/points/{id}
-- resources/migration/qdrant_migration.mdx: unknown_endpoint PUT /collections/{name}/index
-- resources/migration/qdrant_migration.mdx: unknown_endpoint POST /collections/{name}/points/scroll
-- resources/migration/qdrant_migration.mdx: unknown_endpoint POST /collections/{name}/points/search/batch
-- resources/migration/qdrant_migration.mdx: unknown_endpoint POST /collections/{name}/points/search
-- resources/migration/qdrant_migration.mdx: unknown_endpoint PUT /collections/{name}/points
-- resources/migration/qdrant_migration.mdx: unknown_endpoint GET /healthz
-- resources/migration/qdrant_migration.mdx: unknown_endpoint GET /collections
+- resources/migration/elasticsearch_migration.mdx: unknown_endpoint POST /_security/api_key
+- resources/migration/elasticsearch_migration.mdx: unknown_endpoint POST /my-index/_delete_by_query
+- resources/migration/elasticsearch_migration.mdx: unknown_endpoint POST /my-index/_doc
+- resources/migration/elasticsearch_migration.mdx: unknown_endpoint POST /my-index/_search
+- resources/migration/elasticsearch_migration.mdx: unknown_endpoint PUT /my-index
+- resources/migration/elasticsearch_migration.mdx: unknown_endpoint PUT /my-index/_settings
 - resources/migration/qdrant_migration.mdx: unknown_endpoint DELETE /collections/{name}
-- resources/migration/qdrant_migration.mdx: unknown_endpoint POST /collections/{name}/snapshots
+- resources/migration/qdrant_migration.mdx: unknown_endpoint GET /collections
+- resources/migration/qdrant_migration.mdx: unknown_endpoint GET /collections/{name}
+- resources/migration/qdrant_migration.mdx: unknown_endpoint GET /collections/{name}/points/{id}
+- resources/migration/qdrant_migration.mdx: unknown_endpoint GET /healthz
 - resources/migration/qdrant_migration.mdx: unknown_endpoint POST /collections/{name}/points/delete
-- capabilities/full_text_search/overview.mdx: unknown_endpoint GET /search
+- resources/migration/qdrant_migration.mdx: unknown_endpoint POST /collections/{name}/points/scroll
+- resources/migration/qdrant_migration.mdx: unknown_endpoint POST /collections/{name}/points/search
+- resources/migration/qdrant_migration.mdx: unknown_endpoint POST /collections/{name}/points/search/batch
+- resources/migration/qdrant_migration.mdx: unknown_endpoint POST /collections/{name}/snapshots
+- resources/migration/qdrant_migration.mdx: unknown_endpoint PUT /collections/{name}
+- resources/migration/qdrant_migration.mdx: unknown_endpoint PUT /collections/{name}/index
+- resources/migration/qdrant_migration.mdx: unknown_endpoint PUT /collections/{name}/points
 
 ## What base-URL scoping prevents
 
 The `naive` arm raises 39 false positive(s) that scoping removes. A sample of them:
 
-- resources/self_hosting/configuration/overview.mdx: unknown_endpoint GET /meilisearch/meilisearch/latest/config.toml
-- resources/self_hosting/deployment/aws.mdx: unknown_endpoint GET /meilisearch/meilisearch/latest/config.toml
-- resources/self_hosting/deployment/digitalocean.mdx: unknown_endpoint GET /meilisearch/meilisearch/latest/config.toml
-- resources/self_hosting/deployment/gcp.mdx: unknown_endpoint GET /meilisearch/meilisearch/latest/config.toml
-- resources/self_hosting/deployment/running_production.mdx: unknown_endpoint GET /meilisearch/meilisearch/latest/config.toml
-- resources/migration/updating.mdx: unknown_endpoint GET /meilisearch/meilisearch/releases/download/MEILISEARCH_VERSION/meilisearch-linux-amd64
-- resources/migration/updating.mdx: unknown_endpoint GET /meilisearch/meilisearch/releases/download/{meilisearch_version}/meilisearch-linux-amd64
-- resources/self_hosting/getting_started/install_locally.mdx: unknown_endpoint GET /meilisearch/meilisearch/releases/download/{meilisearch_version}/{meilisearch_os}
+- capabilities/analytics/advanced/migrate_analytics.mdx: unknown_endpoint POST /events
+- capabilities/full_text_search/overview.mdx: unknown_endpoint GET /search
+- resources/migration/elasticsearch_migration.mdx: unknown_endpoint DELETE /my-index
+- resources/migration/elasticsearch_migration.mdx: unknown_endpoint DELETE /my-index/_doc/{id}
+- resources/migration/elasticsearch_migration.mdx: unknown_endpoint GET /_cat/indices
+- resources/migration/elasticsearch_migration.mdx: unknown_endpoint GET /_cluster/health
+- resources/migration/elasticsearch_migration.mdx: unknown_endpoint GET /_tasks/{task_id}
+- resources/migration/elasticsearch_migration.mdx: unknown_endpoint GET /my-index
 
 > 5 true positive(s) are marked ambiguous: the spec
 > may be incomplete rather than the docs stale. Both need a human, so the

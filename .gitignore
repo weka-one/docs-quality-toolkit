@@ -4,3 +4,6 @@ __pycache__/
 reports/*.json
 !reports/.gitkeep
 .vale-cache/
+docs-style-linter/build/
+docs-freshness/eval/results/*.json
+!docs-freshness/eval/results/latest.json

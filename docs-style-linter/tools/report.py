@@ -72,8 +72,8 @@ def measure(target: pathlib.Path, results: dict | None = None) -> dict:
         "total": total,
         "per_1k_words": round(total / words * 1000, 2) if words else 0.0,
         "by_severity": {s: by_severity.get(s, 0) for s in valelib.SEVERITIES},
-        "by_rule": dict(by_rule.most_common()),
-        "by_area": dict(by_area.most_common()),
+        "by_rule": dict(sorted(by_rule.items(), key=lambda kv: (-kv[1], kv[0]))),
+        "by_area": dict(sorted(by_area.items(), key=lambda kv: (-kv[1], kv[0]))),
     }
 
 
@@ -99,7 +99,7 @@ def render_markdown(before: dict, after: dict | None) -> str:
         for sev in valelib.SEVERITIES:
             out.append(f"| {sev} | {before['by_severity'][sev]} |")
         out += ["", "| Rule | Count |", "| --- | ---: |"]
-        for rule, n in before["by_rule"].items():
+        for rule, n in sorted(before["by_rule"].items(), key=lambda kv: (-kv[1], kv[0])):
             out.append(f"| `{rule}` | {n} |")
         return "\n".join(out) + "\n"
 
@@ -126,14 +126,18 @@ def render_markdown(before: dict, after: dict | None) -> str:
         out.append(f"| {sev} | {b} | {a} | {_delta(b, a)} |")
 
     out += ["", "## By rule", "", "| Rule | Before | After | Change |", "| --- | ---: | ---: | ---: |"]
+    # Name is the tiebreaker on purpose. Ranking by count alone leaves rules
+    # with equal counts in set-iteration order, which varies per process
+    # because of hash randomisation -- so the committed report "changes"
+    # between identical runs and the CI staleness check fails at random.
     for rule in sorted(set(before["by_rule"]) | set(after["by_rule"]),
-                       key=lambda r: -before["by_rule"].get(r, 0)):
+                       key=lambda r: (-before["by_rule"].get(r, 0), r)):
         b, a = before["by_rule"].get(rule, 0), after["by_rule"].get(rule, 0)
         out.append(f"| `{rule}` | {b} | {a} | {_delta(b, a)} |")
 
     out += ["", "## By documentation area", "", "| Area | Before | After | Change |", "| --- | ---: | ---: | ---: |"]
     for area in sorted(set(before["by_area"]) | set(after["by_area"]),
-                       key=lambda a: -before["by_area"].get(a, 0)):
+                       key=lambda a: (-before["by_area"].get(a, 0), a)):
         b, a = before["by_area"].get(area, 0), after["by_area"].get(area, 0)
         out.append(f"| `{area}` | {b} | {a} | {_delta(b, a)} |")
 

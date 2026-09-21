@@ -76,3 +76,22 @@ jobs:
 
       - name: Evaluation harness meets its committed thresholds
         run: python docs-freshness/eval/harness.py --check-thresholds
+
+      - name: Committed evaluation report is current
+        working-directory: docs-freshness
+        run: |
+          python eval/harness.py --out-md /tmp/eval.md > /dev/null
+          if ! diff -u eval/results/latest.md /tmp/eval.md; then
+            echo "::error::eval/results/latest.md is stale. Run 'make eval' and commit the result."
+            exit 1
+          fi
+
+      - name: Seeded drift set reproduces exactly
+        working-directory: docs-freshness
+        run: |
+          cp eval/mutations.jsonl /tmp/mutations.before
+          python eval/mutations.py --count 20 > /dev/null
+          if ! diff -u /tmp/mutations.before eval/mutations.jsonl; then
+            echo "::error::mutations.py is no longer deterministic for its seed."
+            exit 1
+          fi
