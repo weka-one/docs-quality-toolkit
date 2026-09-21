@@ -1,7 +1,7 @@
 # Check the PUBLIC TikTok for Developers docs by reading the published site.
 #
-# Use this when the CMS has no export and no read API. It reads the site's
-# sitemap, fetches each page, reduces the HTML to Markdown, and runs the
+# Use this when the CMS has no export and no read API. It visits each page in a
+# headless browser, takes the text the browser ends up showing, and runs the
 # checks over that.
 #
 # It checks what actually went live, which is its real advantage over checking
@@ -17,6 +17,24 @@
 
 source:
   type: site-crawl
+
+  # Render each page in a real (windowless) browser before reading it.
+  #
+  # This site builds every page with JavaScript: a plain fetch returns an empty
+  # shell. The first attempt here was to read the page data the site inlines,
+  # but on developers.tiktok.com that data is a translation dictionary, and the
+  # longest, most prose-like strings in it are interface copy - the newsletter
+  # blurb, the NDA modal, the unsubscribe line - while the documentation itself
+  # is split into fragments too small to recognise. Picking content out of it
+  # by guesswork was never going to be reliable.
+  #
+  # A browser removes the guess. It also gives back the page's structure, so
+  # the navigation, header and footer can be left out and only the article
+  # read - which is what makes a per-page check mean anything.
+  #
+  # Costs roughly 1-3 seconds a page against a few milliseconds. Needs the
+  # browser installed once: `make browser`.
+  render: true
 
   # There is no sitemap: every usual address returns 404, and robots.txt does
   # not name one. So the page list comes from following links instead.
@@ -36,11 +54,13 @@ source:
   # per line; `#` comments allowed. This wins over discover_from.
   # urls_file: tt4d-urls.txt
 
-  # These pages render in the browser, but every page's prose ships inline as
-  # JSON under `_ROUTER_DATA`. The crawler reads whichever source yields more
-  # text - the HTML or the JSON island - so this needs no configuring. Set it
-  # to false to force plain HTML reduction.
-  # extract_json: false
+  # How long to wait after the page settles, in milliseconds. Raise it if
+  # pages come back short; documentation that loads in stages may need it.
+  # settle_ms: 400
+
+  # Use a Chrome you already have instead of the browser `make browser`
+  # downloads. Also settable as DOCS_PIPELINE_BROWSER.
+  # browser_path: /Applications/Google Chrome.app/Contents/MacOS/Google Chrome
 
   # Seconds between requests. The crawler raises this automatically if
   # robots.txt asks for a slower pace.

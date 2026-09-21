@@ -18,6 +18,11 @@ Three adapters, covering the three situations a docs team is actually in:
 
 The last one is the unglamorous fallback, and it is the one most likely to be
 needed. A CMS that cannot export and has no read API still serves HTML.
+
+It has a limit: a site that assembles itself in the browser serves an empty
+shell to a plain fetch, and no amount of reading that HTML recovers the text.
+`render.py` adds a fourth adapter for exactly that case, driving a real browser
+and reusing every routing and politeness decision made here.
 """
 from __future__ import annotations
 
@@ -446,7 +451,13 @@ def build(config: dict) -> Source:
         return FilesystemSource(pathlib.Path(config["root"]))
     if kind == "cms-api":
         return CmsApiSource(config)
-    if kind == "site-crawl":
+    if kind in ("site-crawl", "rendered-crawl"):
+        # Rendering is the same crawl with a browser doing the fetching, so it
+        # is reachable both as its own type and as a flag on the plain crawl.
+        if kind == "rendered-crawl" or config.get("render"):
+            from pipeline.render import RenderedCrawlSource  # late: it imports us
+
+            return RenderedCrawlSource(config)
         return SiteCrawlSource(config)
     raise ValueError(f"unknown source type: {kind}")
 

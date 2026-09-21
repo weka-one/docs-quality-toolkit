@@ -1,0 +1,9 @@
+# Only needed for `render: true` - checking a site that builds its pages in the
+# browser. Everything else in this repository runs without it.
+#
+#   python3 -m pip install -r requirements-browser.txt
+#   python3 -m playwright install chromium
+#
+# The second command downloads a private copy of Chromium (~150 MB) used only
+# by this tool. It needs no Homebrew and does not touch your own browser.
+playwright>=1.40

@@ -31,13 +31,14 @@ instead of on a diff.
 
 ## Where content comes from
 
-Three adapters, covering the three situations a docs team is actually in.
+Four adapters, covering the situations a docs team is actually in.
 
 | Adapter | Use when |
 | --- | --- |
 | `FilesystemSource` | A directory, or an export the CMS produced |
 | `CmsApiSource` | The CMS has a read API |
-| `SiteCrawlSource` | It doesn't — read the published site from its sitemap |
+| `SiteCrawlSource` | It doesn't — read the published site |
+| `RenderedCrawlSource` | The site builds its pages in the browser |
 
 No CMS is hardcoded, because the one this is aimed at is internal and its API
 is not something this repository can know. `CmsApiSource` is described entirely
@@ -53,6 +54,49 @@ of truth that may not match what was published.
 Its HTML-to-Markdown reduction is deliberately small — headings, fenced code,
 inline code, paragraph text, and nothing else. A fuller converter would invent
 structure the checks would then treat as real.
+
+### When the page is empty until JavaScript runs
+
+`SiteCrawlSource` reads the HTML the server sends. A site that assembles pages
+in the browser sends an empty shell, and no amount of reading that HTML
+recovers the text.
+
+The first attempt at this was to mine the JSON such sites inline, scoring every
+string on how much it reads like prose. Run against `developers.tiktok.com`, it
+returned the newsletter blurb, the NDA modal and the unsubscribe line: the
+site's own interface copy, sitting in a translation dictionary, where the long
+grammatical English sentences are. The documentation was chopped into fragments
+too short to score at all. That approach is recorded in `json_island.py` and is
+kept because it is fast and does work on sites that inline their content
+whole — but it guesses, every site hides its content in a different shape, and
+tuning the guess is not a method.
+
+`RenderedCrawlSource` (`render: true`) stops guessing. It runs a windowless
+browser, waits for the page to finish assembling, and reads the result. Two
+things follow from that:
+
+- **It works anywhere.** No knowledge of the framework, and a redesign does not
+  break it.
+- **It gets the page's structure back.** A rendered page says which part is
+  navigation and which is the article, so `MAIN_SELECTORS` can return the body
+  and leave the site furniture out — which is the failure the JSON mining hit.
+
+The cost is time: roughly 1–3 seconds a page against a few milliseconds. Two
+things keep that workable over a whole documentation set — one browser for the
+entire batch rather than one per page, and images, fonts and video refused
+before they are fetched. Measured at 0.65s per page over a local batch of
+eight; on a real site expect network latency plus whatever `delay_seconds`
+politeness requires. A 500-page set is a run of roughly half an hour, which is
+a nightly job, not an interactive one.
+
+Everything about *which* pages to visit is inherited unchanged from
+`SiteCrawlSource`: sitemap or link discovery, `robots.txt`, the crawl delay,
+the host restriction. Only the fetch differs.
+
+```
+make browser                                   install it, once
+make render URL=https://example.com/doc/page   check one page before a batch
+```
 
 ## Reporting, and why it is not a gate
 
@@ -102,8 +146,10 @@ Rendered and checked at 1060px and 390px in both themes.
 
 ```
 make install     dependencies
-make test        11 unit tests for the source adapters
+make browser     the headless browser, only for render: true
+make test        34 unit tests for the source adapters
 make run         one monitoring run
+make render      render one page and show its text
 make dashboard   rebuild the report from history
 make demo        reproduce the committed two-run demo
 ```
@@ -121,8 +167,16 @@ A CMS slug is untrusted input and the pipeline writes it to disk. `materialise`
 refuses any path that resolves outside the staging directory, and there is a
 test for it. The crawler will not leave the host named in its sitemap URL,
 honours a delay between requests, and treats one failed page as a finding
-rather than the end of the run.
+rather than the end of the run. Rendering inherits all of that, and draws the
+line in the same place: a page that fails to load is one finding, while a
+missing browser stops the run rather than reporting 500 empty pages as 500
+broken documents.
 
 ## Requirements
 
 Python 3.9+, PyYAML, and Vale 3.9.6 on `PATH` for the style checks.
+
+`render: true` additionally needs Playwright and a copy of Chromium, installed
+by `make browser`. Nothing else in this repository needs them, and the tests
+skip the browser-backed case when they are absent. Set `DOCS_PIPELINE_BROWSER`
+(or `browser_path` in the config) to use a Chrome you already have instead.
