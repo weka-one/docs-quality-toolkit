@@ -48,13 +48,37 @@ BLOCKED_MARKERS = re.compile(
 )
 SPA_ROOTS = re.compile(r'(?i)<div[^>]+id=["\'](root|__next|app|__nuxt|svelte)["\']')
 
+# Frameworks that server-render into a JSON island rather than into HTML. The
+# prose IS in the response, just not as text - which is a far easier problem
+# than a page that has to be executed to exist.
+EMBEDDED_DATA = re.compile(
+    r"(__NEXT_DATA__|self\.__next_f|__NUXT__|__remixContext"
+    r"|window\.__INITIAL_STATE__|window\.__APOLLO_STATE__|__sveltekit_)"
+)
+
+# Words of readable text per KB of HTML. A server-rendered documentation page
+# sits in the tens; an app shell sits under one.
+MIN_DENSITY = 4.0
+
+
+def density(html: str, words: int) -> float:
+    return words / max(1.0, len(html) / 1024)
+
 
 def diagnose(html: str, words: int) -> str:
-    """Why does this page have no text: blocked, browser-rendered, or fine?"""
-    if words >= 150:
-        return "ok"
+    """Why does this page have little text: blocked, embedded, rendered, or fine?
+
+    Word count alone is not enough. A 229 KB page yielding 161 words passed an
+    earlier `words >= 150` check and was reported as fine; at 0.7 words per KB
+    it was an app shell whose prose never appeared in the HTML at all. Density
+    is what separates a real page from a wrapper around one.
+    """
     if BLOCKED_MARKERS.search(html):
         return "blocked"
+    if words >= 150 and density(html, words) >= MIN_DENSITY:
+        return "ok"
+    if EMBEDDED_DATA.search(html):
+        return "embedded"
     bundles = len(re.findall(r'(?i)<script[^>]+src=', html))
     if SPA_ROOTS.search(html) or bundles >= 3:
         return "spa"
@@ -81,6 +105,8 @@ def main() -> int:
     ap.add_argument("base", help="site root, e.g. https://developers.tiktok.com")
     ap.add_argument("--page", default="", help="a documentation page path to sample")
     ap.add_argument("--delay", type=float, default=1.0)
+    ap.add_argument("--dump", type=pathlib.Path,
+                    help="save the sampled page's HTML here, for working out how to read it")
     args = ap.parse_args()
 
     base = args.base.rstrip("/")
@@ -118,7 +144,12 @@ def main() -> int:
             print(f"  OK  {url}\n      {kind}, {count} entries")
             found = url
             break
-        print(f"  --  {url} (HTTP {status})")
+        if status == 200:
+            looks = ("HTML" if "<html" in body[:2000].lower() else
+                     "JSON" if body.lstrip()[:1] in "{[" else "something else")
+            print(f"  200 {url}\n      but it is {looks} ({len(body):,} bytes), not a sitemap")
+        else:
+            print(f"  --  {url} (HTTP {status})")
 
     # --- can a page be read without a browser? ---------------------------
     print("\npage content")
@@ -126,8 +157,12 @@ def main() -> int:
     sample_url = f"{base}/{sample.lstrip('/')}" if sample.strip("/") else base
     time.sleep(args.delay)
     status, html = fetch(sample_url)
+    if args.dump and status == 200:
+        args.dump.write_text(html, encoding="utf-8")
+        print(f"  saved the HTML to {args.dump} ({len(html):,} bytes)")
     if status != 200:
         print(f"  {sample_url} returned HTTP {status}")
+        verdict = "blocked"
         rendered_ok = False
     else:
         text = html_to_markdown(html)
@@ -135,11 +170,16 @@ def main() -> int:
         scripts = len(re.findall(r"(?i)<script", html))
         print(f"  {sample_url}")
         print(f"  {len(html):,} bytes of HTML, {scripts} script tags")
-        print(f"  reduces to {words:,} words of readable text")
+        print(f"  reduces to {words:,} words of readable text "
+              f"({density(html, words):.1f} words per KB)")
         verdict = diagnose(html, words)
         rendered_ok = verdict == "ok"
         if verdict == "ok":
             print("  -> the text is in the HTML; plain fetching works")
+        elif verdict == "embedded":
+            print("  -> little readable text, but the page carries a JSON data island")
+            print("     (Next.js, Nuxt, Remix or similar). The prose IS in the")
+            print("     response, just not as HTML text.")
         elif verdict == "spa":
             print("  -> almost no text, but the page carries an app shell and script")
             print("     bundles. It is assembled in the browser by JavaScript.")
@@ -153,6 +193,12 @@ def main() -> int:
     if found and rendered_ok:
         print("Ready to crawl. Put this in config.tiktok.yml:\n")
         print(f"  sitemap_url: {found}\n")
+    elif verdict == "embedded":
+        print("The prose is in the page, inside a JSON payload rather than as HTML.")
+        print("This is the good version of the problem: no browser needed, just an")
+        print("extractor that reads that payload. Send me the output of:\n")
+        print(f"  python3 pipeline/probe.py {base} --page {args.page or '/'} --dump page.html\n")
+        print("and I can write the extractor against the real shape.")
     elif found and verdict == "spa":
         print("A sitemap exists, but the pages are assembled in the browser.")
         print("Crawling would collect empty pages. Options, best first:")

@@ -242,3 +242,55 @@ def test_missing_robots_is_permission_not_a_stop():
         opener=no_robots,
     )
     assert source.urls() == ["https://docs.example/a"]
+
+
+# --- no sitemap: the two fallbacks ------------------------------------------
+
+def test_explicit_url_list(tmp_path):
+    listing = tmp_path / "urls.txt"
+    listing.write_text(
+        "# TT4D doc pages\n"
+        "https://docs.example/doc/a\n"
+        "https://docs.example/doc/b\n"
+        "https://other.example/doc/c\n"   # off-host, must be dropped
+    )
+    source = SiteCrawlSource(
+        {"urls_file": str(listing), "sitemap_url": "https://docs.example/sitemap.xml"},
+        opener=opener_for({"https://docs.example/robots.txt": "User-agent: *\n"}),
+    )
+    assert source.urls() == ["https://docs.example/doc/a", "https://docs.example/doc/b"]
+
+
+def test_link_discovery_stays_on_host_and_respects_depth():
+    pages = {
+        "https://docs.example/robots.txt": "User-agent: *\n",
+        "https://docs.example/start": (
+            '<a href="/doc/a">A</a><a href="https://evil.example/x">X</a>'
+            '<a href="/doc/b">B</a>'
+        ),
+        "https://docs.example/doc/a": '<a href="/doc/deep">deep</a>',
+        "https://docs.example/doc/b": "",
+        "https://docs.example/doc/deep": "",
+    }
+    source = SiteCrawlSource(
+        {"discover_from": "https://docs.example/start", "discover_depth": 1,
+         "delay_seconds": 0},
+        opener=opener_for(pages),
+    )
+    found = source.urls()
+    assert "https://docs.example/doc/a" in found
+    assert "https://docs.example/doc/b" in found
+    assert not any("evil.example" in u for u in found)
+    # depth 1 means the seed's links, not their links
+    assert "https://docs.example/doc/deep" not in found
+
+
+def test_include_patterns_narrow_the_crawl(tmp_path):
+    listing = tmp_path / "urls.txt"
+    listing.write_text("https://docs.example/doc/a\nhttps://docs.example/blog/b\n")
+    source = SiteCrawlSource(
+        {"urls_file": str(listing), "sitemap_url": "https://docs.example/s.xml",
+         "include_patterns": ["/doc/"]},
+        opener=opener_for({"https://docs.example/robots.txt": "User-agent: *\n"}),
+    )
+    assert source.urls() == ["https://docs.example/doc/a"]

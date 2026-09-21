@@ -227,7 +227,9 @@ class SiteCrawlSource:
             return self._robots
         import urllib.robotparser
 
-        parsed = urllib.parse.urlparse(self.config["sitemap_url"])
+        origin = (self.config.get("sitemap_url") or self.config.get("discover_from")
+                  or (self.config.get("urls") or [""])[0])
+        parsed = urllib.parse.urlparse(origin)
         parser = urllib.robotparser.RobotFileParser()
         robots_url = f"{parsed.scheme}://{parsed.netloc}/robots.txt"
         try:
@@ -263,6 +265,92 @@ class SiteCrawlSource:
             return response.read().decode("utf-8", errors="replace")
 
     def urls(self) -> list[str]:
+        """Where the list of pages comes from, in order of preference.
+
+        A sitemap is the polite, complete answer, and plenty of sites do not
+        have one - developers.tiktok.com returns 404 for every usual address.
+        So two fallbacks: an explicit list of URLs, and following links from a
+        seed page. Both honour robots.txt and the delay exactly as the sitemap
+        path does.
+        """
+        if self.config.get("urls"):
+            return self._filter(list(self.config["urls"]))
+        if self.config.get("urls_file"):
+            listed = pathlib.Path(self.config["urls_file"]).read_text(encoding="utf-8")
+            return self._filter([
+                line.strip() for line in listed.splitlines()
+                if line.strip() and not line.startswith("#")
+            ])
+        if self.config.get("discover_from"):
+            return self._discover()
+        return self._from_sitemap()
+
+    def _filter(self, candidates: list[str]) -> list[str]:
+        host = urllib.parse.urlparse(
+            self.config.get("sitemap_url") or self.config.get("discover_from") or candidates[0]
+        ).netloc
+        kept = []
+        for url in candidates:
+            if urllib.parse.urlparse(url).netloc != host:
+                continue
+            if any(re.search(p, url) for p in self.config.get("exclude_patterns", [])):
+                continue
+            include = self.config.get("include_patterns") or []
+            if include and not any(re.search(p, url) for p in include):
+                continue
+            if not self.allowed(url):
+                self.skipped_by_robots += 1
+                continue
+            kept.append(url)
+        seen, unique = set(), []
+        for url in kept:
+            if url not in seen:
+                seen.add(url)
+                unique.append(url)
+        return unique[: self.limit] if self.limit else unique
+
+    def _discover(self) -> list[str]:
+        """Follow links from a seed page, staying on the host.
+
+        Breadth-first with a depth cap, because a docs site's navigation is
+        usually two or three clicks deep and an uncapped crawl wanders into
+        every archive the site has.
+        """
+        import time
+
+        seed = self.config["discover_from"]
+        max_depth = int(self.config.get("discover_depth", 2))
+        budget = self.limit or 500
+
+        host = urllib.parse.urlparse(seed).netloc
+        seen, found, frontier = {seed}, [], [(seed, 0)]
+        link_re = re.compile(r'(?i)<a\b[^>]*href=["\']([^"\'#]+)')
+
+        while frontier and len(found) < budget:
+            url, depth = frontier.pop(0)
+            if not self.allowed(url):
+                self.skipped_by_robots += 1
+                continue
+            try:
+                html = self._get(url)
+            except Exception:
+                continue
+            found.append(url)
+            if depth >= max_depth:
+                continue
+            for href in link_re.findall(html):
+                target = urllib.parse.urljoin(url, href).split("#")[0].rstrip("/")
+                if not target or target in seen:
+                    continue
+                if urllib.parse.urlparse(target).netloc != host:
+                    continue
+                seen.add(target)
+                frontier.append((target, depth + 1))
+            time.sleep(self.delay)
+
+        return self._filter(found)
+
+    def _from_sitemap(self) -> list[str]:
         url = self.config["sitemap_url"]
         try:
             sitemap = self._get(url)

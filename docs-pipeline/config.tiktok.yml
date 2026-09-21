@@ -17,7 +17,24 @@
 
 source:
   type: site-crawl
+
+  # There is no sitemap: every usual address returns 404, and robots.txt does
+  # not name one. So the page list comes from following links instead.
+  #
+  # Start here and follow links two clicks deep, staying on the host.
+  discover_from: https://developers.tiktok.com/doc/overview
+  discover_depth: 2
+
+  # Only pages that look like documentation.
+  include_patterns:
+    - "/doc/"
+
+  # Used for the robots.txt lookup and the host check.
   sitemap_url: https://developers.tiktok.com/sitemap.xml
+
+  # If link-following misses pages you care about, list them instead. One URL
+  # per line; `#` comments allowed. This wins over discover_from.
+  # urls_file: tt4d-urls.txt
 
   # Seconds between requests. The crawler raises this automatically if
   # robots.txt asks for a slower pace.
