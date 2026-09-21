@@ -1,0 +1,23 @@
+{
+  "//": "Editorial rules enforced on every build. Each rule matches a regex against page text and reports the preferred form. severity: error fails the build, warn does not. Add a rule here rather than in check.mjs.",
+
+  "rules": [
+    { "id": "docusaurus",   "severity": "error", "pattern": "\\b(?:docusaurus|DocuSaurus|Docusarus)\\b", "prefer": "Docusaurus" },
+    { "id": "wordpress",    "severity": "error", "pattern": "\\b(?:Wordpress|wordpress)\\b",            "prefer": "WordPress" },
+    { "id": "github",       "severity": "error", "pattern": "\\b(?:Github|github)\\b",                  "prefer": "GitHub" },
+    { "id": "javascript",   "severity": "error", "pattern": "\\b(?:Javascript|javascript)\\b",          "prefer": "JavaScript" },
+    { "id": "tiktok",       "severity": "error", "pattern": "\\b(?:Tiktok|tiktok|Tik Tok)\\b",          "prefer": "TikTok" },
+    { "id": "rst",          "severity": "error", "pattern": "\\bReStructuredText\\b",                   "prefer": "reStructuredText" },
+    { "id": "linkedin",     "severity": "error", "pattern": "\\b(?:Linkedin|linkedin)\\b",              "prefer": "LinkedIn" },
+    { "id": "markdown",     "severity": "warn",  "pattern": "\\bmarkdown\\b",                           "prefer": "Markdown" },
+    { "id": "elearning",    "severity": "warn",  "pattern": "\\b(?:elearning|eLearning)\\b",            "prefer": "e-learning" },
+    { "id": "utilize",      "severity": "warn",  "pattern": "\\butiliz(?:e|es|ed|ing)\\b",              "prefer": "use" },
+    { "id": "condescend",   "severity": "warn",  "pattern": "\\b(?:simply|obviously|of course|easy enough)\\b", "prefer": "cut it — it tells the reader how they should feel about the difficulty" },
+    { "id": "double-space", "severity": "warn",  "pattern": "(?<=\\S)  +(?=\\S)",                       "prefer": "a single space" }
+  ],
+
+  "linkText": {
+    "//": "Link text that tells the reader nothing on its own.",
+    "banned": ["click here", "here", "this link", "read more", "link"]
+  }
+}

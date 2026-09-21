@@ -76,7 +76,7 @@ const SITE = {
       org: "Odoo",
       format: "User documentation",
       category: "Documentation",
-      desc: "Configuring bills of materials for product variants in Odoo Manufacturing. Written in ReStructuredText and shipped through GitHub pull requests.",
+      desc: "Configuring bills of materials for product variants in Odoo Manufacturing. Written in reStructuredText and shipped through GitHub pull requests.",
       url: "https://www.odoo.com/documentation/15.0/applications/inventory_and_mrp/manufacturing/management/product_variants.html"
     },
     {
@@ -174,7 +174,7 @@ const SITE = {
     },
     {
       heading: "Tools & formats",
-      items: ["Markdown", "ReStructuredText", "HTML & CSS", "Git & GitHub", "Docusaurus", "Figma"]
+      items: ["Markdown", "reStructuredText", "HTML & CSS", "Git & GitHub", "Docusaurus", "Figma"]
     },
     {
       heading: "Working with teams",
