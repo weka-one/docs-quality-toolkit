@@ -1,0 +1,16 @@
+# Source: TT4D style guide, Word list > Words to avoid.
+# Rationale: each of these asks the reader to supply a meaning the writer
+# should have supplied.
+extends: substitution
+message: "Use '%s' instead of '%s'."
+level: warning
+ignorecase: true
+swap:
+  '\bvia\b': through
+  'the desired (\w+)': 'the \1 you want'
+  '\bdesired\b': 'the one you want'
+  '\babort\b': stop
+  '\bkill\b': stop
+  '\bterminate\b': end
+  'man.hours': person-hours
+  'manpower': staffing

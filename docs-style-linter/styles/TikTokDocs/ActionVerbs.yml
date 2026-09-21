@@ -1,0 +1,27 @@
+# Source: TT4D style guide, Word list > Verbs and actions.
+# Rationale: the same action should have the same verb on every page. These
+# are the substitutions with exactly one correct output; UI-specific ones live
+# in ScreenComponents and UIActions.
+extends: substitution
+message: "Use '%s' instead of '%s'."
+level: warning
+ignorecase: true
+swap:
+  'navigate to': go to
+  'head to': go to
+  'hit the (?:endpoint|API)': call the endpoint
+  'ping the (?:endpoint|API)': call the endpoint
+  'invoke the endpoint': call the endpoint
+  'grab the': retrieve the
+  'fetch the (?:token|data|response)': retrieve the
+  'type in': enter
+  'key in': enter
+  'input your': enter your
+  'turn on': enable
+  'turn off': disable
+  'log in\b': sign in
+  'logging in': signing in
+  'log out\b': sign out
+  '\blogout\b': sign out
+  'give back': return
+  'send back': return

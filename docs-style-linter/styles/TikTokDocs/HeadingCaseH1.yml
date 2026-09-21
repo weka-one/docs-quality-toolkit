@@ -1,0 +1,15 @@
+# Source: TT4D style guide, Capitalization > Title case. A deliberate divergence
+# from Google, which wants sentence case everywhere.
+# Rationale: H1 title case is already the consistent practice across TT4D pages
+# and matches Developer Portal navigation. Changing it means retitling every
+# page and every nav label in one coordinated migration, so the linter enforces
+# the status quo rather than nudging pages toward a half-finished change.
+extends: capitalization
+message: "Use title case for the H1 '%s'."
+link: https://apstylebook.com
+level: error
+scope: heading.h1
+match: $title
+style: AP
+exceptions:
+  - "TikTok for Developers"

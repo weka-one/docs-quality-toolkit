@@ -1,5 +1,7 @@
 # Source: Google developer documentation style guide, "Capitalization" —
 # sentence case for common nouns, even when they contain an initialism.
+# Note: TT4D's own term is `client key`; ProductTerms owns the token and
+# secret spellings so the two rules never report the same span twice.
 # Rationale: "API key" is a common noun, not a product name. The corpus this
 # linter was tuned against contained both spellings on the same page.
 extends: substitution
@@ -14,7 +16,3 @@ swap:
   'api key(s)?': API key
   'api Key(s)?': API key
   'API KEY(S)?': API key
-  'Access Token(s)?': access token
-  'Refresh Token(s)?': refresh token
-  'Bearer Token(s)?': bearer token
-  'Client Secret(s)?': client secret

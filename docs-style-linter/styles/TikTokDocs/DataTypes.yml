@@ -1,0 +1,27 @@
+# Source: TT4D style guide, API reference documentation > Data types.
+# Rationale: the guide resolves a live inconsistency -- `bool` vs `boolean` vs
+# `Boolean`, `int64` vs `i64` vs `integer`. A parameter table is a contract, and
+# a reader who sees three spellings for one type assumes three types.
+# Everything is lowercase except `Boolean` and PascalCase object names.
+# Scoped to table cells. Unscoped, this fired 157 times on the evaluation
+# corpus, almost entirely on ordinary prose uses of `integer` and `boolean`.
+# The guide places this rule under Parameter tables, and that is where it
+# belongs.
+extends: substitution
+scope:
+  - table.cell
+message: "Use the type spelling '%s' instead of '%s'."
+level: error
+ignorecase: false
+swap:
+  '\bString\b': string
+  '\bstr\b': string
+  '\bInt64\b|\bi64\b': int64
+  '\bInt32\b|\bi32\b': int32
+  '\binteger\b|\bInteger\b': int64
+  '\bfloat\b|\bFloat\b|\bdecimal\b': double
+  '\bbool\b|\bboolean\b|\bBOOL\b': Boolean
+  '\bArray\b': 'list<...>'
+  '\[\]string': 'list<string>'
+  '\bObject\b': object
+  '\bdict\b|\bstruct\b': object

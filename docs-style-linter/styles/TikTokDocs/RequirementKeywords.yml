@@ -1,0 +1,19 @@
+# Source: TT4D style guide, Overview > Requirement keywords; RFC 2119 keyword
+# discipline applied to prose.
+# Rationale: must/should/can carry real meaning for an integrator. "May" reads
+# as possibility rather than permission, and "need to"/"have to" are synonyms
+# that leave a reader unable to tell a requirement from advice. Loose usage
+# here becomes support tickets.
+extends: substitution
+message: "Use '%s' instead of '%s' -- must, should, and can are the only requirement keywords."
+level: error
+ignorecase: true
+swap:
+  'you may (?:optionally )?': you can
+  'users? may ': users can
+  'you need to': you must
+  'you have to': you must
+  'you are required to': you must
+  "you'll need to": you must
+  'it is necessary to': you must
+  'it is mandatory to': you must

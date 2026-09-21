@@ -1,0 +1,19 @@
+# Source: TT4D style guide, Images > Referring to images; Words to avoid.
+# Rationale: layout changes across screen sizes, so "below" is wrong on mobile
+# and meaningless to a screen reader. "The following" and "the preceding"
+# survive both.
+extends: substitution
+message: "Use '%s' instead of '%s' -- directional language breaks on mobile and with screen readers."
+link: https://developers.google.com/style/cross-references
+level: error
+ignorecase: true
+swap:
+  'the (?:image|table|diagram|example|code|list|section) below': the following
+  'the (?:image|table|diagram|example|code|list|section) above': the preceding
+  'see (?:the )?below': see the following
+  'see (?:the )?above': see the preceding
+  'shown below': shown in the following
+  'to the right': the following
+  'to the left': the preceding
+  'on the left.hand side': the preceding
+  'on the right.hand side': the following

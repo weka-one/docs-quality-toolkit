@@ -9,4 +9,4 @@ level: error
 nonword: true
 scope: raw
 tokens:
-  - '\[(?i:click here|here|this link|this page|read more|learn more|more|link|this)\]\('
+  - '\[(?i:click here|here|this link|this page|this document|this guide|read more|learn more|more|link|this)\]\('

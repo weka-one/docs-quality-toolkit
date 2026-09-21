@@ -1,0 +1,60 @@
+# TT4D structural policy.
+#
+# This file holds the parts of the style guide that are a *decision* rather
+# than a mechanism: which fence labels are allowed, what the Required column
+# accepts, how many callouts a section may carry. The checks in
+# tools/structure_lint.py are the mechanism and do not change per house style.
+#
+# Keeping them apart is what lets the same linter be measured against a corpus
+# that follows different conventions without either pretending the corpus is
+# wrong or weakening the checks.
+
+# Where a page's title comes from. TT4D pages set an H1 in the body.
+h1_source: heading
+
+# Approved code fence labels. Guide: API reference documentation > Code samples
+# > Approved fence labels.
+approved_fences:
+  - bash
+  - json
+  - javascript
+  - typescript
+  - html
+  - python
+  - java
+  - kotlin
+  - swift
+  - text
+
+# Guide: API reference documentation > Expressing requirement.
+# Quoted: YAML 1.1 parses bare Yes/No as booleans. This is the second
+# time that trap has appeared in this project -- the first silently
+# disabled a whole Vale rule.
+required_column_values: ["Yes", "No", "Conditional"]
+
+# Guide: API reference documentation > Parameter tables. `Field`, never these.
+banned_column_names: [Key, Param, Name, Field Name, Nested field, Parameter]
+
+# Guide: Tables > Table construction rules.
+max_table_columns: 5
+
+# Guide: Callouts.
+approved_callouts: [Note, Tip, Important, Caution, Warning]
+retired_callouts:
+  Info: Note
+  Danger: Warning
+  Forbidden: Warning
+  Error: Warning
+max_callouts_per_section: 2
+
+# Files that are includes/partials rather than pages. They have no title of
+# their own and are not checked for page-level structure.
+exclude:
+  - "_includes/**"
+  - "**/_*.md"
+  - "**/_*.mdx"
+
+# Placeholders documented once for the whole doc set rather than on every page.
+# TT4D's guide requires a per-page explanation, so this list stays empty; the
+# resulting findings are a real backlog, not noise.
+globally_known_placeholders: []

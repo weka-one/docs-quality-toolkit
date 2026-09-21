@@ -1,0 +1,11 @@
+# Source: TT4D style guide, Abbreviations and acronyms > File.
+# Rationale: a file *type* is an uppercase word with no period (a PNG file);
+# a *filename extension* is lowercase and code-formatted (`icon.png`). Mixing
+# them in one sentence is the common error.
+extends: existence
+message: "Write the file type as an uppercase word with no period, not '%s'."
+level: warning
+nonword: true
+tokens:
+  - '\s\.(?:PNG|JPG|JPEG|GIF|SVG|PDF|ZIP|JSON|CSV|MP4|MOV)\b'
+  - '\ba \.(?:png|jpg|jpeg|gif|svg|pdf|zip|json|csv|mp4|mov) file\b'

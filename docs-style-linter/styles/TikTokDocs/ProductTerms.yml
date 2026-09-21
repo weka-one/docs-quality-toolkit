@@ -1,0 +1,29 @@
+# Source: TT4D style guide, Capitalization > Product and feature names;
+# Word list > Product and platform terms. Every term here appears on the public
+# developer site; no internal-only terminology is encoded.
+# Rationale: the governing distinction is that a product name is capitalised
+# and the generic thing a developer builds with it is not -- "Build a mini game
+# on TikTok Mini Games." That is a rule humans get wrong constantly and a
+# linter gets right every time.
+extends: substitution
+message: "Use '%s' instead of '%s'."
+level: error
+ignorecase: false
+swap:
+  '\bTT4D\b|\bTikTok4Devs\b': TikTok for Developers
+  '\bDev Portal\b|\bdeveloper portal\b': Developer Portal
+  '\bMini App\b|\bminiapp\b|\bmini-app\b': mini app
+  '\bMini Game\b|\bminigame\b|\bmini-game\b': mini game
+  '\bMini Drama\b|\bmini-drama\b': mini drama
+  '\bTikTok minis\b': TikTok Minis
+  '\baccessToken\b|\bAccessToken\b|\bAccess Token\b': access token
+  '\brefreshToken\b|\bRefreshToken\b|\bRefresh Token\b': refresh token
+  '\bclientKey\b|\bClient Key\b': client key
+  '\bclientSecret\b|\bClient Secret\b': client secret
+  '\bcallback URL\b|\bredirect URL\b': redirect URI
+  '\bweb hook\b|\bWebhook\b': webhook
+  '\bSandbox\b': sandbox
+  '\btest mode\b': sandbox
+  '\bApp Review\b': app review
+  '\bApp Page\b': app page
+  '\borg admin\b': organization admin

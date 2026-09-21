@@ -1,0 +1,12 @@
+# Source: TT4D style guide, Punctuation > Dash > Em dash.
+# Rationale: em dashes are banned in documentation and permitted in blog posts.
+# The replacement is a period, a colon, or parentheses -- all of which force a
+# clearer sentence boundary than a dash does.
+# Note this rule does NOT flag en dashes, which are correct for number ranges.
+extends: existence
+message: "Replace the em dash in '%s' with a period, a colon, or parentheses."
+level: error
+nonword: true
+tokens:
+  - '\x{2014}'
+  - '\s--\s'

@@ -1,0 +1,10 @@
+# Source: TT4D style guide, Punctuation > Colon and semicolon.
+# Rationale: kept at suggestion. A semicolon is almost always two sentences
+# that have not been separated yet, but flagging it as an error would punish
+# correct usage in lists.
+extends: existence
+message: "Avoid the semicolon in '%s'. Use two sentences."
+level: suggestion
+nonword: true
+tokens:
+  - '\w;\s'

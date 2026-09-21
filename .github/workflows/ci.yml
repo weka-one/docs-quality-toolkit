@@ -50,6 +50,23 @@ jobs:
         working-directory: docs-style-linter
         run: python tools/verify_codeblocks.py ../corpus/meilisearch-docs build/after
 
+      - name: Structural checks run clean against their own policy
+        working-directory: docs-style-linter
+        run: |
+          python tools/structure_lint.py ../corpus/meilisearch-docs \
+            --config config/evaluation-corpus.yml --out build/structure.md > /dev/null
+          if ! diff -u reports/structure.md build/structure.md; then
+            echo "::error::reports/structure.md is stale. Run 'make structure' and commit it."
+            exit 1
+          fi
+
+      - name: Structural policy files are valid
+        working-directory: docs-style-linter
+        run: |
+          for cfg in config/*.yml; do
+            python tools/structure_lint.py ../corpus/meilisearch-docs --config "$cfg" > /dev/null
+          done
+
       - name: Committed before/after metrics are current
         working-directory: docs-style-linter
         run: |

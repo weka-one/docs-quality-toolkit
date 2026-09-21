@@ -1,0 +1,10 @@
+# Source: TT4D style guide, Punctuation > Forward slash.
+# Rationale: a slash in prose stands in for "or", "and", or an unspecified
+# relationship. Spelling it out removes the ambiguity, and it does not
+# translate.
+extends: existence
+message: "Spell out the relationship in '%s' instead of using a slash."
+level: warning
+nonword: true
+tokens:
+  - '\b[a-z]{3,}/[a-z]{3,}\b'

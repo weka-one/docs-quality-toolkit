@@ -39,6 +39,14 @@ def vale_bin() -> str:
     sys.exit("vale not found on PATH. See docs-style-linter/README.md for install steps.")
 
 
+# Vale's selector vocabulary. A scope outside this set is not an error to Vale;
+# the rule simply never fires.
+VALID_SCOPES = {
+    "text", "heading", "table", "list", "paragraph", "sentence", "code", "raw",
+    "blockquote", "alt", "summary", "link", "strong", "emphasis", "figure",
+}
+
+
 def preflight() -> list[str]:
     """Catch rule files that Vale would silently skip.
 
@@ -63,6 +71,22 @@ def preflight() -> list[str]:
             problems.append(f"{path.name}: missing `extends`")
         if rule.get("level") not in {"suggestion", "warning", "error"}:
             problems.append(f"{path.name}: level {rule.get('level')!r} is not valid")
+        scope = rule.get("scope")
+        scopes = scope if isinstance(scope, list) else ([scope] if scope else [])
+        for entry in scopes:
+            if not isinstance(entry, str):
+                problems.append(f"{path.name}: `scope` entry {entry!r} is not a string")
+            elif "|" in entry:
+                problems.append(
+                    f"{path.name}: `scope` {entry!r} uses pipe alternation. Vale parses "
+                    "that without error and then matches nothing — use a YAML list"
+                )
+            elif entry.split(".")[0] not in VALID_SCOPES:
+                problems.append(
+                    f"{path.name}: `scope` {entry!r} is not a Vale scope "
+                    f"(expected one of {', '.join(sorted(VALID_SCOPES))})"
+                )
+
         for key in ("exceptions", "tokens"):
             for item in rule.get(key) or []:
                 if not isinstance(item, str):

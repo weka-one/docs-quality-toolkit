@@ -1,0 +1,20 @@
+# Source: TT4D style guide, Screen components; Navigation; Word list > Verbs
+# and actions.
+# Rationale: one name per control. A reader searching the docs for "dropdown"
+# should not have to also try "drop-down" and "drop-down menu".
+extends: substitution
+message: "Use '%s' instead of '%s'."
+level: error
+ignorecase: true
+swap:
+  'drop.down menus?': dropdown
+  'drop.downs?': dropdown
+  'left.hand navigation': left navigation panel
+  'left navigation (?:bar|menu)': left navigation panel
+  'navigation bar menu': main navigation bar
+  'navigation menu': main navigation bar
+  'radio buttons?': option
+  'check the (\w+) checkbox': 'select the \1 checkbox'
+  'uncheck': deselect
+  'unclick': deselect
+  'tick the': select the

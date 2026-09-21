@@ -7,9 +7,12 @@
 VALE_VERSION ?= 3.9.6
 CORPUS       ?= ../corpus/meilisearch-docs
 BUILD        ?= build/after
+# Structural policy. config/tiktok.yml is the house style; the corpus follows
+# its own conventions, so measuring it uses its own policy file.
+POLICY       ?= config/evaluation-corpus.yml
 PY           ?= python3
 
-.PHONY: help test lint vocab vocab-check report sarif verify clean install-vale
+.PHONY: help test lint structure vocab vocab-check report sarif verify clean install-vale
 
 help:
 	@grep -E '^[a-z-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN{FS=":.*?## "}{printf "  %-14s %s\n", $$1, $$2}'
@@ -23,6 +26,9 @@ test: vocab-check ## Run the rule fixture suite
 lint: ## Lint the corpus and print a single-run report
 	$(PY) tools/report.py --target $(CORPUS)
 
+structure: ## Run the structural checks Vale cannot express
+	$(PY) tools/structure_lint.py $(CORPUS) --config $(POLICY) --out reports/structure.md
+
 vocab: ## Regenerate rule exceptions from styles/vocabulary/accept.txt
 	$(PY) tools/sync_vocab.py
 
@@ -35,7 +41,7 @@ $(BUILD): ## Apply the deterministic remediation pass
 verify: $(BUILD) ## Prove remediation touched no code sample
 	$(PY) tools/verify_codeblocks.py $(CORPUS) $(BUILD)
 
-report: test $(BUILD) verify ## Regenerate the committed before/after report
+report: test $(BUILD) verify structure ## Regenerate every committed report
 	$(PY) tools/report.py --before $(CORPUS) --after $(BUILD) \
 	  --out-json reports/before-after.json --out-md reports/before-after.md
 

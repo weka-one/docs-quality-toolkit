@@ -1,4 +1,5 @@
-# Source: Google developer documentation style guide, "Word list";
+# Source: TT4D style guide, Referencing the audience > Inclusive language;
+# Google developer documentation style guide, "Word list";
 # Microsoft Writing Style Guide, "Bias-free communication"; IETF
 # draft-knodel-terminology.
 # Rationale: each replacement is also more precise than the term it replaces —
@@ -10,7 +11,8 @@ level: error
 ignorecase: true
 swap:
   'white[- ]?list(s|ed|ing)?': allowlist
-  'black[- ]?list(s|ed|ing)?': blocklist
+  # TT4D specifies denylist, not the blocklist some guides use.
+  'black[- ]?list(s|ed|ing)?': denylist
   'master/slave': primary/replica
   'slave (node|server|database)': 'replica'
   'sanity check': consistency check
@@ -19,3 +21,6 @@ swap:
   'crazy': unexpected
   'insane': unexpected
   'blind(ly)? (call|invoke|retry)': unconditional
+  '\bdumb\b': unclear
+  'cripple(s|d)?': disable
+  '\bnative speaker': first-language speaker

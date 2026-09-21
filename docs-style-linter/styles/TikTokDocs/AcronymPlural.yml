@@ -1,0 +1,9 @@
+# Source: TT4D style guide, Abbreviations and acronyms.
+# Rationale: an apostrophe makes a possessive, not a plural.
+extends: existence
+message: "Pluralise the acronym in '%s' without an apostrophe."
+level: error
+nonword: true
+tokens:
+  - "\\b[A-Z]{2,5}'s\\b(?: are| were| include)"
+  - "\\b(?:URL|API|SDK|UI|ID|JSON|CDN)'s\\b"

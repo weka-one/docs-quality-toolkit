@@ -1,0 +1,26 @@
+# Source: TT4D style guide, Overview > Timeless documentation.
+# Rationale: docs are read months after they are written. "Currently" is true
+# on the day it is published and misleading thereafter, and nobody goes back to
+# delete it. If a date matters, give the date.
+# Exception by design: release notes, changelogs and migration guides are
+# time-anchored by nature. Exclude those paths in .vale.ini rather than
+# weakening this rule.
+extends: existence
+message: "'%s' anchors the page to the moment of writing. Delete it, or give a specific date."
+level: warning
+ignorecase: true
+tokens:
+  - currently
+  - 'at (?:this|the present) time'
+  - 'as of this writing'
+  - 'at the moment'
+  - recently
+  - 'soon'
+  - 'eventually'
+  - 'in the near future'
+  - 'does not yet'
+  - "doesn't yet"
+  - 'for now'
+  - 'the latest version of'
+  - 'newly (?:added|released|launched)'
+  - 'coming soon'

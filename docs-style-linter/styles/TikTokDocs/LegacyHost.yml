@@ -1,0 +1,11 @@
+# Source: TT4D style guide, Release status and deprecation; API reference
+# documentation > Endpoint summary table.
+# Rationale: `open-api.tiktok.com` is legacy and belongs only on deprecated
+# pages. The guide lists legacy-host pages as a known outstanding cleanup, so
+# this rule is the thing that stops the backlog growing while it is worked.
+extends: existence
+message: "'%s' is a legacy host. Current APIs use `open.tiktokapis.com`."
+level: error
+nonword: true
+tokens:
+  - 'open-api\.tiktok\.com'

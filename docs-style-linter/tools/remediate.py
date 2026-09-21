@@ -49,6 +49,13 @@ def keep_case(replacement: str):
     return repl
 
 
+def _match_case(observed: str, replacement: str) -> str:
+    """Give `replacement` the capitalisation of `observed`."""
+    if observed[:1].isupper():
+        return replacement[:1].upper() + replacement[1:]
+    return replacement
+
+
 def drop_and_capitalise(m: re.Match) -> str:
     """Delete a filler stem and re-capitalise the word that now starts the sentence."""
     rest = m.group("rest")
@@ -100,16 +107,75 @@ FIXES: dict[str, list[tuple[re.Pattern, object]]] = {
         (re.compile(r"\bpress[ ]on\b", I), keep_case("press")),
         (re.compile(r"\bright[ ]click\b", I), keep_case("right-click")),
     ],
-    "CurlyQuotes": [
-        (re.compile("[“”]"), '"'),
-        (re.compile("[‘’]"), "'"),
-    ],
     "InclusiveLanguage": [
         (re.compile(r"\bwhite[ -]?list(s|ed|ing)?\b", I), keep_case("allowlist")),
         (re.compile(r"\bblack[ -]?list(s|ed|ing)?\b", I), keep_case("blocklist")),
         (re.compile(r"\bmaster/slave\b", I), keep_case("primary/replica")),
         (re.compile(r"\bsanity[ ]check\b", I), keep_case("consistency check")),
         (re.compile(r"\bgrandfathered\b", I), keep_case("legacy")),
+    ],
+    "ProductTerms": [
+        (re.compile(r"\bTT4D\b|\bTikTok4Devs\b"), "TikTok for Developers"),
+        (re.compile(r"\bDev Portal\b|\bdeveloper portal\b"), "Developer Portal"),
+        (re.compile(r"\bMini App\b|\bminiapp\b|\bmini-app\b"), "mini app"),
+        (re.compile(r"\bMini Game\b|\bminigame\b|\bmini-game\b"), "mini game"),
+        (re.compile(r"\bMini Drama\b|\bmini-drama\b"), "mini drama"),
+        (re.compile(r"\bTikTok minis\b"), "TikTok Minis"),
+        (re.compile(r"\baccessToken\b|\bAccessToken\b|\bAccess Token\b"), "access token"),
+        (re.compile(r"\brefreshToken\b|\bRefreshToken\b|\bRefresh Token\b"), "refresh token"),
+        (re.compile(r"\bclientKey\b|\bClient Key\b"), "client key"),
+        (re.compile(r"\bclientSecret\b|\bClient Secret\b"), "client secret"),
+        (re.compile(r"\bcallback URL\b|\bredirect URL\b"), "redirect URI"),
+        (re.compile(r"\bweb hook\b", I), keep_case("webhook")),
+        (re.compile(r"\borg admin\b", I), keep_case("organization admin")),
+    ],
+    "ActionVerbs": [
+        (re.compile(r"\bnavigate to\b", I), keep_case("go to")),
+        (re.compile(r"\bhead to\b", I), keep_case("go to")),
+        (re.compile(r"\btype in\b", I), keep_case("enter")),
+        (re.compile(r"\bkey in\b", I), keep_case("enter")),
+        (re.compile(r"\bturn on\b", I), keep_case("enable")),
+        (re.compile(r"\bturn off\b", I), keep_case("disable")),
+        (re.compile(r"\blog out\b", I), keep_case("sign out")),
+        (re.compile(r"\blogout\b", I), keep_case("sign out")),
+        (re.compile(r"\bgive back\b", I), keep_case("return")),
+        (re.compile(r"\bsend back\b", I), keep_case("return")),
+    ],
+    "ScreenComponents": [
+        (re.compile(r"\bdrop.down menus?\b", I), keep_case("dropdown")),
+        (re.compile(r"\bdrop-downs?\b", I), keep_case("dropdown")),
+        (re.compile(r"\bleft.hand navigation\b", I), keep_case("left navigation panel")),
+        (re.compile(r"\bleft navigation (?:bar|menu)\b", I), keep_case("left navigation panel")),
+        (re.compile(r"\buncheck\b", I), keep_case("deselect")),
+        (re.compile(r"\bunclick\b", I), keep_case("deselect")),
+    ],
+    "DirectionalLanguage": [
+        # `keep_case` cannot be used here because the replacement interpolates a
+        # captured group, so the leading "the" is re-cased explicitly. Without
+        # this, "The example below adds..." became "the following example
+        # adds...", lowercasing the start of the sentence.
+        (re.compile(r"\b(the) (image|table|diagram|example|code|list|section) below\b", I),
+         lambda m: f"{_match_case(m.group(1), 'the')} following {m.group(2).lower()}"),
+        (re.compile(r"\b(the) (image|table|diagram|example|code|list|section) above\b", I),
+         lambda m: f"{_match_case(m.group(1), 'the')} preceding {m.group(2).lower()}"),
+    ],
+    "VagueWords": [
+        (re.compile(r"\bvia\b", I), keep_case("through")),
+        (re.compile(r"\bman.hours\b", I), keep_case("person-hours")),
+        (re.compile(r"\bmanpower\b", I), keep_case("staffing")),
+    ],
+    "AcronymPlural": [
+        (re.compile(r"\b(URL|API|SDK|UI|ID|JSON|CDN|IP)'s\b"), r"\1s"),
+    ],
+    "Measurements": [
+        (re.compile(r"\b(\d+)(KB|MB|GB|TB|px|ms|fps)\b"), r"\1 \2"),
+        (re.compile(r"\b(\d+)\s+%"), r"\1%"),
+    ],
+    "EmDash": [
+        # An em dash between spaces becomes a colon only when it introduces a
+        # list or an explanation; that judgement is not mechanical. Only the
+        # unambiguous `--` ASCII form is rewritten, to an en dash-free colon.
+        (re.compile(r"\s--\s"), ": "),
     ],
     "GenderNeutral": [
         (re.compile(r"\bhe/she\b", I), keep_case("they")),
@@ -192,7 +258,18 @@ NOT_AUTOMATABLE = {
     "Hedging": "requires deciding whether the step is required or optional - a judgement about the API, not the prose",
     "SentenceLength": "splitting a sentence requires understanding it",
     "Acronyms": "the expansion has to be written, and belongs at first use, which may be on another page",
-    "HeadingSentenceCase": "cannot distinguish a product name from a capitalised common noun without a maintained vocabulary",
+    "HeadingCaseH1": "title case requires knowing which words are product names; AP title case also needs part-of-speech tagging for prepositions",
+    "HeadingCaseH2Plus": "cannot distinguish a product name from a capitalised common noun without a maintained vocabulary",
+    "RequirementKeywords": "picking must, should, or can is a statement about the API's behaviour, not about the prose",
+    "TimelessDocs": "the fix is usually to delete a clause or supply a date the writer has and the tool does not",
+    "Editorializing": "deleting a marketing adjective often leaves a sentence with no predicate",
+    "Exclamation": "removing the mark is trivial; the surrounding sentence usually needs rewriting too",
+    "Semicolon": "splitting the clause correctly requires understanding it",
+    "ForwardSlash": "only the writer knows whether the slash meant and, or, or something else",
+    "DataTypes": "type spellings appear inside tables and code spans where a blind substitution would corrupt a sample",
+    "RequirementColumn": "changing `true` to `Yes` is safe, but `Optional` may mean `No` or `Conditional`",
+    "Placeholders": "renaming a placeholder means renaming every reference to it on the page",
+    "LegacyHost": "the replacement host may not serve the same path; each case needs checking",
     "LinkText": "the replacement text is the destination's subject, which means reading the destination",
     "EndpointInCode": "adding code spans changes rendering; safe in prose, unsafe inside tables and existing spans",
     "HTTPMethodCase": "'get /path' is ambiguous between the HTTP method and the English verb",

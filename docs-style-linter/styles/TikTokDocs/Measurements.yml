@@ -1,0 +1,10 @@
+# Source: TT4D style guide, Numbers and measurements.
+# Rationale: a space between the numeral and the unit, and no space before a
+# percent sign. Small, mechanical, and universally got wrong.
+extends: existence
+message: "Put a space between the number and the unit in '%s'."
+level: warning
+nonword: true
+tokens:
+  - '\b\d+(?:KB|MB|GB|TB|kb|mb|gb|tb|px|ms|fps)\b'
+  - '\b\d+\s+%'

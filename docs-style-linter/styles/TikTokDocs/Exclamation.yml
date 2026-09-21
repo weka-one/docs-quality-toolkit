@@ -1,0 +1,9 @@
+# Source: TT4D style guide, Punctuation > Exclamation point.
+# Rationale: banned in documentation, permitted sparingly in blog posts.
+extends: existence
+message: "Remove the exclamation point in '%s'."
+level: error
+nonword: true
+tokens:
+  - '\w!(?:\s|$)'
+  - '!{2,}'

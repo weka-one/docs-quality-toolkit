@@ -1,0 +1,76 @@
+# Structural policy for the vendored evaluation corpus.
+#
+# The corpus is Meilisearch documentation. It is a real, well-maintained doc
+# set that follows its own conventions, not TT4D's. Measuring it against
+# config/tiktok.yml produces 552 "missing H1" issues (its titles live in
+# frontmatter) and 1,193 "unapproved fence" issues (it documents Go, Rust, PHP,
+# Ruby, C#, Dart and Swift, which TT4D's list does not cover).
+#
+# Neither is a defect in the corpus. They are a different house style, and
+# reporting them as defects would make the measurement meaningless. This config
+# states the corpus's actual conventions so the run measures what the checks
+# can find, not the distance between two style guides.
+
+h1_source: frontmatter
+
+approved_fences:
+  - bash
+  - sh
+  - json
+  - javascript
+  - typescript
+  - html
+  - python
+  - java
+  - kotlin
+  - swift
+  - go
+  - rust
+  - php
+  - ruby
+  - csharp
+  - dart
+  - text
+  - toml
+  - yaml
+  - sql
+
+# Quoted: YAML 1.1 parses bare Yes/No as booleans. This is the second
+# time that trap has appeared in this project -- the first silently
+# disabled a whole Vale rule.
+required_column_values: ["Yes", "No", "Conditional"]
+banned_column_names: [Key, Param, Name, Field Name, Nested field, Parameter]
+max_table_columns: 5
+approved_callouts: [Note, Tip, Important, Caution, Warning]
+retired_callouts:
+  Info: Note
+  Danger: Warning
+  Forbidden: Warning
+  Error: Warning
+max_callouts_per_section: 2
+
+# `snippets/` holds generated code samples that pages import. They are partials,
+# not pages: no frontmatter, no title, no headings. Checking them for page
+# structure produced 259 of the 259 remaining "missing title" issues.
+exclude:
+  - "snippets/**"
+
+# This doc set defines its base-URL and credential placeholders once, in its
+# getting-started pages, rather than on every page that uses them. TT4D's guide
+# requires a per-page explanation; this corpus made a different call, and the
+# check honours the corpus's convention when measuring against it.
+globally_known_placeholders:
+  - MEILISEARCH_URL
+  - MEILI_HOST
+  - MASTER_KEY
+  - API_KEY
+  - SEARCH_API_KEY
+  - DEFAULT_SEARCH_API_KEY
+  - MEILISEARCH_KEY
+  - PROJECT_URL
+  - INDEX_NAME
+  - INDEX_UID
+  - PROVIDER_API_KEY
+  - OPENAI_API_KEY
+  - MEILISEARCH_VERSION
+  - MEILISEARCH_OS

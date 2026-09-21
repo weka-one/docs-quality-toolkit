@@ -43,14 +43,6 @@ TikTokDocs.FirstPerson:
     - "Batch documents in groups of 1000."
     - "The next section covers pagination."
 
-TikTokDocs.Hedging:
-  bad:
-    - "You should set a master key before exposing the instance."
-    - "It is recommended that you rotate the key every 90 days."
-  good:
-    - "Set a master key before exposing the instance."
-    - "Rotate the key every 90 days."
-
 TikTokDocs.NoteThat:
   bad:
     - "Note that the task queue processes updates asynchronously."
@@ -130,11 +122,9 @@ TikTokDocs.Terminology:
 TikTokDocs.ApiKeyCase:
   bad:
     - "Copy the API Key from the dashboard."
-    - "Your Access Token expires in one hour."
     - "Regenerate the Api key if it leaks."
   good:
     - "Copy the API key from the dashboard."
-    - "Your access token expires in one hour."
     - "Regenerate the API key if it leaks."
 
 TikTokDocs.HTTPMethodCase:
@@ -170,14 +160,6 @@ TikTokDocs.StatusCodeName:
     - "A missing index returns 404 Not Found."
     - "An expired key returns 401 Unauthorized."
 
-TikTokDocs.CurlyQuotes:
-  bad:
-    - "Set the index’s primary key before indexing."
-    - "The docs call this a “searchable attribute”."
-  good:
-    - "Set the index's primary key before indexing."
-    - "The docs call this a \"searchable attribute\"."
-
 TikTokDocs.LinkText:
   bad:
     - "For pagination rules, [click here](/reference/api/pagination)."
@@ -195,15 +177,6 @@ TikTokDocs.HeadingPunctuation:
     - "### Configure the client"
     - "## What is a task?"
 
-TikTokDocs.HeadingSentenceCase:
-  bad:
-    - "## Create An Index From The Dashboard"
-    - "### Configure Your Search Settings"
-  good:
-    - "## Create an index from the dashboard"
-    - "### Configure your search settings"
-    - "## Use the JSON API with Node.js"
-
 TikTokDocs.SentenceLength:
   bad:
     - "The search endpoint accepts a query string and a set of optional filters and a sort order and a pagination cursor and a list of attributes to retrieve and a list of attributes to highlight and a matching strategy, all of which interact in ways that are documented separately."
@@ -217,3 +190,174 @@ TikTokDocs.Acronyms:
     - "Route the request through the content delivery warehouse (CDW) before indexing."
     - "The API returns JSON over HTTPS and the SDK wraps it."
     - "Filter with AND and OR operators."
+
+TikTokDocs.HeadingCaseH1:
+  bad:
+    - "# Register your app"
+    - "# Get started with the Content Posting API"
+  good:
+    - "# Register Your App"
+    - "# Get Started with the Content Posting API"
+    - "# Query Creator Info"
+
+TikTokDocs.HeadingCaseH2Plus:
+  bad:
+    - "## Connect Your App"
+    - "### Configure The Redirect URI"
+  good:
+    - "## Connect your app"
+    - "### Configure the redirect URI"
+    - "## Use the JSON API with Node.js"
+
+TikTokDocs.RequirementKeywords:
+  bad:
+    - "You may request additional scopes after approval."
+    - "You need to register an app before requesting a client key."
+    - "You are required to include the Authorization header."
+  good:
+    - "You can request additional scopes after approval."
+    - "You must register an app before requesting a client key."
+    # `should` is a real TT4D requirement keyword, not hedging.
+    - "You should cache the access token until it expires."
+
+TikTokDocs.TimelessDocs:
+  bad:
+    - "The Monetization API currently supports three currencies."
+    - "We recently added support for subscription refunds."
+    - "This endpoint does not yet support pagination."
+  good:
+    - "The Monetization API supports three currencies."
+    - "The August 12, 2025 release adds support for subscription refunds."
+
+TikTokDocs.Editorializing:
+  bad:
+    - "The SDK provides a seamless integration experience."
+    - "Our powerful API returns results in milliseconds."
+  good:
+    - "The SDK returns the user's open ID after the user grants consent."
+
+TikTokDocs.EmDash:
+  bad:
+    - "The endpoint accepts two source types — FILE_UPLOAD and PULL_FROM_URL."
+  good:
+    - "The endpoint accepts two source types: FILE_UPLOAD and PULL_FROM_URL."
+    - "Use the compute environment to access data for users aged 13–17."
+
+TikTokDocs.Exclamation:
+  bad:
+    - "Congratulations! You have submitted your effect."
+  good:
+    - "You have successfully submitted your effect."
+
+TikTokDocs.DirectionalLanguage:
+  bad:
+    - "The image below shows the app credentials panel."
+    - "See the table above for supported formats."
+  good:
+    - "The following image shows the app credentials panel."
+    - "See the preceding table for supported formats."
+
+TikTokDocs.AndOr:
+  bad:
+    - "You can request the user.info.basic and/or video.list scope."
+  good:
+    - "You can request the user.info.basic scope, the video.list scope, or both."
+
+TikTokDocs.Semicolon:
+  bad:
+    - "The token expires after 24 hours; refresh it before it expires."
+  good:
+    - "The token expires after 24 hours. Refresh it before it expires."
+
+TikTokDocs.ForwardSlash:
+  bad:
+    - "You can move the image left/right."
+  good:
+    - "You can move the image left or right."
+    - "Send the request to the endpoint."
+
+TikTokDocs.DataTypes:
+  # Scoped to table cells: in prose, "an integer value" is ordinary English.
+  bad:
+    - "| Field | Type |\n| --- | --- |\n| `limit` | String |"
+    - "| Field | Type |\n| --- | --- |\n| `limit` | integer |"
+    - "| Field | Type |\n| --- | --- |\n| `flag` | bool |"
+  good:
+    - "| Field | Type |\n| --- | --- |\n| `limit` | `int64` |"
+    - "| Field | Type |\n| --- | --- |\n| `flag` | `Boolean` |"
+    - "Pass an integer value to the endpoint."
+
+TikTokDocs.Placeholders:
+  bad:
+    - "Replace {app-client-key} with your key."
+    - "Set the token to YOUR_ACCESS_TOKEN before running."
+    - "Pass <client_key> in the request."
+  good:
+    - "Replace `CLIENT_KEY` with your key."
+    - "Set the token to `ACCESS_TOKEN` before running."
+
+TikTokDocs.LegacyHost:
+  bad:
+    - "Send the request to open-api.tiktok.com/oauth/token/."
+  good:
+    - "Send the request to `https://open.tiktokapis.com/v2/oauth/token/`."
+
+TikTokDocs.ScreenComponents:
+  bad:
+    - "Choose an option from the drop-down menu."
+    - "Select a radio button for your display mode."
+    - "Uncheck the Import animation checkbox."
+  good:
+    - "From the dropdown, choose an option that applies to you."
+    - "In the Preview panel, select a display option."
+    - "Deselect the Import animation checkbox."
+
+TikTokDocs.ActionVerbs:
+  bad:
+    - "Navigate to the app page on the Developer Portal."
+    - "Type in your app name."
+    - "Hit the endpoint to retrieve the token."
+  good:
+    - "Go to the app page on the Developer Portal."
+    - "Enter your app name."
+    - "Call the endpoint to retrieve the token."
+
+TikTokDocs.ProductTerms:
+  bad:
+    - "Build a Mini Game on TikTok Mini Games."
+    - "Copy the Client Key from the Dev Portal."
+    - "Your Access Token expires in one hour."
+    - "Configure the callback URL for your app."
+  good:
+    - "Build a mini game on TikTok Mini Games."
+    - "Copy the client key from the Developer Portal."
+    - "Your access token expires in one hour."
+    - "Configure the redirect URI for your app."
+
+TikTokDocs.VagueWords:
+  bad:
+    - "Authenticate via the OAuth flow."
+    - "Select the desired option from the list."
+  good:
+    - "Authenticate through the OAuth flow."
+    - "Select the option you want from the list."
+
+TikTokDocs.AcronymPlural:
+  bad:
+    - "Request multiple URL's."
+  good:
+    - "Request multiple URLs."
+
+TikTokDocs.FileTypes:
+  bad:
+    - "Upload a .png file named app-icon.png."
+  good:
+    - "Upload a PNG file named `app-icon.png`."
+
+TikTokDocs.Measurements:
+  bad:
+    - "The maximum upload size is 50MB."
+    - "The success rate is 40 %."
+  good:
+    - "The maximum upload size is 50 MB."
+    - "The success rate is 40%."

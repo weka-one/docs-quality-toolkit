@@ -1,0 +1,22 @@
+# Source: TT4D style guide, Overview > Voice and tone; Words to avoid.
+# Rationale: reference documentation describes what a system does. Marketing
+# adjectives make a claim the docs cannot substantiate, and a developer who
+# hits a limitation after reading "seamless" trusts the next page less.
+extends: existence
+message: "Delete '%s'. Documentation describes behaviour; it does not sell."
+level: error
+ignorecase: true
+tokens:
+  - powerful
+  - seamless(?:ly)?
+  - robust
+  - world.class
+  - best.in.class
+  - cutting.edge
+  - state.of.the.art
+  - blazing(?:ly)? fast
+  - effortless(?:ly)?
+  - 'game.chang(?:ing|er)'
+  - 'rich(?:ly)? featured'
+  - 'simply'
+  - 'quickly and easily'

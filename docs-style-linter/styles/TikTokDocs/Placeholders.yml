@@ -1,0 +1,16 @@
+# Source: TT4D style guide, Placeholders and sample values.
+# Rationale: the guide counted at least six placeholder conventions in use
+# across sibling pages. UPPERCASE_WITH_UNDERSCORES is the one. Brackets and
+# braces are worse than cosmetic -- a reader who copies `<client_key>` into a
+# shell gets a redirection operator.
+extends: existence
+message: "Use UPPERCASE_WITH_UNDERSCORES for the placeholder '%s'."
+level: error
+nonword: true
+tokens:
+  - '\{[A-Za-z][A-Za-z0-9_-]*\}'
+  - '<[a-z][a-z0-9_-]*>'
+  - '\[[A-Z][A-Z0-9_]+\]'
+  - '\bYOUR_[A-Z0-9_]+\b'
+  - '\bMY_[A-Z0-9_]+\b'
+  - '\bx{4,}\b'

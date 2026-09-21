@@ -55,6 +55,10 @@ def render(path: pathlib.Path, terms: list[str]) -> str:
         )
     if "exceptions:" not in text:
         sys.exit(f"{path.name} has no `exceptions:` key to populate")
+    # `exceptions: []` is an inline empty list; appending list items under it
+    # produces YAML that Vale silently refuses to load. Normalise to a bare key
+    # first. The fixture preflight caught this the first time it happened.
+    text = re.sub(r"^exceptions:\s*\[\s*\]\s*$", "exceptions:", text, flags=re.M)
     return text.rstrip("\n") + "\n" + block + "\n"
 
 
@@ -65,7 +69,7 @@ def main() -> int:
 
     vocab = load_vocab()
     targets = {
-        STYLES / "HeadingSentenceCase.yml": vocab,
+        STYLES / "HeadingCaseH2Plus.yml": vocab,
         STYLES / "Acronyms.yml": [t for t in vocab if is_initialism(t)],
     }
 

@@ -1,0 +1,9 @@
+# Source: TT4D style guide, Punctuation > Forward slash.
+# Rationale: "and/or" is three meanings in one token. Every instance resolves
+# to "A, B, or both" or to plain "or", and the writer has to decide which.
+extends: existence
+message: "Rewrite '%s'. Use 'A, B, or both', or just 'or'."
+level: error
+ignorecase: true
+tokens:
+  - 'and/or'

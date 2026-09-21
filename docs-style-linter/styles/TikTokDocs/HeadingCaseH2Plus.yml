@@ -1,12 +1,19 @@
-# Source: Google developer documentation style guide, "Capitalization in
-# headings".
-# Rationale: sentence case is faster to scan and removes per-word judgement
-# calls from authors. Product names and initialisms are exempted below.
+# Source: TT4D style guide, Capitalization > Sentence case.
+# Rationale: sentence case below H1 is faster to scan and removes per-word
+# judgement calls. Product names and initialisms are exempted via
+# styles/vocabulary/accept.txt -- see tools/sync_vocab.py.
 extends: capitalization
 message: "Use sentence case for the heading '%s'."
-link: https://developers.google.com/style/capitalization#capitalization-in-titles-and-headings
+link: https://developers.google.com/style/capitalization
 level: warning
-scope: heading
+# Must be a YAML list. `scope: heading.h2|heading.h3` parses without error
+# and matches nothing, silently disabling the rule.
+scope:
+  - heading.h2
+  - heading.h3
+  - heading.h4
+  - heading.h5
+  - heading.h6
 match: $sentence
 exceptions:
   # --- BEGIN generated from accept.txt (tools/sync_vocab.py) ---
