@@ -19,80 +19,23 @@
 <header class="rail"></header>
 
 <main id="main">
-  <article class="case">
+  <!-- Static fallback for crawlers and no-JS readers. assets/case.js
+       replaces it with the full page rendered from assets/cases.js.
+       scripts/check.mjs fails the build if these drift apart. -->
+  <article class="case" id="case">
     <a class="case__back" href="index.html">&larr; Portfolio</a>
     <p class="case__kicker">TikTok · Effect House · 2023–2025</p>
     <h1 class="case__title">Rebuilding a documentation platform and its information architecture</h1>
     <p class="case__deck">Moving 300+ guides off WordPress onto Docusaurus — and restructuring what they said while they moved.</p>
-
-    <dl class="meta">
-      <div><dt>Role</dt><dd>Migration lead; information architecture owner</dd></div>
-      <div><dt>Surface</dt><dd>Effect House learning resources</dd></div>
-      <div><dt>Worked with</dt><dd>Technical writing, design, engineering, QA</dd></div>
-      <div><dt>Stack</dt><dd>WordPress → Docusaurus, Markdown, Git</dd></div>
-    </dl>
-
-    <dl class="stats">
-      <div><dt>300+</dt><dd>existing guides converted from WordPress to Markdown</dd></div>
-      <div><dt>70 → 140+</dt><dd>technical guides refactored into feature guides mapped to the tool</dd></div>
-      <div><dt>256</dt><dd>redirect rules written to keep inbound links working</dd></div>
-      <div><dt>50%</dt><dd>reduction in time spent on article creation and staging</dd></div>
-    </dl>
-
-    <div class="prose">
-
-      <h2>The problem was never just the CMS</h2>
-      <p>Effect House documentation ran on WordPress. As a content management system it was fragile: publishing was slow, there was no real versioning, staging was awkward, and nothing about the workflow resembled how the engineers next to us shipped their own work.</p>
-      <p>But the platform was only half of it. The information architecture had grown by accretion. Guides were organized around the order in which they had been written rather than around the tool a reader had open in front of them — someone looking at a panel in the editor had no reliable path from what they could see to the page that explained it. Beginners landed in an introduction that assumed they already knew what augmented reality authoring involved.</p>
-      <p>Those two problems had a scheduling relationship that mattered. Migrating first and restructuring later would have meant moving 300+ pages into a structure we already knew was wrong, then moving them again. I argued for doing both in one pass.</p>
-
-      <h2>What I owned</h2>
-      <p>I spearheaded the restructure and ran the conversion. Concretely, that meant:</p>
-      <ul>
-        <li>Converting 300+ existing guides from WordPress into Markdown.</li>
-        <li>Building and maintaining the migration tracker — a page-by-page record of what had been converted, reviewed, and published, so nothing was quietly dropped on the way across.</li>
-        <li>Designing the new information architecture and refactoring the content to fit it.</li>
-        <li>Owning the redirect strategy.</li>
-        <li>Clearing every content bug QA found before launch.</li>
-      </ul>
-
-      <h2>Restructuring around the tool, not around the docs</h2>
-      <p>The central move was refactoring 70+ existing technical guides into 140+ feature guides organized to mirror the tool's own layout of objects, components, and assets. Splitting pages roughly doubled the page count, which sounds like the wrong direction until you look at what the old pages were: single documents covering several unrelated features because those features had happened to ship together. A reader with a component selected in the editor could now find exactly the page for that component.</p>
-      <p>Alongside that:</p>
-      <ul>
-        <li><strong>Getting Started was rebuilt.</strong> I redesigned the "Introduction to Effect House" guide for readers with no AR background, and wrote new guides introducing the tool interface and the underlying AR concepts.</li>
-        <li><strong>The glossary became a page.</strong> Terminology work that had lived in an internal document was published into the docs themselves, so readers and writers worked from the same vocabulary.</li>
-        <li><strong>Existing guides were rewritten to fit the new structure</strong>, not just moved. <a href="https://effecthouse.tiktok.com/learn/guides/getting-started/technical-guidelines/technical-optimization">Technical Optimization for Effects</a> is one of them — a guide that sits at the end of every creator's workflow, where being wrong or badly placed costs someone a rejected submission.</li>
-        <li><strong>New top-level categories were created for tool interface and AR concepts.</strong> These were deliberately forward-looking — at launch they were thin, but they gave beginner content somewhere to grow instead of forcing it into categories built for feature reference.</li>
-        <li><strong>The landing page was redesigned</strong> with the design team, so the entry point matched the new structure.</li>
-      </ul>
-
-      <div class="pull">
-        <p>The argument I had to make repeatedly was that a migration is the cheapest moment to fix structure, and the most expensive moment to postpone it. Every link, every redirect, and every reader habit gets re-cemented on the way across.</p>
-      </div>
-
-      <h2>Not breaking the internet on the way</h2>
-      <p>Effect House documentation was linked from inside the product, from email campaigns, and from blog posts — none of which we controlled or could retroactively edit. A URL change would have broken all of it silently.</p>
-      <p>I wrote redirect rules for 256 URLs so every existing inbound link stayed backwards compatible with the new pages, and worked with engineering to close out the remaining broken-link risk. Before go-to-market I worked through 30 content bugs QA had filed — syntax errors, typos, broken internal links — so launch day was not the first time anyone read the pages in their new home.</p>
-
-      <h2>What changed afterward</h2>
-      <p>Docusaurus put the documentation in Git, which changed the team's working model more than it changed the reader's experience. Content could be versioned on branches. Drafts could be reviewed as pull requests instead of as comments on a staging URL. Writers could work the way the engineers they documented already worked.</p>
-      <p>Time spent on article creation and staging dropped by 50%. The practices moved from improvised to something close to an industry-standard docs-as-code workflow, and the beginner categories we built as empty scaffolding have had content added to them since.</p>
-
-      <h2>What I would do differently</h2>
-      <p>The migration fixed the platform and it fixed the structure. It did not ship the thing that keeps either of them honest.</p>
-      <p>What we ended up with was a good architecture maintained by attention — the 256 redirects were correct on the day I wrote them, the IA was correct on the day we launched, and staying correct afterward depended on people noticing. There was no link checker in CI, no staleness detection, no style linting at review time, no automated check that a page referencing a renamed UI element got flagged when the element was renamed.</p>
-      <p>If I ran this migration again I would front-load that automation instead of treating it as a follow-up. The pull request workflow we adopted was the hard part; adding quality gates to a pipeline that already exists is comparatively cheap, and it is the difference between a docs estate that is accurate at launch and one that stays accurate.</p>
-
-    </div>
-
-    <nav class="pager" id="pager" aria-label="More projects"></nav>
   </article>
 
   <footer>Built by hand with HTML, CSS, and a little JavaScript.</footer>
 </main>
 
 <script src="../assets/data.js"></script>
+<script src="../assets/cases.js"></script>
+<script src="../assets/case.js"></script>
 <script src="../assets/site.js"></script>
+<script src="../assets/edit.js"></script>
 </body>
 </html>

@@ -1,152 +1,181 @@
 /* =================================================================
    CONTENT — the only file you need to edit to change what the site says.
 
-   PROJECTS  drives the Portfolio section, the rail dropdown, the
-             /portfolio/ index, and the prev/next pager on case pages.
-             Adding a project here wires it into all four; you still
-             write the case study page itself at portfolio/<slug>.html.
-
-   SITE      drives about, the writing index, experience, and skills.
+   Last written by the site's own edit mode. Values here are plain data;
+   the page renders from them, and edit mode writes back to them.
    ================================================================= */
 
 const PROJECTS = [
   {
-    slug: "docs-quality-tooling",
-    title: "Checking documentation the way CI checks code",
-    nav: "Docs quality tooling",
-    org: "Independent project",
-    deck: "Three tools that catch what a style guide can't enforce by hand — a style linter, a freshness checker that compares docs against the API they describe, and a pipeline that runs both against documentation that doesn't live in Git.",
-    tags: ["Docs-as-code", "CI quality gates", "Evaluation", "Automation"]
+    "slug": "docs-quality-tooling",
+    "title": "Checking documentation the way CI checks code",
+    "nav": "Docs quality tooling",
+    "org": "Independent project",
+    "deck": "Three tools that catch what a style guide can't enforce by hand — a style linter, a freshness checker that compares docs against the API they describe, and a pipeline that runs both against documentation that doesn't live in Git.",
+    "tags": [
+      "Docs-as-code",
+      "CI quality gates",
+      "Evaluation",
+      "Automation"
+    ]
   },
   {
-    slug: "tiktok-minis",
-    title: "Documentation as the onboarding path for a developer platform",
-    nav: "TikTok Minis",
-    org: "TikTok · TikTok for Developers",
-    deck: "108 pages covering TikTok Minis, Mini Games, Mini Dramas, and Monetization — the self-service path that replaced manual developer onboarding during a seven-market expansion.",
-    tags: ["Developer documentation", "Onboarding", "Compliance & KYB", "Monetization APIs"]
+    "slug": "tiktok-minis",
+    "title": "Documentation as the onboarding path for a developer platform",
+    "nav": "TikTok Minis",
+    "org": "TikTok · TikTok for Developers",
+    "deck": "108 pages covering TikTok Minis, Mini Games, Mini Dramas, and Monetization — the self-service path that replaced manual developer onboarding during a seven-market expansion.",
+    "tags": [
+      "Developer documentation",
+      "Onboarding",
+      "Compliance & KYB",
+      "Monetization APIs"
+    ]
   },
   {
-    slug: "docs-platform-migration",
-    title: "Rebuilding a documentation platform and its information architecture",
-    nav: "Platform migration",
-    org: "TikTok · Effect House",
-    deck: "Moving 300+ guides off WordPress onto Docusaurus — and restructuring what they said while they moved.",
-    tags: ["Information architecture", "Docs-as-code", "Migration", "Redirect strategy"]
+    "slug": "docs-platform-migration",
+    "title": "Rebuilding a documentation platform and its information architecture",
+    "nav": "Platform migration",
+    "org": "TikTok · Effect House",
+    "deck": "Moving 300+ guides off WordPress onto Docusaurus — and restructuring what they said while they moved.",
+    "tags": [
+      "Information architecture",
+      "Docs-as-code",
+      "Migration",
+      "Redirect strategy"
+    ]
   },
   {
-    slug: "editorial-standards",
-    title: "Editorial standards for documentation written by many hands",
-    nav: "Editorial standards",
-    org: "TikTok · Effect House and TikTok for Developers",
-    deck: "Two style guides, a shared glossary, and the contribution workflows that let several teams publish to one docs surface without it drifting apart.",
-    tags: ["Style guides", "Terminology", "Contribution workflow", "Localization"]
+    "slug": "editorial-standards",
+    "title": "Editorial standards for documentation written by many hands",
+    "nav": "Editorial standards",
+    "org": "TikTok · Effect House and TikTok for Developers",
+    "deck": "Two style guides, a shared glossary, and the contribution workflows that let several teams publish to one docs surface without it drifting apart.",
+    "tags": [
+      "Style guides",
+      "Terminology",
+      "Contribution workflow",
+      "Localization"
+    ]
   },
   {
-    slug: "crash-course",
-    title: "Teaching AR authoring to people who have never opened the tool",
-    nav: "Crash Course",
-    org: "TikTok · Effect House",
-    deck: "An instructional-design program built from scratch: the highest-performing Effect House video series to date, plus the creator mission around it.",
-    tags: ["Instructional design", "Curriculum", "Video production", "Bloom's taxonomy"]
+    "slug": "crash-course",
+    "title": "Teaching AR authoring to people who have never opened the tool",
+    "nav": "Crash Course",
+    "org": "TikTok · Effect House",
+    "deck": "An instructional-design program built from scratch: the highest-performing Effect House video series to date, plus the creator mission around it.",
+    "tags": [
+      "Instructional design",
+      "Curriculum",
+      "Video production",
+      "Bloom's taxonomy"
+    ]
   }
 ];
 
 const SITE = {
-
-  // Set to "resume.pdf" once you drop your resume PDF next to index.html.
-  // Leave as null to hide the link.
-  resumeUrl: null,
-
-  identity: {
-    name: "Wesley Kao",
-    role: "Technical writer, San Francisco Bay Area"
+  "resumeUrl": null,
+  "identity": {
+    "name": "Wesley Kao",
+    "role": "Technical writer, San Francisco Bay Area"
   },
-
-  hero: {
-    statement: "I turn complicated products into documentation people can actually follow.",
-    sub: "Senior technical writer at TikTok, working on developer documentation, information architecture, and the editorial systems that keep a large docs estate accurate as the product moves underneath it."
+  "hero": {
+    "statement": "Wesley Kao",
+    "sub": "Senior Technical Writer at TikTok, working on developer documentation, information architecture, and the editorial systems that keep a large docs estate accurate as the product moves underneath it."
   },
-
-  about: {
-    paragraphs: [
-      "I write for developers. At TikTok I own documentation for the mini apps platform \u2014 guides, API references, and monetization docs used by partners building games, short-form drama apps, and hotel booking integrations on top of the platform.",
-      "Most of what I do is not drafting. It is deciding how a documentation set should be organized, what a good page looks like, and how it stays correct once dozens of people are contributing to it. I wrote TikTok's developer documentation style guide, and I led the migration of the Effect House learning resources estate off WordPress onto Docusaurus \u2014 which meant rebuilding the information architecture and the review workflow at the same time.",
-      "Before technical writing I studied biochemistry and spent two years in dental school. Reading dense technical material and explaining it to someone who does not have the background is the part of that training I still use every day."
+  "about": {
+    "paragraphs": [
+      "I turn complicated products into documentation people can actually follow. Having worked in product areas ranging from SaaS to developer integrations, I have extensive experience managing systems and defining standards. But more than that, I'm deeply curious individual with and penchant for interrogating systems a knack for collaboration.",
+      "I currently work as a Senior Technical Writer at TikTok, where I work cross-functionally with teams across the world to deliver documentation to the developers who use our platform. As the sole writer managing TikTok’s developer documentation, I created our style guide, and laid the foundation for our platform's information architecture, localization rules, and technical writing workflows.",
+      "Outside of work you can find me running outside, doing Muay Thai, or at home whipping up an amazing meal for friends. I am also very likely to bring home-baked treats into the office."
     ],
-    aside: [
-      { label: "Currently", value: "Senior Technical Writer, TikTok" },
-      { label: "Based in", value: "Alameda, CA" },
-      { label: "Works in", value: "Markdown, RST, Git, Docusaurus" },
-      { label: "Languages", value: "English, Mandarin Chinese (proficient)" }
+    "aside": [
+      {
+        "label": "Currently",
+        "value": "Senior Technical Writer, TikTok"
+      },
+      {
+        "label": "Based in",
+        "value": "San Francisco Bay Area, CA"
+      },
+      {
+        "label": "Languages",
+        "value": "English, Mandarin Chinese (proficient)"
+      }
     ]
   },
-
-  contact: {
-    intro: "I'm open to senior technical writing and documentation engineering roles. The fastest way to reach me is email.",
-    lines: [
-      { label: "Email", value: "wesley.y.kao@gmail.com", href: "mailto:wesley.y.kao@gmail.com" },
-      { label: "LinkedIn", value: "wesley-kao", href: "https://www.linkedin.com/in/wesley-kao-6a6779220/" },
-      { label: "Location", value: "Alameda, CA \u2014 Bay Area", href: null }
+  "contact": {
+    "intro": "",
+    "lines": [
+      {
+        "label": "Email",
+        "value": "wesley.y.kao@gmail.com",
+        "href": "mailto:wesley.y.kao@gmail.com"
+      },
+      {
+        "label": "LinkedIn",
+        "value": "wesley-kao",
+        "href": "https://www.linkedin.com/in/wesley-kao-6a6779220/"
+      },
+      {
+        "label": "Location",
+        "value": "Alameda, CA — Bay Area",
+        "href": null
+      }
     ]
   },
-
-  sectionNotes: {
-    portfolio: "Five pieces of work, written up in depth \u2014 what the problem was, what I built, and what I would do differently now.",
-    writing: "Four published pages you can read without me in the room."
+  "sectionNotes": {
+    "portfolio": "Five pieces of work, written up in depth — what the problem was, what I built, and what I would do differently now.",
+    "writing": "Four published pages you can read without me in the room."
   },
-
-
-  // Externally linkable published work. Case studies live in PROJECTS.
-  samples: [
+  "samples": [
     {
-      title: "In-App Purchases: Subscriptions",
-      org: "TikTok for Developers",
-      format: "Developer guide",
-      desc: "How developers implement recurring subscription purchases inside a TikTok mini app. Part of the monetization documentation set.",
-      url: "https://developers.tiktok.com/docs/en/tiktok-minis-in-app-purchases-subscriptions"
+      "title": "In-App Purchases: Subscriptions",
+      "org": "TikTok for Developers",
+      "format": "Developer guide",
+      "desc": "How developers implement recurring subscription purchases inside a TikTok mini app. Part of the monetization documentation set.",
+      "url": "https://developers.tiktok.com/docs/en/tiktok-minis-in-app-purchases-subscriptions"
     },
     {
-      title: "Silent Login",
-      org: "TikTok for Developers",
-      format: "Capability guide",
-      desc: "Authenticating a user without an explicit prompt — the first capability most TikTok Minis developers integrate, and the entry point to the capability guide set.",
-      url: "https://developers.tiktok.com/docs/en/silent-login"
+      "title": "Silent Login for TikTok Minis",
+      "org": "TikTok for Developers",
+      "format": "Developer guide",
+      "desc": "Authenticating a user without an explicit prompt — the first capability most TikTok Minis developers integrate, and the entry point to the capability guide set.",
+      "url": "https://developers.tiktok.com/docs/en/silent-login"
     },
     {
-      title: "Technical Optimization for Effects",
-      org: "TikTok Effect House",
-      format: "Guide",
-      desc: "Optimizing an augmented reality effect so it passes review and performs on real devices. One of the guides restructured during the Docusaurus migration.",
-      url: "https://effecthouse.tiktok.com/learn/guides/getting-started/technical-guidelines/technical-optimization"
+      "title": "Technical Optimization for Effects",
+      "org": "TikTok Effect House",
+      "format": "AR effect guide",
+      "desc": "Optimizing an augmented reality effect so it passes review and performs on real devices. One of the guides restructured during the Docusaurus migration.",
+      "url": "https://effecthouse.tiktok.com/learn/guides/getting-started/technical-guidelines/technical-optimization"
     },
     {
-      title: "Managing BoMs for product variants",
-      org: "Odoo",
-      format: "User documentation",
-      desc: "Configuring bills of materials for product variants in Odoo Manufacturing. Written in reStructuredText and shipped through GitHub pull requests.",
-      url: "https://www.odoo.com/documentation/15.0/applications/inventory_and_mrp/manufacturing/management/product_variants.html"
+      "title": "Managing BoMs for product variants",
+      "org": "Odoo",
+      "format": "SaaS user guide",
+      "desc": "Configuring bills of materials for product variants in Odoo Manufacturing. Written in reStructuredText and shipped through GitHub pull requests.",
+      "url": "https://www.odoo.com/documentation/15.0/applications/inventory_and_mrp/manufacturing/management/product_variants.html"
     }
   ],
-
-  experience: [
+  "experience": [
     {
-      when: "Jun 2025 — Present",
-      title: "Senior Technical Writer",
-      org: "TikTok",
-      points: [
-        "Authored and published all 108 pages of public documentation for TikTok Minis and Mini Games, cutting developer onboarding time 4x and taking launches from under 10 to over 200 per two-week cycle.",
+      "when": "Jun 2025 — Present",
+      "title": "Senior Technical Writer",
+      "org": "TikTok",
+      "points": [
+        "Authored and published all 108 pages of public documentation for TikTok Minis and Mini Games, cutting developer onboarding time fourfold and taking launches from under 10 to over 200 per two-week cycle.",
         "Published the monetization documentation behind roughly $100k in daily GMV from mini games through in-app purchases and ads.",
         "Delivered onboarding guides and API documentation for travel partners including Expedia and Booking.com launching hotel booking on TikTok.",
-        "Shipped a quickstart guide, codebook, and 28 API reference pages for TikTok's research tools.",
+        "Managed the migration of TikTok for Devleopers documentation to a custom CMS, defining the information architecture and docsite UI copy.",
         "Created and maintain TikTok's developer documentation style guide."
       ]
     },
     {
-      when: "Jan 2023 — Jun 2025",
-      title: "Technical Writer & Content Designer",
-      org: "TikTok",
-      points: [
+      "when": "Jan 2023 — Jun 2025",
+      "title": "Technical Writer & Content Designer",
+      "org": "TikTok",
+      "points": [
         "Led the migration of the Effect House learning resources estate from WordPress to Docusaurus — 300+ guides converted, information architecture rebuilt, 256 redirect rules written, article creation and staging time cut 50%.",
         "Authored the TikTok for Developers style guide and expanded the Effect House learning resources style guide; standardized 40+ UI terms in a shared glossary.",
         "Defined how the writing team contributes to the major/minor release cycle and documented it as a team source of truth.",
@@ -156,33 +185,53 @@ const SITE = {
       ]
     },
     {
-      when: "Jan 2022 — Dec 2022",
-      title: "Technical Content Writer",
-      org: "Odoo, Inc.",
-      points: [
+      "when": "Jan 2022 — Dec 2022",
+      "title": "Technical Content Writer",
+      "org": "Odoo, Inc.",
+      "points": [
         "Scripted 35 production-quality video tutorials for material requirements planning applications.",
         "Authored a client-facing white paper on MRP use cases and Odoo Manufacturing.",
         "Maintained multiple versions of user documentation on GitHub — reviewing pull requests, editing RST, and publishing new docs from scratch."
       ]
     }
   ],
-
-  skills: [
+  "skills": [
     {
-      heading: "Documentation systems",
-      items: ["Information architecture", "Editorial standards & style guides", "Docs-as-code workflows", "Content audits & migrations", "Terminology management", "API documentation", "Localization readiness"]
+      "heading": "Documentation systems",
+      "items": [
+        "Information architecture",
+        "Editorial standards & style guides",
+        "Docs-as-code workflows",
+        "Content audits & migrations",
+        "Terminology management",
+        "API documentation",
+        "Localization readiness"
+      ]
     },
     {
-      heading: "Tools & formats",
-      items: ["Markdown", "reStructuredText", "HTML & CSS", "Git & GitHub", "Docusaurus", "Figma"]
+      "heading": "Tools & formats",
+      "items": [
+        "Markdown",
+        "reStructuredText",
+        "HTML & CSS",
+        "Git & GitHub",
+        "Docusaurus",
+        "Figma"
+      ]
     },
     {
-      heading: "Working with teams",
-      items: ["Stakeholder management", "Process design", "Instructional design", "Cross-cultural collaboration", "Mandarin Chinese (proficient)"]
+      "heading": "Working with teams",
+      "items": [
+        "Stakeholder management",
+        "Process design",
+        "Project management",
+        "Cross-cultural collaboration",
+        "Mandarin Chinese (proficient)"
+      ]
     },
     {
-      heading: "Education",
-      items: [
+      "heading": "Education",
+      "items": [
         "UCSF School of Dentistry, 2019–2021 — D.D.S. candidate, honors standing in select coursework",
         "Cal Poly San Luis Obispo, 2015–2019 — B.S. Biochemistry, minor in Music, 4.0 GPA"
       ]

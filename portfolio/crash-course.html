@@ -19,70 +19,23 @@
 <header class="rail"></header>
 
 <main id="main">
-  <article class="case">
+  <!-- Static fallback for crawlers and no-JS readers. assets/case.js
+       replaces it with the full page rendered from assets/cases.js.
+       scripts/check.mjs fails the build if these drift apart. -->
+  <article class="case" id="case">
     <a class="case__back" href="index.html">&larr; Portfolio</a>
     <p class="case__kicker">TikTok · Effect House · 2023–2025</p>
     <h1 class="case__title">Teaching AR authoring to people who have never opened the tool</h1>
     <p class="case__deck">An instructional-design program built from scratch: the highest-performing Effect House video series to date, plus the creator mission around it.</p>
-
-    <dl class="meta">
-      <div><dt>Role</dt><dd>Lead writer; instructional designer</dd></div>
-      <div><dt>Surface</dt><dd>Effect House learning resources and YouTube</dd></div>
-      <div><dt>Worked with</dt><dd>Technical writing, content design, community, design, external video agency</dd></div>
-      <div><dt>Method</dt><dd>Bloom's taxonomy learning objectives, per module and program-wide</dd></div>
-    </dl>
-
-    <dl class="stats">
-      <div><dt>#1</dt><dd>highest-performing Effect House YouTube series to date</dd></div>
-      <div><dt>7M+</dt><dd>newsletter subscribers reached by the accompanying mission page</dd></div>
-      <div><dt>312k+</dt><dd>views across the 16 tutorials in the two courses I designed</dd></div>
-      <div><dt>LinkedIn</dt><dd>approached us about featuring Crash Course as a LinkedIn Learning course with certification</dd></div>
-    </dl>
-
-    <div class="prose">
-
-      <h2>The gap at the top of the funnel</h2>
-      <p>Effect House had reference documentation for people who already understood augmented reality authoring, and it had a product that a large number of TikTok creators could plausibly use and had never opened. Reference documentation does not convert that second group. Someone who does not yet know what a material or a visual script <em>is</em> cannot be helped by a well-written page explaining the Material Editor's options.</p>
-      <p>Crash Course was built for that gap, and the <strong>#MyFirstTikTokEffect</strong> mission was built to give finishing the course a point — a concrete thing to make and publish at the end.</p>
-
-      <h2>Designing it as a course, not a playlist</h2>
-      <p>The distinction I cared about most was that this be an actual curriculum. Working closely with a colleague on content design, I used Bloom's taxonomy to write explicit learning objectives — for each module individually and for the program as a whole — before any script was written.</p>
-      <p>That ordering does real work. Learning objectives determine what a module is allowed to assume the viewer already knows, which determines module order, which determines what has to be demonstrated versus merely mentioned. Without them a tutorial series drifts toward showing off the tool's capabilities in the order the writer finds them interesting. With them, the sequence is answerable to whether a beginner can actually follow it.</p>
-
-      <div class="pull">
-        <p>A video series is easy to produce and hard to make someone finish. The learning objectives were the mechanism for deciding what to cut — anything that did not serve an objective was interesting, not necessary.</p>
-      </div>
-
-      <h2>What I produced</h2>
-      <p>As the key writer on the project I generated all of the video and written content for Crash Course:</p>
-      <ul>
-        <li><strong>Scripts</strong> for every module.</li>
-        <li><strong>Narrated screencasts</strong> at production quality, delivered as the source material the final videos were built from.</li>
-        <li><strong>Companion written guides</strong> for each module, carrying the same learning objectives, reviewed with content design — so the course worked for people who prefer to read and so it stayed searchable.</li>
-      </ul>
-      <p>Two of the published pieces are still live: the course's opening module, <a href="https://effecthouse.tiktok.com/learn/tutorials/eh-crash-course/introduction-to-visual-scripting">Introduction to Visual Scripting</a>, and the <a href="https://effecthouse.tiktok.com/learn/library/template-tutorials/art-maker">Art Maker template tutorial</a> — a walkthrough of an AI-driven template that restyles camera input, written for creators with no technical background.</p>
-      <p>On the production side I ran the relationship with our external design agency: communicating requirements and coordinating weekly asset delivery against the schedule. The screencast-plus-script handoff was the part worth getting right — supplying narrated screencasts rather than written direction alone meant the agency was matching a demonstrated interaction instead of interpreting a description of one.</p>
-
-      <h2>The mission around it</h2>
-      <p>Crash Course alone would have been a learning resource. #MyFirstTikTokEffect turned it into a program with an outcome. Working with the design and community teams, I helped develop a mission page that went out in an email newsletter to more than 7 million subscribers, giving course completers a specific, public thing to do with what they had just learned.</p>
-
-      <h2>How it did</h2>
-      <p>The program outperformed expectations. Crash Course became the highest-performing Effect House YouTube series to date, and LinkedIn approached us about featuring it as a LinkedIn Learning course with certification on completion — external validation that the instructional design held up outside our own distribution.</p>
-      <p>Internally, the more useful result was that it established e-learning as something the team could do deliberately. Both Crash Course and the mission were new initiatives, and their performance is what made planning further modules on more complex topics a reasonable proposal rather than a speculative one.</p>
-
-      <h2>What I would do differently</h2>
-      <p>We measured reach well and learning poorly. Views, newsletter distribution, and series performance were all tracked; whether someone who finished Crash Course could actually build and publish an effect was not, except indirectly through mission participation.</p>
-      <p>The learning objectives were written in a form that made them assessable — that is much of the point of using Bloom's taxonomy — and we never assessed against them. A short check at the end of each module, or instrumenting how many people who started module one published a mission entry, would have told us which module was losing people. Right now I can say the series performed; I cannot say which module was the weakest, and I should be able to.</p>
-
-    </div>
-
-    <nav class="pager" id="pager" aria-label="More projects"></nav>
   </article>
 
   <footer>Built by hand with HTML, CSS, and a little JavaScript.</footer>
 </main>
 
 <script src="../assets/data.js"></script>
+<script src="../assets/cases.js"></script>
+<script src="../assets/case.js"></script>
 <script src="../assets/site.js"></script>
+<script src="../assets/edit.js"></script>
 </body>
 </html>

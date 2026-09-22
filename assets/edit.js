@@ -16,13 +16,42 @@
    does nothing: the page stays exactly as it was.
    ================================================================= */
 (function () {
-  if (document.body.dataset.page !== "home") return;
 
   const $ = (sel) => document.querySelector(sel);
-  const fields = () => [...document.querySelectorAll("[data-edit]")];
+  const fields = () => [...document.querySelectorAll("[data-edit],[data-edit-html]")];
+  const isRich = (el) => el.hasAttribute("data-edit-html");
+  const pathOf = (el) => el.dataset.editHtml || el.dataset.edit;
+
+  /* Rich fields keep inline markup. Anything outside this allowlist —
+     pasted styling, stray divs, scripts — is flattened to its text. */
+  const ALLOWED = { STRONG: [], EM: [], CODE: [], BR: [], A: ["href"] };
+  function sanitize(node) {
+    for (const child of [...node.childNodes]) {
+      if (child.nodeType === Node.TEXT_NODE) continue;
+      if (child.nodeType !== Node.ELEMENT_NODE) { child.remove(); continue; }
+      const keep = ALLOWED[child.tagName];
+      if (!keep) {
+        sanitize(child);
+        child.replaceWith(...child.childNodes);
+        continue;
+      }
+      for (const attr of [...child.attributes]) {
+        if (!keep.includes(attr.name)) child.removeAttribute(attr.name);
+      }
+      const href = child.getAttribute("href");
+      if (href && !/^(https?:|mailto:|#|\.{0,2}\/)/i.test(href)) child.removeAttribute("href");
+      sanitize(child);
+    }
+  }
+  function cleanHtml(el) {
+    const box = document.createElement("div");
+    box.innerHTML = el.innerHTML;
+    sanitize(box);
+    return box.innerHTML.replace(/\s+/g, " ").trim();
+  }
 
   /* ---- read and write a value by its dotted path ---- */
-  const roots = () => ({ SITE, PROJECTS });
+  const roots = () => (typeof CASES === "undefined" ? { SITE, PROJECTS } : { SITE, PROJECTS, CASES });
   function setPath(data, path, value) {
     const keys = path.split(".");
     let node = data[keys[0]];
@@ -45,6 +74,29 @@ const SITE = ${JSON.stringify(data.SITE, null, 2)};
 `;
   }
 
+  function serializeCases(cases) {
+    return `/* =================================================================
+   CASE STUDIES — one entry per project in PROJECTS, keyed by slug.
+   Each case page renders from here, and edit mode writes back here.
+   ================================================================= */
+
+const CASES = ${JSON.stringify(cases, null, 2)};
+`;
+  }
+
+  /* Publish only the data files whose content actually changed. A case
+     page has both loaded; the home page has only data.js. */
+  let baseline = null;
+  function filesFor(data) {
+    const next = { "assets/data.js": serialize(data) };
+    if (data.CASES) next["assets/cases.js"] = serializeCases(data.CASES);
+    const files = {};
+    for (const [path, src] of Object.entries(next)) {
+      if (!baseline || baseline[path] !== src) files[path] = src;
+    }
+    return files;
+  }
+
   let artifact = null;
   let editing = false;
   const original = new Map();
@@ -53,13 +105,16 @@ const SITE = ${JSON.stringify(data.SITE, null, 2)};
     editing = on;
     document.body.classList.toggle("is-editing", on);
     for (const el of fields()) {
-      if (on) original.set(el, el.textContent);
-      el.contentEditable = on ? "plaintext-only" : "inherit";
+      if (on) original.set(el, isRich(el) ? el.innerHTML : el.textContent);
+      if (!on) el.classList.toggle("is-empty", el.textContent.trim() === "");
+      el.contentEditable = on ? (isRich(el) ? "true" : "plaintext-only") : "inherit";
       if (!on) el.removeAttribute("contenteditable");
     }
     $("#editbar").hidden = !on;
     $("#edit-toggle").textContent = on ? "Cancel" : "Edit text";
-    if (!on) for (const [el, text] of original) el.textContent = text;
+    if (!on) for (const [el, was] of original) {
+      if (isRich(el)) el.innerHTML = was; else el.textContent = was;
+    }
     if (!on) original.clear();
   }
 
@@ -77,16 +132,26 @@ const SITE = ${JSON.stringify(data.SITE, null, 2)};
     /* Deep-copy so a failed save leaves the live data untouched. */
     const data = JSON.parse(JSON.stringify(roots()));
     for (const el of fields()) {
-      setPath(data, el.dataset.edit, el.textContent.replace(/\s+/g, " ").trim());
+      setPath(data, pathOf(el),
+        isRich(el) ? cleanHtml(el) : el.textContent.replace(/\s+/g, " ").trim());
+      el.classList.toggle("is-empty", el.textContent.trim() === "");
+    }
+
+    const files = filesFor(data);
+    if (!Object.keys(files).length) {
+      setEditing(false);
+      status("No changes", "ok");
+      return;
     }
 
     try {
-      await artifact.publish({ "assets/data.js": serialize(data) });
+      await artifact.publish(files);
       /* The files form leaves this view running, so adopt the new data
          and re-render rather than reloading. */
       Object.assign(SITE, data.SITE);
       PROJECTS.length = 0;
       PROJECTS.push(...data.PROJECTS);
+      if (data.CASES) Object.assign(CASES, data.CASES);
       setEditing(false);
       status("Saved", "ok");
       setTimeout(() => location.reload(), 600);
@@ -156,6 +221,9 @@ const SITE = ${JSON.stringify(data.SITE, null, 2)};
   claude.use("artifact").then((ns) => {
     if (!ns) return;                       // read-only view, or opened off-platform
     artifact = ns;
+    const snap = JSON.parse(JSON.stringify(roots()));
+    baseline = { "assets/data.js": serialize(snap) };
+    if (snap.CASES) baseline["assets/cases.js"] = serializeCases(snap.CASES);
     requestAnimationFrame(mount);
   });
 })();

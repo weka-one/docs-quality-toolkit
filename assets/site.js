@@ -140,7 +140,11 @@
   for (const el of document.querySelectorAll("[data-edit]")) {
     const value = el.dataset.edit.split(".").slice(1)
       .reduce((o, k) => (o == null ? o : o[k]), SITE);
-    if (typeof value === "string") el.textContent = value;
+    if (typeof value !== "string") continue;
+    el.textContent = value;
+    /* A field emptied in edit mode leaves no gap on the page. Edit mode
+       reveals it again so it can be filled back in. */
+    el.classList.toggle("is-empty", value.trim() === "");
   }
 
   const aboutBody = $("#about-body");

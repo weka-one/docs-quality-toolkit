@@ -674,3 +674,15 @@ footer{
 }
 /* Keep the floating save bar clear of the last line of content. */
 .is-editing main{padding-bottom:5rem;}
+
+/* An emptied field takes no space until edit mode brings it back. */
+.is-empty{display:none;}
+.is-editing .is-empty{
+  display:block;
+  min-height:1.4em;min-width:8rem;
+}
+.is-editing .is-empty::before{
+  content:"Empty — click to add text";
+  color:var(--muted);font-size:.8rem;font-style:italic;
+}
+.is-editing .is-empty:focus::before{content:none;}

@@ -19,76 +19,23 @@
 <header class="rail"></header>
 
 <main id="main">
-  <article class="case">
+  <!-- Static fallback for crawlers and no-JS readers. assets/case.js
+       replaces it with the full page rendered from assets/cases.js.
+       scripts/check.mjs fails the build if these drift apart. -->
+  <article class="case" id="case">
     <a class="case__back" href="index.html">&larr; Portfolio</a>
     <p class="case__kicker">TikTok · Effect House and TikTok for Developers · 2023–2025</p>
     <h1 class="case__title">Editorial standards for documentation written by many hands</h1>
     <p class="case__deck">Two style guides, a shared glossary, and the contribution workflows that let several teams publish to one docs surface without it drifting apart.</p>
-
-    <dl class="meta">
-      <div><dt>Role</dt><dd>Standards author; workflow owner</dd></div>
-      <div><dt>Surface</dt><dd>Effect House learning resources; TikTok for Developers</dd></div>
-      <div><dt>Worked with</dt><dd>Technical writing, content design, engineering, localization</dd></div>
-      <div><dt>Artifacts</dt><dd>Internal — I can walk through them in detail</dd></div>
-    </dl>
-
-    <dl class="stats">
-      <div><dt>2</dt><dd>style guides: TikTok for Developers written from scratch, Effect House substantially expanded</dd></div>
-      <div><dt>40+</dt><dd>UI terms standardized in a shared, published glossary</dd></div>
-      <div><dt>6</dt><dd>design and accessibility issues resolved on the new docs site from writer-side feedback</dd></div>
-      <div><dt>2</dt><dd>localization markets brought into the workflow with training documentation</dd></div>
-    </dl>
-
-    <div class="prose">
-
-      <h2>The failure mode of a growing docs team</h2>
-      <p>By 2023 the technical writing function was expanding, several product teams were contributing to the same documentation surfaces, and there was no agreed standard for what a page should look like. The symptoms were ordinary and corrosive: the same UI element named three different ways across three guides, tables formatted differently on every page, in-tool navigation referenced inconsistently enough that a reader could not tell whether two guides were describing the same menu.</p>
-      <p>Underneath the surface inconsistency was a process gap. There was no defined way for a writer to plug into the product's release cycle, no source of truth for how the team worked, and no archive of decisions — so every question got re-answered from scratch, differently.</p>
-
-      <h2>The style guides</h2>
-      <p>I wrote the TikTok for Developers style guide from scratch and applied it while reviewing API documentation and developer-facing responses on GitHub. For Effect House, I expanded the existing learning resources style guide with specifications it had been missing: table formatting, verbiage conventions, and — the one that mattered most for a tool-centric docs set — how to reference in-tool navigation so that every guide pointed at the interface the same way.</p>
-      <p>I also wrote guidelines for Markdown formatting, which sounds trivial and is not. Once documentation lives in Git and multiple teams contribute through pull requests, formatting inconsistency becomes diff noise that buries the substantive review comments.</p>
-
-      <h2>Terminology as shared infrastructure</h2>
-      <p>Working with content design, I reviewed and finalized 40+ Effect House UI terms for use across the documentation. The decision I would defend hardest is that the glossary did not stay an internal reference — it was published as a page in the documentation itself.</p>
-      <p>An internal-only glossary standardizes writers. A published one standardizes writers, support, the product team, and the readers who go on to write community tutorials. It also creates accountability: a term that is wrong in public gets reported.</p>
-
-      <div class="pull">
-        <p>A standard nobody can follow is decoration. Most of the work was not writing the guides — it was building the surrounding process so that following them was the path of least resistance.</p>
-      </div>
-
-      <h2>Making the standard operational</h2>
-      <p>A style guide with no delivery mechanism gets read once. The surrounding system mattered more than the documents:</p>
-      <ul>
-        <li><strong>A defined release-cycle workflow.</strong> I specified how the writing team contributes to the major and minor release cycle, so documentation work had a known shape and a known entry point rather than being negotiated per release.</li>
-        <li><strong>A source-of-truth process document</strong> outlining how the team operated, so process questions had one answer.</li>
-        <li><strong>A centralized team workspace</strong> for storing and collaborating on documents, plus internal documentation of our workflows — deliberately written for posterity, so the reasoning survived turnover.</li>
-        <li><strong>Weekly standups</strong> that I established and ran, including delegating the week's work.</li>
-      </ul>
-
-      <h2>Extending it past the writing team</h2>
-      <p>Standards that only bind the people who wrote them do not hold a shared surface together. Three efforts pushed the standard outward:</p>
-      <ul>
-        <li><strong>Localization.</strong> I opened the localization conversation with the team in Shanghai and wrote internal training documentation on Markdown formatting in Docusaurus for the Korean and Japanese localization stakeholders — so that translated content entered the same pipeline under the same conventions instead of arriving as a parallel content set.</li>
-        <li><strong>A content audit.</strong> I developed a proposal to audit learning resources for inaccurate and out-of-date content and ran the kickoff discussion with the writing team and our lead. Setting a standard raises an uncomfortable question — how much existing content violates it — and the audit was how I made that question answerable rather than rhetorical.</li>
-        <li><strong>Feedback into the platform itself.</strong> I was a primary contributor to feedback on the new learning resources website, flagging problems from the writer's and reader's side that resulted in 6 design and accessibility issues being resolved before they shipped.</li>
-      </ul>
-      <p>I also hosted a global content design and product writing event and built a digital yearbook for the team — lighter work, but part of the same effort to make a distributed writing function feel like one group with one standard.</p>
-
-      <h2>What I would do differently</h2>
-      <p>Everything above was enforced by review, which means it was enforced as consistently as the reviewer's attention on a given day. That is a real ceiling, and I hit it.</p>
-      <p>A meaningful share of what these guides specify is mechanically checkable: approved terminology, table conventions, heading structure, how in-tool navigation is referenced, link health, whether a page has gone stale relative to the release it documents. None of it needed a human.</p>
-      <p>What I would build now is the linter — terminology and structural rules encoded as automated checks running in CI on every pull request, with human review reserved for the things that actually require judgment: whether the explanation is correct, whether the page is aimed at the right reader, whether it should exist at all. The style guide stops being a document people are supposed to have read and becomes a property of the pipeline.</p>
-
-    </div>
-
-    <nav class="pager" id="pager" aria-label="More projects"></nav>
   </article>
 
   <footer>Built by hand with HTML, CSS, and a little JavaScript.</footer>
 </main>
 
 <script src="../assets/data.js"></script>
+<script src="../assets/cases.js"></script>
+<script src="../assets/case.js"></script>
 <script src="../assets/site.js"></script>
+<script src="../assets/edit.js"></script>
 </body>
 </html>
