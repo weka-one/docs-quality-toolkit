@@ -5,197 +5,195 @@
 
 const CASES = {
   "docs-quality-tooling": {
-    "kicker": "Independent project · 2026",
-    "title": "Checking documentation the way CI checks code",
-    "deck": "Three tools that catch what a style guide can't enforce by hand — and what happened when I tried to measure whether they actually worked.",
-    "description": "Three tools that check documentation automatically: a style linter that cut violations 36% across 553 pages, a freshness checker with zero false alarms, and a pipeline for docs that don't live in Git.",
+    "kicker": "Personal project · 2026",
+    "title": "Turning a style guide into something a machine can check",
+    "deck": "I wrote TikTok's developer style guide. This was me finding out how much of it a machine could enforce on its own — and where that stops working.",
+    "description": "A personal project encoding a developer style guide as automated checks, built with Claude Code and measured against 553 pages of public documentation. A proof of concept.",
     "meta": [
       {
-        "label": "Role",
-        "value": "Sole author — design, build, evaluation",
+        "label": "What this is",
+        "value": "A personal project, and a proof of concept",
         "href": null
       },
       {
         "label": "Built with",
-        "value": "Vale, GitHub Actions, OpenAPI, a headless browser",
+        "value": "Claude Code, Vale, OpenAPI",
         "href": null
       },
       {
-        "label": "Measured on",
-        "value": "Meilisearch documentation (MIT, pinned commit)",
+        "label": "My part",
+        "value": "The rules, the test design, and judging the results",
         "href": null
       },
       {
-        "label": "Tests",
-        "value": "273 across the three tools",
+        "label": "Tested against",
+        "value": "Meilisearch documentation — public, 553 pages",
         "href": null
       }
     ],
     "stats": [
       {
         "value": "553",
-        "label": "pages of documentation I didn't write, used as the test corpus"
+        "label": "pages of documentation I did not write, used as the test"
       },
       {
         "value": "36%",
-        "label": "fewer style violations after the automated fixes ran"
+        "label": "fewer style violations after the automatic fixes ran"
       },
       {
-        "value": "0",
-        "label": "false alarms from the freshness checker at its shipping setting"
+        "value": "16 of 16",
+        "label": "problems the freshness checker reported that were real"
       },
       {
         "value": "23 of 40",
-        "label": "style-guide rules a machine can check; the rest need a person"
+        "label": "style-guide rules a machine can check; the other 17 need a person"
       }
     ],
     "body": [
       {
         "t": "h2",
-        "html": "Documentation breaks quietly"
+        "html": "The question"
       },
       {
         "t": "p",
-        "html": "It breaks in two ways, and neither announces itself. It drifts out of house style — one heading capitalized differently, one product name written three ways. And it drifts out of sync with the product, which is worse: the endpoint moved, the parameter was renamed, and the page still confidently says otherwise."
+        "html": "A style guide only works if somebody enforces it. Across a large documentation set that means a person reading every page and noticing that a heading is capitalized wrong, or that a product name is written three different ways. Nobody has time for that, so mostly it does not happen."
       },
       {
         "t": "p",
-        "html": "Both happen a page at a time. Neither shows up until a reader hits it. Code has linters and tests for exactly this problem; documentation usually has a style guide nobody has time to enforce by hand."
+        "html": "Programmers solved this a long time ago with linters — a tool that reads your work, checks it against a list of rules, and flags anything that breaks one. It runs every time, automatically, and never gets tired or distracted."
       },
       {
         "t": "p",
-        "html": "I built three tools to close that gap."
+        "html": "I wrote the TikTok for Developers style guide. This project was me finding out how much of it a linter could enforce, using a style guide I know well as the test case."
       },
       {
         "t": "h2",
-        "html": "What I built"
+        "html": "What it does"
+      },
+      {
+        "t": "p",
+        "html": "<strong>A style linter.</strong> 40 rules taken from the style guide — heading capitalization, which word to use for a requirement, banned punctuation, product names spelled consistently. It reads a page and flags anything that breaks one."
+      },
+      {
+        "t": "p",
+        "html": "<strong>A freshness checker.</strong> Documentation goes stale when the product changes and the page does not. This compares what a page claims about an API against the API's own definition, and reports where they disagree: an endpoint that moved, a parameter that was renamed, a value that no longer exists."
+      },
+      {
+        "t": "p",
+        "html": "<strong>A pipeline</strong> that runs both on a schedule, for documentation that does not live in a code repository."
+      },
+      {
+        "t": "h2",
+        "html": "How it actually works"
+      },
+      {
+        "t": "p",
+        "html": "Worth spelling out, because \"automated documentation review\" sounds more mysterious than it is."
+      },
+      {
+        "t": "p",
+        "html": "<strong>The style linter is built on Vale</strong>, an open-source tool for checking prose. Each rule is a small configuration file: a pattern to look for and a message to show when it matches. Vale reads the Markdown and reports every hit with a line number. The work was translating the style guide into 40 of those, and deciding which ones were worth having at all."
+      },
+      {
+        "t": "p",
+        "html": "<strong>The freshness checker compares two descriptions of the same thing.</strong> An API has a machine-readable definition — an OpenAPI file listing every endpoint, parameter and valid value. The documentation describes that same API in prose and code samples. If the page says a parameter is called <code>user_id</code> and the definition says <code>userId</code>, the page is wrong. The checker reads both and reports the disagreements."
+      },
+      {
+        "t": "p",
+        "html": "Neither is clever. Both are ordinary comparisons done consistently — which is exactly what a person reading 500 pages cannot do."
+      },
+      {
+        "t": "h2",
+        "html": "How I built it"
+      },
+      {
+        "t": "p",
+        "html": "I built it with Claude Code. I decided what the tools should do, wrote the rules, chose what to test them against, and said what evidence I wanted before believing any of it. Claude wrote the implementation. I read the output, ran it against real documentation, and decided what to keep."
+      },
+      {
+        "t": "p",
+        "html": "I would rather say that plainly than imply otherwise, and not only because it is true. The interesting part of this project was never the code. It was working out what a machine can usefully check, what it cannot, and how to tell the difference — and that part does not come from the tool."
+      },
+      {
+        "t": "h2",
+        "html": "Testing it on documentation I did not write"
+      },
+      {
+        "t": "p",
+        "html": "A style rule tested against text you already agree with proves nothing. I needed a documentation set that was public, large, and not mine."
+      },
+      {
+        "t": "p",
+        "html": "I used the Meilisearch documentation — 553 pages, open source, pinned to a specific version so the results can be checked — along with its official API definition. Nothing was picked to make the tools look good, and several rules were dropped once it was clear their output was mostly noise."
+      },
+      {
+        "t": "p",
+        "html": "Running the rules and applying the automatic fixes cut style violations by 36%: 1,092 down to 704."
+      },
+      {
+        "t": "h2",
+        "html": "What the numbers mean"
+      },
+      {
+        "t": "p",
+        "html": "Two terms, because they are how a tool like this is judged:"
       },
       {
         "t": "ul",
         "items": [
-          "<strong>A style linter</strong> — 40 rules covering heading case, requirement words, banned punctuation, and product-term drift. Runs on every pull request and annotates the diff.",
-          "<strong>A freshness checker</strong> — reads the code samples, routes and parameter tables on a page, then checks each claim against the product's API definition. Does this endpoint still exist? Is this parameter still called that? Is this value still valid?",
-          "<strong>A monitoring pipeline</strong> — runs both on a schedule, for documentation that lives in a CMS rather than Git, where there is no pull request to gate and no diff to check."
+          "<strong>Precision</strong> — of the problems it reported, how many were real.",
+          "<strong>Recall</strong> — of the real problems, how many it found."
         ]
       },
       {
-        "t": "h2",
-        "html": "Measured on documentation I didn't write"
+        "t": "p",
+        "html": "At its shipping setting the freshness checker reports 16 problems and all 16 are real. That is perfect precision."
       },
       {
         "t": "p",
-        "html": "A style rule tested against text you already agree with proves nothing. So I measured everything against 553 pages of the Meilisearch documentation — open source, pinned to a specific commit so the results reproduce — along with that project's official API definition. Nothing was hand-picked to pass, and several rules were retired once it turned out their output was mostly noise."
-      },
-      {
-        "t": "p",
-        "html": "Running the rules and applying the automated fixes cut style violations by 36%, from 1,092 to 704."
-      },
-      {
-        "t": "h2",
-        "html": "Four decisions that did most of the work"
-      },
-      {
-        "t": "ol",
-        "items": [
-          "<strong>Rules are tested like code.</strong> 173 test cases pin down both what each rule catches and what it must never flag. A rule with no tests fails the build.",
-          "<strong>Code samples are provably untouched.</strong> A linter that rewrites prose must never reach inside a code block. A separate check proves all 16,541 protected segments come through byte-identical — which is what makes it safe to let the automated fixes run without a human reading every diff.",
-          "<strong>It fails on new problems, not old ones.</strong> A quality tool that blocks work on day one over 400 pre-existing issues gets switched off in week one. This one only fails a build on findings that weren't there before.",
-          "<strong>Policy lives in a config file.</strong> Which heading case, which callout labels, which languages are allowed — all configuration. Pointing the tool at a different style guide is an edit, not a rewrite."
-        ]
-      },
-      {
-        "t": "h2",
-        "html": "Zero false alarms, on purpose"
-      },
-      {
-        "t": "p",
-        "html": "At its shipping setting, the freshness checker reports 16 problems and all 16 are real."
-      },
-      {
-        "t": "p",
-        "html": "That is a deliberate trade, not a lucky result. Told to report everything, it finds 51 problems and 30 of them are wrong — three false alarms for every two real ones, which is precisely how a tool gets ignored by the second week. Raising the confidence bar gives up about a quarter of the real problems and leaves a queue a writer can trust completely."
-      },
-      {
-        "t": "p",
-        "html": "I would rather miss a few things than be the tool nobody believes. Making that trade visible, instead of guessing at it, is what the evaluation harness is for."
-      },
-      {
-        "t": "h2",
-        "html": "Being graded on my own homework"
-      },
-      {
-        "t": "p",
-        "html": "The first evaluation scored perfectly — full marks on both measures. That was a red flag, not a result."
-      },
-      {
-        "t": "p",
-        "html": "I had written the answer key by reading the tool's own output. Measured that way, a tool cannot miss anything, because anything it missed never made it into the answer key in the first place. The score was guaranteed before I ran it."
+        "html": "It gets there by staying quiet about anything it is unsure of. Told to report everything, it finds 51 problems and 30 of them are wrong — three false alarms for every two real ones. A tool like that gets switched off in a week. Raising the bar means missing about a quarter of the real problems and leaving a list a writer can trust completely."
       },
       {
         "t": "pull",
         "items": [
-          "So I built a second answer key by hand — checking every route and parameter on a sample of pages against the API definition, without looking at the tool at all. The first time I ran against it, the tool scored zero. That is what made it worth keeping."
-        ]
-      },
-      {
-        "t": "p",
-        "html": "Breaking the results down per detector showed where the inaccuracy actually lived: three of the five were already perfect, and effectively every false alarm came from one detector reading endpoints that belonged to a different service. Knowing that is the difference between tuning one thing and distrusting the whole tool."
-      },
-      {
-        "t": "h2",
-        "html": "Documentation that doesn't live in Git"
-      },
-      {
-        "t": "p",
-        "html": "Both tools assumed a folder of Markdown that a pull request changes. Plenty of documentation doesn't work that way. It lives in a CMS — no pull request, no diff, no file on disk until something goes and fetches one."
-      },
-      {
-        "t": "p",
-        "html": "The checks were never the problem; they work on text. What needed replacing was the part that produces the text. There are now four ways in: a folder, a CMS read API, the published site, or a real browser for sites that assemble their pages on the fly. None of them hardcodes a particular CMS."
-      },
-      {
-        "t": "p",
-        "html": "That last option taught me the most. Sites built in the browser serve an empty shell to a plain fetch, so my first attempt mined the data embedded in the page and scored every string on how much it read like English. Run against a real developer site, it returned the newsletter blurb, a legal modal, and an unsubscribe line — the site's own interface copy, which is exactly where the long grammatical sentences live. The actual documentation was in fragments too short to score. The approach wasn't undertuned; it was guessing."
-      },
-      {
-        "t": "p",
-        "html": "Driving a real browser removed the guesswork and gave back something the data-mining never had: structure. A rendered page knows which part is navigation and which part is the article, so the checks can read the body and leave the furniture alone."
-      },
-      {
-        "t": "p",
-        "html": "The obvious version of that was slow. A four-page crawl took 35 seconds, because every short page sat out the full timeout waiting for content that had already arrived. Ending the wait when the text stops changing brought it to 3.6 seconds — under a second per page, which makes a 500-page site a half-hour unattended run."
-      },
-      {
-        "t": "h2",
-        "html": "What it doesn't do"
-      },
-      {
-        "t": "p",
-        "html": "Of 40 checkable items in the style guide, 23 are automated and 17 need a person. Voice, argument structure, and whether an example is actually useful are not lintable. Claiming otherwise would have made the tool untrustworthy in the places where it does work."
-      },
-      {
-        "t": "p",
-        "html": "Three other limits worth stating plainly:"
-      },
-      {
-        "t": "ul",
-        "items": [
-          "The figure for how much the freshness checker <em>finds</em> rests on a small hand-built sample. The figure for how much of what it finds is <em>real</em> is solid; the other half of the picture is thinner.",
-          "Everything was measured against one documentation set. How it performs on another, with different conventions, is unknown until someone runs it.",
-          "The 36% is what the automated fixes achieved, not everything the rules found. The rest was deliberately left for a human."
+          "That trade is the actual decision in this project. A tool nobody believes is worth less than a tool that finds less."
         ]
       },
       {
         "t": "h2",
-        "html": "What I'd build next"
+        "html": "The mistake worth asking me about"
       },
       {
         "t": "p",
-        "html": "Not another detector. The freshness checker already knows an endpoint moved and knows what it moved to — which is enough to open a pull request with the correction rather than a ticket describing it."
+        "html": "The first time I measured how well the freshness checker worked, it scored perfectly. That was a warning sign, not a result."
       },
       {
         "t": "p",
-        "html": "The evaluation harness is what makes that safe to attempt. A tool that is right 41% of the time must never be allowed to write anything. A tool that is right every time, over a deliberately narrowed set of findings, can."
+        "html": "To measure a tool you need an answer key — a list of the problems genuinely present in the documentation. I had built that list by reading the tool's own output. So of course it found everything on it: anything it missed never made it onto the list in the first place. The score was decided before I ran it."
+      },
+      {
+        "t": "p",
+        "html": "The fix was a second answer key, built by hand, checking pages against the API definition without looking at the tool at all. The first time I ran against that one, the tool scored zero."
+      },
+      {
+        "t": "p",
+        "html": "I keep this in the write-up on purpose. It is easy to produce a number that looks like evidence and is not, and I would rather be the person who caught it than the person who shipped it."
+      },
+      {
+        "t": "h2",
+        "html": "Where this stands: a proof of concept"
+      },
+      {
+        "t": "p",
+        "html": "The rules encode a real style guide and the results are measured on real documentation. But of 40 checkable items in that style guide, 23 can be automated and 17 need a person — voice, argument structure, whether an example is actually useful. I would not claim more than that."
+      },
+      {
+        "t": "p",
+        "html": "The gap between this and something usable at work is the content itself. TikTok's developer documentation lives in an internal CMS, not a folder of Markdown that a pull request can check. The checks would work on the text; getting the text out of the CMS on a schedule, and getting findings back to writers somewhere they already look, is the part that would have to be built."
+      },
+      {
+        "t": "p",
+        "html": "So the approach is demonstrated and the numbers are real, and putting it to work where I am would be a separate project. That seemed worth saying outright."
       }
     ]
   },

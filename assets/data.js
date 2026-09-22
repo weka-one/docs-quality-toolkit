@@ -8,15 +8,15 @@
 const PROJECTS = [
   {
     "slug": "docs-quality-tooling",
-    "title": "Checking documentation the way CI checks code",
-    "nav": "Docs quality tooling",
-    "org": "Independent project",
-    "deck": "Three tools that catch what a style guide can't enforce by hand — a style linter, a freshness checker that compares docs against the API they describe, and a pipeline that runs both against documentation that doesn't live in Git.",
+    "title": "Turning a style guide into something a machine can check",
+    "nav": "Automating a style guide",
+    "org": "Personal project",
+    "deck": "How much of a style guide can a machine enforce on its own? I encoded the TikTok for Developers style guide as automated checks, built them with Claude Code, and measured them against 553 pages of public documentation. A proof of concept.",
     "tags": [
-      "Docs-as-code",
-      "CI quality gates",
-      "Evaluation",
-      "Automation"
+      "Personal project",
+      "Proof of concept",
+      "Built with Claude Code",
+      "Vale"
     ]
   },
   {
