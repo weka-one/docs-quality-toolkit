@@ -154,44 +154,17 @@
   }
 
   /* ---------------------------------------------------------------
-     Writing index with category filters
+     Writing index
      --------------------------------------------------------------- */
   const index = $("#index");
   if (index) {
-    let active = "All";
-
-    const rowMarkup = (s) => `
+    index.innerHTML = SITE.samples.map((s) => `
       <a class="row" href="${esc(s.url)}" target="_blank" rel="noopener">
         <span class="row__title">${esc(s.title)}</span>
         <span class="row__org">${esc(s.org)}</span>
         <span class="row__format">${esc(s.format)}</span>
         <p class="row__desc">${esc(s.desc)}</p>
-      </a>`;
-
-    const renderIndex = () => {
-      const list = active === "All"
-        ? SITE.samples
-        : SITE.samples.filter((s) => s.category === active);
-      index.innerHTML = list.length
-        ? list.map(rowMarkup).join("")
-        : `<p class="index__empty">Nothing filed under ${esc(active)} yet.</p>`;
-    };
-
-    const filters = $("#filters");
-    ["All", ...SITE.categories].forEach((cat) => {
-      const b = document.createElement("button");
-      b.type = "button";
-      b.textContent = cat;
-      b.setAttribute("aria-pressed", String(cat === "All"));
-      b.addEventListener("click", () => {
-        active = cat;
-        [...filters.children].forEach((x) =>
-          x.setAttribute("aria-pressed", String(x === b)));
-        renderIndex();
-      });
-      filters.append(b);
-    });
-    renderIndex();
+      </a>`).join("");
   }
 
   /* ---------------------------------------------------------------
