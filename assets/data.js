@@ -91,7 +91,7 @@ const SITE = {
     "paragraphs": [
       "I turn complicated products into documentation people can actually follow. Having worked in product areas ranging from SaaS to developer integrations, I have extensive experience managing systems and defining standards. But more than that, I'm a deeply curious individual with a penchant for interrogating systems and a knack for collaboration.",
       "I currently work as a Senior Technical Writer at TikTok, where I work cross-functionally with teams across the world to deliver documentation to the developers who use our platform. As the sole writer managing TikTok's developer documentation, I created our style guide, and laid the foundation for our platform's information architecture, localization rules, and technical writing workflows.",
-      "Outside of work you can find me running outside, doing Muay Thai, or at home whipping up an amazing meal for friends. I am also very likely to bring home-baked treats into the office."
+      "Outside of work you can find me running outside, snapping photos, doing Muay Thai, or at home whipping up an amazing meal for friends. I am also very likely to bring home-baked treats into the office."
     ],
     "aside": [
       {
@@ -118,7 +118,7 @@ const SITE = {
       },
       {
         "label": "LinkedIn",
-        "value": "wesley-kao",
+        "value": "linkedin.com/in/wesley-kao-6a6779220/",
         "href": "https://www.linkedin.com/in/wesley-kao-6a6779220/"
       },
       {
@@ -130,7 +130,7 @@ const SITE = {
   },
   "sectionNotes": {
     "portfolio": "Five pieces of work, written up in depth — what the problem was, what I built, and what I would do differently now.",
-    "writing": "Four published pages you can read without me in the room."
+    "writing": ""
   },
   "samples": [
     {

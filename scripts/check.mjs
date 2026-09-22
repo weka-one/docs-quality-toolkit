@@ -276,6 +276,9 @@ const IDENTIFIER_FIELDS = new Set(["slug", "url", "resumeUrl"]);
 lintProse(dataPath, dataSrc, [...dataSrc.matchAll(/"((?:[^"\\]|\\.)*)"/g)]
   .filter((m) => {
     if (/^(?:https?:)?\/\//.test(m[1])) return false;
+    /* A bare URL or hostname used as display text, e.g. a LinkedIn
+       address shown as itself. Lowercase is correct there. */
+    if (/^[\w.-]+\.[a-z]{2,}(?:[/?#]|$)/i.test(m[1])) return false;
     const key = dataSrc.slice(0, m.index).match(/"?(\w+)"?\s*:\s*$/)?.[1];
     return !(key && IDENTIFIER_FIELDS.has(key));
   })

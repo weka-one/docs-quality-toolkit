@@ -43,7 +43,7 @@ for (const [slug, c] of Object.entries(cases.value)) {
 
   c.body = c.body.filter((b, i) => {
     if (b.t === "table") {
-      if (isBlank(b.caption)) { b.caption = ""; removed.push(`${slug}: emptied table caption`); }
+      if (isBlank(b.caption) && b.caption !== "") { b.caption = ""; removed.push(`${slug}: emptied table caption`); }
       return true;
     }
     if (b.items) {
