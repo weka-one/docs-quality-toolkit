@@ -232,8 +232,10 @@
   /* ---------------------------------------------------------------
      Case study pager — previous / next, wrapping
      --------------------------------------------------------------- */
-  const pager = $("#pager");
-  if (pager) {
+  window.renderPager = function () {
+    const pager = $("#pager");
+    if (!pager) return;
+    {
     const i = PROJECTS.findIndex((p) => p.slug === PAGE);
     if (i !== -1 && PROJECTS.length > 1) {
       const prev = PROJECTS[(i - 1 + PROJECTS.length) % PROJECTS.length];
@@ -246,7 +248,9 @@
           <span>Next</span><strong>${esc(next.nav)}</strong>
         </a>`;
     }
-  }
+    }
+  };
+  window.renderPager();
 
   /* ---------------------------------------------------------------
      Scroll-spy on the rail nav (home only)

@@ -231,11 +231,11 @@ const CASES = {
         "label": "developers screened across 29 countries through the documented intake process"
       },
       {
-        "value": "&lt;10 &rarr; 200+",
+        "value": "&lt;10 → 200+",
         "label": "app launches per two-week cycle after onboarding moved to self-service"
       },
       {
-        "value": "4&times;",
+        "value": "4×",
         "label": "reduction in developer onboarding time"
       }
     ],
@@ -262,11 +262,11 @@ const CASES = {
       },
       {
         "t": "p",
-        "html": "I authored and published the entire public documentation set for TikTok Minis and Mini Games: the introduction and platform concepts, the Mini Games and Mini Dramas build guides, and the monetization documentation. Every public page a developer reads on their way from \"interested\" to \"launched\" came through me."
+        "html": "I collaborated closely with engineering, operations, and product management stakeholders to develop and deliver the entire public documentation set for TikTok Minis and Mini Games: the introduction and platform concepts, the mini games and mini dramas build guides, and the monetization documentation. All requests for documentation came through me, and I was the sole publisher.&nbsp;"
       },
       {
         "t": "table",
-        "caption": "Counted from the published navigation. Where a folder page and its first child resolve to the same URL, the two are counted once.",
+        "caption": "",
         "head": [
           "Section",
           "Pages"
@@ -295,16 +295,6 @@ const CASES = {
         ]
       },
       {
-        "t": "p",
-        "html": "That scope is unusual and it mattered. A single author across the whole funnel means the integration guide and the monetization guide assume the same prior knowledge, use the same terms for the same things, and hand off to each other in the order a developer actually hits them. Documentation written by the team that owns each feature tends not to do that."
-      },
-      {
-        "t": "pull",
-        "items": [
-          "The test of onboarding documentation is not whether it is accurate. It is whether a developer in a market you have never visited, working from a time zone where nobody is online to ask, can get to a launched app without talking to anyone."
-        ]
-      },
-      {
         "t": "h2",
         "html": "The integration workflow"
       },
@@ -313,16 +303,12 @@ const CASES = {
         "html": "The core work was documenting the integration workflow end to end so it could be followed without a partner manager in the loop. Once that existed, intake stopped being a conversation and became a process: 359 developers were screened across 29 countries, and biweekly launches moved from fewer than 10 to more than 200."
       },
       {
-        "t": "p",
-        "html": "Onboarding time dropped by a factor of four. The mechanism is not mysterious — the questions that used to be asked in a thread were answered on a page, once, in the place the developer was already looking."
-      },
-      {
         "t": "h2",
-        "html": "Compliance and KYB"
+        "html": "Compliance and business screening"
       },
       {
         "t": "p",
-        "html": "Scaling a developer platform into new markets raises a problem that is the opposite of a growth problem: every additional developer is an additional entity you have to know something about. I wrote the end-to-end compliance and Know Your Business processes."
+        "html": "Scaling a developer platform into new markets raises a problem that is the opposite of a growth problem: every additional developer is an additional entity you have to know something about. I wrote the end-to-end compliance and Know Your Business (KYB) processes."
       },
       {
         "t": "p",
@@ -338,7 +324,7 @@ const CASES = {
       },
       {
         "t": "p",
-        "html": "Ad monetization documentation has a property most developer documentation does not: the difference between a correct and an incorrect implementation shows up directly in the developer's revenue. Documenting the monetization APIs well enough that developers configured them properly contributed to an average ROAS increase for in-app ads of more than 100% in Q4."
+        "html": "Ad monetization documentation has a property most developer documentation does not: the difference between a correct and an incorrect implementation shows up directly in the developer's revenue. Documenting the monetization APIs well enough that developers configured them properly contributed to an average ROAS increase for in-app ads of more than 100% in Q4 2025."
       },
       {
         "t": "h2",
@@ -528,11 +514,6 @@ const CASES = {
         "label": "Worked with",
         "value": "Technical writing, content design, engineering, localization",
         "href": null
-      },
-      {
-        "label": "Artifacts",
-        "value": "Internal — I can walk through them in detail",
-        "href": null
       }
     ],
     "stats": [
@@ -572,11 +553,7 @@ const CASES = {
       },
       {
         "t": "p",
-        "html": "I wrote the TikTok for Developers style guide from scratch and applied it while reviewing API documentation and developer-facing responses on GitHub. For Effect House, I expanded the existing learning resources style guide with specifications it had been missing: table formatting, verbiage conventions, and — the one that mattered most for a tool-centric docs set — how to reference in-tool navigation so that every guide pointed at the interface the same way."
-      },
-      {
-        "t": "p",
-        "html": "I also wrote guidelines for Markdown formatting, which sounds trivial and is not. Once documentation lives in Git and multiple teams contribute through pull requests, formatting inconsistency becomes diff noise that buries the substantive review comments."
+        "html": "I wrote the TikTok for Developers style guide from scratch and applied it while reviewing API documentation. For Effect House, I expanded the existing learning resources style guide with specifications it had been missing: table formatting, verbiage conventions, and — the one that mattered most for a tool-centric docs set — how to reference in-tool navigation so that every guide pointed at the interface the same way. I also wrote guidelines for Markdown formatting."
       },
       {
         "t": "h2",
@@ -585,16 +562,6 @@ const CASES = {
       {
         "t": "p",
         "html": "Working with content design, I reviewed and finalized 40+ Effect House UI terms for use across the documentation. The decision I would defend hardest is that the glossary did not stay an internal reference — it was published as a page in the documentation itself."
-      },
-      {
-        "t": "p",
-        "html": "An internal-only glossary standardizes writers. A published one standardizes writers, support, the product team, and the readers who go on to write community tutorials. It also creates accountability: a term that is wrong in public gets reported."
-      },
-      {
-        "t": "pull",
-        "items": [
-          "A standard nobody can follow is decoration. Most of the work was not writing the guides — it was building the surrounding process so that following them was the path of least resistance."
-        ]
       },
       {
         "t": "h2",
@@ -630,10 +597,6 @@ const CASES = {
         ]
       },
       {
-        "t": "p",
-        "html": "I also hosted a global content design and product writing event and built a digital yearbook for the team — lighter work, but part of the same effort to make a distributed writing function feel like one group with one standard."
-      },
-      {
         "t": "h2",
         "html": "What I would do differently"
       },
@@ -643,7 +606,7 @@ const CASES = {
       },
       {
         "t": "p",
-        "html": "A meaningful share of what these guides specify is mechanically checkable: approved terminology, table conventions, heading structure, how in-tool navigation is referenced, link health, whether a page has gone stale relative to the release it documents. None of it needed a human."
+        "html": "A meaningful share of what these guides specify is mechanically checkable: approved terminology, table conventions, heading structure, how in-tool navigation is referenced, link health, whether a page has gone stale relative to the release it documents.&nbsp;"
       },
       {
         "t": "p",
@@ -653,7 +616,7 @@ const CASES = {
   },
   "crash-course": {
     "kicker": "TikTok · Effect House · 2023–2025",
-    "title": "Teaching AR authoring to people who have never opened the tool",
+    "title": "Teaching an AR program to people who have never opened the tool",
     "deck": "An instructional-design program built from scratch: the highest-performing Effect House video series to date, plus the creator mission around it.",
     "description": "Designing the Effect House Crash Course and the #MyFirstTikTokEffect mission: the highest-performing Effect House video series to date, built on explicit learning objectives.",
     "meta": [
@@ -715,17 +678,11 @@ const CASES = {
       },
       {
         "t": "p",
-        "html": "The distinction I cared about most was that this be an actual curriculum. Working closely with a colleague on content design, I used Bloom's taxonomy to write explicit learning objectives — for each module individually and for the program as a whole — before any script was written."
+        "html": "The distinction I cared about most was that this be an actual curriculum. Working closely with content design, I used Bloom's taxonomy to write explicit learning objectives — for each module individually and for the program as a whole — before any script was written."
       },
       {
         "t": "p",
-        "html": "That ordering does real work. Learning objectives determine what a module is allowed to assume the viewer already knows, which determines module order, which determines what has to be demonstrated versus merely mentioned. Without them a tutorial series drifts toward showing off the tool's capabilities in the order the writer finds them interesting. With them, the sequence is answerable to whether a beginner can actually follow it."
-      },
-      {
-        "t": "pull",
-        "items": [
-          "A video series is easy to produce and hard to make someone finish. The learning objectives were the mechanism for deciding what to cut — anything that did not serve an objective was interesting, not necessary."
-        ]
+        "html": "Learning objectives determined what a module is allowed to assume the viewer already knows, which determines module order, which determines what has to be demonstrated versus merely mentioned. Without them a tutorial series would have drifted toward showing off the tool's capabilities without substance. With them, the sequence is answerable to whether a beginner can actually follow it."
       },
       {
         "t": "h2",
@@ -745,7 +702,7 @@ const CASES = {
       },
       {
         "t": "p",
-        "html": "Two of the published pieces are still live: the course's opening module, <a href=\"https://effecthouse.tiktok.com/learn/tutorials/eh-crash-course/introduction-to-visual-scripting\">Introduction to Visual Scripting</a>, and the <a href=\"https://effecthouse.tiktok.com/learn/library/template-tutorials/art-maker\">Art Maker template tutorial</a> — a walkthrough of an AI-driven template that restyles camera input, written for creators with no technical background."
+        "html": "The&nbsp;<a href=\"https://effecthouse.tiktok.com/learn/tutorials/eh-crash-course/introduction-to-visual-scripting\">Introduction to Visual Scripting</a>&nbsp;module is an example of a lesson written for creators with no technical background."
       },
       {
         "t": "p",

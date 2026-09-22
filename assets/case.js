@@ -7,7 +7,7 @@
      data-edit       plain text  — read and written as textContent
      data-edit-html  rich text   — inline <strong>/<em>/<a>/<code>
    ================================================================= */
-(function () {
+function renderCase() {
   const slug = document.body.dataset.page;
   const root = document.getElementById("case");
   if (!root || typeof CASES === "undefined" || !CASES[slug]) return;
@@ -36,6 +36,14 @@
       case "pull":
         return `<div class="pull">${b.items.map((it, k) =>
           `<p data-edit-html="${p("body", i, "items", k)}">${it}</p>`).join("")}</div>`;
+      case "figure": {
+        const cls = `fig fig--${b.size || "full"}${b.align ? " fig--" + b.align : ""}`;
+        const cap = b.caption || "";
+        return `<figure class="${cls}" data-block="${i}">
+          <img src="${esc(b.src)}" alt="${esc(b.alt || "")}"${b.width ? ` width="${esc(b.width)}"` : ""}>
+          <figcaption data-edit-html="${p("body", i, "caption")}"${cap ? "" : ' class="is-empty"'}>${cap}</figcaption>
+        </figure>`;
+      }
       case "table":
         return `<table class="tbl">
           ${b.caption ? `<caption data-edit-html="${p("body", i, "caption")}">${b.caption}</caption>` : ""}
@@ -80,4 +88,5 @@
     <div class="prose">${c.body.map(block).join("\n")}</div>
 
     <nav class="pager" id="pager" aria-label="More projects"></nav>`;
-})();
+}
+renderCase();

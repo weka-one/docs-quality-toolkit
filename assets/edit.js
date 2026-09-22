@@ -97,6 +97,20 @@ const CASES = ${JSON.stringify(cases, null, 2)};
     return files;
   }
 
+  /* Block edits (adding an image, removing a block) change the data
+     directly, so the page is redrawn from it and edit mode re-applied. */
+  let dirty = false;
+  function rerender() {
+    const keep = editing;
+    if (keep) setEditing(false);
+    if (typeof renderCase === "function") {
+      renderCase();
+      if (typeof window.renderPager === "function") window.renderPager();
+    }
+    if (keep) setEditing(true);
+  }
+  const markDirty = () => { dirty = true; status("Unsaved changes", "warn"); };
+
   let artifact = null;
   let editing = false;
   const original = new Map();
@@ -109,6 +123,12 @@ const CASES = ${JSON.stringify(cases, null, 2)};
       if (!on) el.classList.toggle("is-empty", el.textContent.trim() === "");
       el.contentEditable = on ? (isRich(el) ? "true" : "plaintext-only") : "inherit";
       if (!on) el.removeAttribute("contenteditable");
+    }
+    const prose = document.querySelector("#case");
+    if (prose) {
+      for (const bar of prose.querySelectorAll(".blocktools")) bar.remove();
+      for (const n of prose.querySelectorAll(".has-blocktools")) n.classList.remove("has-blocktools");
+      if (on && window.EditImages && EditImages.ready) EditImages.decorate(prose);
     }
     $("#editbar").hidden = !on;
     $("#edit-toggle").textContent = on ? "Cancel" : "Edit text";
@@ -138,7 +158,7 @@ const CASES = ${JSON.stringify(cases, null, 2)};
     }
 
     const files = filesFor(data);
-    if (!Object.keys(files).length) {
+    if (!Object.keys(files).length && !dirty) {
       setEditing(false);
       status("No changes", "ok");
       return;
@@ -152,6 +172,7 @@ const CASES = ${JSON.stringify(cases, null, 2)};
       PROJECTS.length = 0;
       PROJECTS.push(...data.PROJECTS);
       if (data.CASES) Object.assign(CASES, data.CASES);
+      dirty = false;
       setEditing(false);
       status("Saved", "ok");
       setTimeout(() => location.reload(), 600);
@@ -224,6 +245,10 @@ const CASES = ${JSON.stringify(cases, null, 2)};
     const snap = JSON.parse(JSON.stringify(roots()));
     baseline = { "assets/data.js": serialize(snap) };
     if (snap.CASES) baseline["assets/cases.js"] = serializeCases(snap.CASES);
+    if (window.EditImages && typeof CASES !== "undefined" && CASES[document.body.dataset.page]) {
+      EditImages.init({ slug: document.body.dataset.page, rerender, markDirty })
+        .catch(() => {});
+    }
     requestAnimationFrame(mount);
   });
 })();
