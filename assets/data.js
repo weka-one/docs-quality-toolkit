@@ -58,6 +58,44 @@ const SITE = {
   // Leave as null to hide the link.
   resumeUrl: null,
 
+  identity: {
+    name: "Wesley Kao",
+    role: "Technical writer, San Francisco Bay Area"
+  },
+
+  hero: {
+    statement: "I turn complicated products into documentation people can actually follow.",
+    sub: "Senior technical writer at TikTok, working on developer documentation, information architecture, and the editorial systems that keep a large docs estate accurate as the product moves underneath it."
+  },
+
+  about: {
+    paragraphs: [
+      "I write for developers. At TikTok I own documentation for the mini apps platform \u2014 guides, API references, and monetization docs used by partners building games, short-form drama apps, and hotel booking integrations on top of the platform.",
+      "Most of what I do is not drafting. It is deciding how a documentation set should be organized, what a good page looks like, and how it stays correct once dozens of people are contributing to it. I wrote TikTok's developer documentation style guide, and I led the migration of the Effect House learning resources estate off WordPress onto Docusaurus \u2014 which meant rebuilding the information architecture and the review workflow at the same time.",
+      "Before technical writing I studied biochemistry and spent two years in dental school. Reading dense technical material and explaining it to someone who does not have the background is the part of that training I still use every day."
+    ],
+    aside: [
+      { label: "Currently", value: "Senior Technical Writer, TikTok" },
+      { label: "Based in", value: "Alameda, CA" },
+      { label: "Works in", value: "Markdown, RST, Git, Docusaurus" },
+      { label: "Languages", value: "English, Mandarin Chinese (proficient)" }
+    ]
+  },
+
+  contact: {
+    intro: "I'm open to senior technical writing and documentation engineering roles. The fastest way to reach me is email.",
+    lines: [
+      { label: "Email", value: "wesley.y.kao@gmail.com", href: "mailto:wesley.y.kao@gmail.com" },
+      { label: "LinkedIn", value: "wesley-kao", href: "https://www.linkedin.com/in/wesley-kao-6a6779220/" },
+      { label: "Location", value: "Alameda, CA \u2014 Bay Area", href: null }
+    ]
+  },
+
+  sectionNotes: {
+    portfolio: "Five pieces of work, written up in depth \u2014 what the problem was, what I built, and what I would do differently now.",
+    writing: "Four published pages you can read without me in the room."
+  },
+
 
   // Externally linkable published work. Case studies live in PROJECTS.
   samples: [

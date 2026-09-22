@@ -45,8 +45,8 @@
 
     rail.innerHTML = `
       <div>
-        <p class="rail__name"><a href="${esc(home("#top"))}">Wesley Kao</a></p>
-        <p class="rail__role">Technical writer, San Francisco Bay Area</p>
+        <p class="rail__name"><a href="${esc(home("#top"))}">${esc(SITE.identity.name)}</a></p>
+        <p class="rail__role">${esc(SITE.identity.role)}</p>
       </div>
       <nav class="nav" aria-label="Sections">
         <ol>
@@ -135,6 +135,40 @@
   }
 
   /* ---------------------------------------------------------------
+     Copy that lives in data.js: hero, about, contact, section notes
+     --------------------------------------------------------------- */
+  for (const el of document.querySelectorAll("[data-edit]")) {
+    const value = el.dataset.edit.split(".").slice(1)
+      .reduce((o, k) => (o == null ? o : o[k]), SITE);
+    if (typeof value === "string") el.textContent = value;
+  }
+
+  const aboutBody = $("#about-body");
+  if (aboutBody) {
+    aboutBody.innerHTML = SITE.about.paragraphs
+      .map((t, i) => `<p data-edit="SITE.about.paragraphs.${i}">${esc(t)}</p>`).join("");
+  }
+
+  const aboutAside = $("#about-aside");
+  if (aboutAside) {
+    aboutAside.innerHTML = SITE.about.aside.map((row, i) => `
+      <div>
+        <dt data-edit="SITE.about.aside.${i}.label">${esc(row.label)}</dt>
+        <dd data-edit="SITE.about.aside.${i}.value">${esc(row.value)}</dd>
+      </div>`).join("");
+  }
+
+  const contactLines = $("#contact-lines");
+  if (contactLines) {
+    contactLines.innerHTML = SITE.contact.lines.map((row, i) => {
+      const value = row.href
+        ? `<a href="${esc(row.href)}" data-edit="SITE.contact.lines.${i}.value">${esc(row.value)}</a>`
+        : `<span data-edit="SITE.contact.lines.${i}.value">${esc(row.value)}</span>`;
+      return `<div><span data-edit="SITE.contact.lines.${i}.label">${esc(row.label)}</span>${value}</div>`;
+    }).join("");
+  }
+
+  /* ---------------------------------------------------------------
      Portfolio cards (home section and /portfolio/ index)
      --------------------------------------------------------------- */
   const cards = $("#cards");
@@ -143,11 +177,11 @@
       <a class="card" href="${esc(project(p.slug))}">
         <span class="card__num">${String(i + 1).padStart(2, "0")}</span>
         <div>
-          <h3 class="card__title">${esc(p.title)}</h3>
-          <span class="card__org">${esc(p.org)}</span>
-          <p class="card__deck">${esc(p.deck)}</p>
+          <h3 class="card__title" data-edit="PROJECTS.${i}.title">${esc(p.title)}</h3>
+          <span class="card__org" data-edit="PROJECTS.${i}.org">${esc(p.org)}</span>
+          <p class="card__deck" data-edit="PROJECTS.${i}.deck">${esc(p.deck)}</p>
           <ul class="card__tags">
-            ${p.tags.map((t) => `<li>${esc(t)}</li>`).join("")}
+            ${p.tags.map((t, j) => `<li data-edit="PROJECTS.${i}.tags.${j}">${esc(t)}</li>`).join("")}
           </ul>
         </div>
       </a>`).join("");
@@ -158,12 +192,12 @@
      --------------------------------------------------------------- */
   const index = $("#index");
   if (index) {
-    index.innerHTML = SITE.samples.map((s) => `
+    index.innerHTML = SITE.samples.map((s, i) => `
       <a class="row" href="${esc(s.url)}" target="_blank" rel="noopener">
-        <span class="row__title">${esc(s.title)}</span>
-        <span class="row__org">${esc(s.org)}</span>
-        <span class="row__format">${esc(s.format)}</span>
-        <p class="row__desc">${esc(s.desc)}</p>
+        <span class="row__title" data-edit="SITE.samples.${i}.title">${esc(s.title)}</span>
+        <span class="row__org" data-edit="SITE.samples.${i}.org">${esc(s.org)}</span>
+        <span class="row__format" data-edit="SITE.samples.${i}.format">${esc(s.format)}</span>
+        <p class="row__desc" data-edit="SITE.samples.${i}.desc">${esc(s.desc)}</p>
       </a>`).join("");
   }
 
@@ -172,22 +206,22 @@
      --------------------------------------------------------------- */
   const jobs = $("#experience-list");
   if (jobs) {
-    jobs.innerHTML = SITE.experience.map((j) => `
+    jobs.innerHTML = SITE.experience.map((j, i) => `
       <article class="job">
-        <div class="job__when">${esc(j.when)}</div>
+        <div class="job__when" data-edit="SITE.experience.${i}.when">${esc(j.when)}</div>
         <div>
-          <h3 class="job__title">${esc(j.title)} <span class="job__org">· ${esc(j.org)}</span></h3>
-          <ul>${j.points.map((p) => `<li>${esc(p)}</li>`).join("")}</ul>
+          <h3 class="job__title"><span data-edit="SITE.experience.${i}.title">${esc(j.title)}</span> <span class="job__org">· <span data-edit="SITE.experience.${i}.org">${esc(j.org)}</span></span></h3>
+          <ul>${j.points.map((p, k) => `<li data-edit="SITE.experience.${i}.points.${k}">${esc(p)}</li>`).join("")}</ul>
         </div>
       </article>`).join("");
   }
 
   const cols = $("#skills-cols");
   if (cols) {
-    cols.innerHTML = SITE.skills.map((g) => `
+    cols.innerHTML = SITE.skills.map((g, i) => `
       <div>
-        <h3>${esc(g.heading)}</h3>
-        <ul>${g.items.map((i) => `<li>${esc(i)}</li>`).join("")}</ul>
+        <h3 data-edit="SITE.skills.${i}.heading">${esc(g.heading)}</h3>
+        <ul>${g.items.map((it, k) => `<li data-edit="SITE.skills.${i}.items.${k}">${esc(it)}</li>`).join("")}</ul>
       </div>`).join("");
   }
 

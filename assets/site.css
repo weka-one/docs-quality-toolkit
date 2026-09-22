@@ -619,3 +619,58 @@ footer{
   max-width:var(--measure);
   line-height:1.5;
 }
+
+/* ---------------------------------------------------------------
+   Edit mode — present only when the viewer can write the artifact
+   --------------------------------------------------------------- */
+.edit-toggle{
+  font:inherit;font-size:.8rem;
+  margin-top:.4rem;padding:.25rem .7rem;
+  background:transparent;color:var(--muted);
+  border:1px solid var(--rule);border-radius:999px;
+  cursor:pointer;
+  transition:color .16s ease,border-color .16s ease;
+}
+.edit-toggle:hover{color:var(--accent);border-color:var(--accent);}
+
+.editbar{
+  position:fixed;left:50%;bottom:1.25rem;transform:translateX(-50%);
+  z-index:60;
+  display:flex;align-items:center;gap:1rem;
+  padding:.6rem .75rem .6rem 1.1rem;
+  background:var(--ink);color:var(--paper);
+  border-radius:999px;
+  box-shadow:0 10px 30px rgb(0 0 0 / .22);
+  font-size:.85rem;
+  max-width:calc(100vw - 2rem);
+}
+.editbar[hidden]{display:none;}
+.editbar__hint{opacity:.7;white-space:nowrap;}
+.editbar__status{opacity:.85;white-space:nowrap;}
+.editbar__status[data-tone="ok"]{color:#7fd8be;}
+.editbar__status[data-tone="warn"]{color:#f3b7a8;}
+.editbar button{
+  font:inherit;font-size:.85rem;font-weight:500;
+  padding:.3rem .9rem;border:0;border-radius:999px;
+  background:var(--paper);color:var(--ink);
+  cursor:pointer;
+}
+.editbar button:disabled{opacity:.5;cursor:default;}
+
+.is-editing [data-edit]{
+  outline:1px dashed var(--rule);
+  outline-offset:3px;
+  border-radius:2px;
+}
+.is-editing [data-edit]:focus{
+  outline:2px solid var(--accent);
+  background:var(--accent-weak);
+}
+.is-editing a.row,.is-editing a.card{pointer-events:none;}
+.is-editing a.row [data-edit],.is-editing a.card [data-edit]{pointer-events:auto;}
+
+@media (max-width:620px){
+  .editbar__hint{display:none;}
+}
+/* Keep the floating save bar clear of the last line of content. */
+.is-editing main{padding-bottom:5rem;}

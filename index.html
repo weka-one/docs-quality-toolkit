@@ -21,8 +21,8 @@
 <main id="main">
 
   <section class="hero reveal" id="top" aria-label="Introduction">
-    <h1 class="hero__statement">I turn complicated products into documentation people can actually follow.</h1>
-    <p class="hero__sub">Senior technical writer at TikTok, working on developer documentation, information architecture, and the editorial systems that keep a large docs estate accurate as the product moves underneath it.</p>
+    <h1 class="hero__statement" data-edit="SITE.hero.statement"></h1>
+    <p class="hero__sub" data-edit="SITE.hero.sub"></p>
     <div class="hero__links">
       <a href="#portfolio">See the portfolio</a>
       <a href="mailto:wesley.y.kao@gmail.com">wesley.y.kao@gmail.com</a>
@@ -32,23 +32,14 @@
 
   <section id="about">
     <h2 class="h2"><span>About</span></h2>
-    <div class="about__body">
-      <p>I write for developers. At TikTok I own documentation for the mini apps platform — guides, API references, and monetization docs used by partners building games, short-form drama apps, and hotel booking integrations on top of the platform.</p>
-      <p>Most of what I do is not drafting. It is deciding how a documentation set should be organized, what a good page looks like, and how it stays correct once dozens of people are contributing to it. I wrote TikTok's developer documentation style guide, and I led the migration of the Effect House learning resources estate off WordPress onto Docusaurus — which meant rebuilding the information architecture and the review workflow at the same time.</p>
-      <p>Before technical writing I studied biochemistry and spent two years in dental school. Reading dense technical material and explaining it to someone who does not have the background is the part of that training I still use every day.</p>
-    </div>
-    <dl class="about__aside">
-      <div><dt>Currently</dt><dd>Senior Technical Writer, TikTok</dd></div>
-      <div><dt>Based in</dt><dd>Alameda, CA</dd></div>
-      <div><dt>Works in</dt><dd>Markdown, RST, Git, Docusaurus</dd></div>
-      <div><dt>Languages</dt><dd>English, Mandarin Chinese (proficient)</dd></div>
-    </dl>
+    <div class="about__body" id="about-body"></div>
+    <dl class="about__aside" id="about-aside"></dl>
   </section>
 
   <section id="portfolio">
     <h2 class="h2">
       <span>Portfolio</span>
-      <span class="h2__note">Four pieces of work, written up in depth — what the problem was, what I built, and what I would do differently now.</span>
+      <span class="h2__note" data-edit="SITE.sectionNotes.portfolio"></span>
     </h2>
     <div class="cards" id="cards"></div>
   </section>
@@ -56,7 +47,7 @@
   <section id="writing">
     <h2 class="h2">
       <span>Selected writing</span>
-      <span class="h2__note">Four published pages you can read without me in the room.</span>
+      <span class="h2__note" data-edit="SITE.sectionNotes.writing"></span>
     </h2>
     <div class="index" id="index"></div>
   </section>
@@ -73,12 +64,8 @@
 
   <section id="contact">
     <h2 class="h2"><span>Contact</span></h2>
-    <p>I'm open to senior technical writing and documentation engineering roles. The fastest way to reach me is email.</p>
-    <div class="contact__lines">
-      <div><span>Email</span><a href="mailto:wesley.y.kao@gmail.com">wesley.y.kao@gmail.com</a></div>
-      <div><span>LinkedIn</span><a href="https://www.linkedin.com/in/wesley-kao-6a6779220/">wesley-kao</a></div>
-      <div><span>Location</span>Alameda, CA — Bay Area</div>
-    </div>
+    <p data-edit="SITE.contact.intro"></p>
+    <div class="contact__lines" id="contact-lines"></div>
   </section>
 
   <footer>Built by hand with HTML, CSS, and a little JavaScript.</footer>
@@ -86,5 +73,6 @@
 
 <script src="assets/data.js"></script>
 <script src="assets/site.js"></script>
+<script src="assets/edit.js"></script>
 </body>
 </html>
