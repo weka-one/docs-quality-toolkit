@@ -152,7 +152,7 @@
     const pt = SITE.hero.portrait;
     if (pt && pt.src) {
       portrait.innerHTML =
-        `<img src="${esc(BASE + pt.src)}" alt="${esc(pt.alt || "")}" width="760" height="950" loading="eager" decoding="async">`;
+        `<img src="${esc(BASE + pt.src)}" alt="${esc(pt.alt || "")}" width="640" height="805" loading="eager" decoding="async">`;
     } else {
       portrait.remove();
     }

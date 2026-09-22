@@ -792,16 +792,20 @@ footer{
    --------------------------------------------------------------- */
 .hero{
   display:grid;
-  grid-template-columns:minmax(0,1fr) minmax(0,19rem);
-  gap:clamp(2rem,5vw,4.5rem);
+  /* The text column is sized to its own content, not stretched to fill:
+     hero__sub caps at 46ch, so a 1fr column left ~70px of slack that
+     read as part of the gap. */
+  grid-template-columns:fit-content(32rem) minmax(0,17rem);
+  gap:clamp(1.5rem,3vw,2.75rem);
+  justify-content:start;
   align-items:center;
 }
 .hero__text{min-width:0;}
 .hero__portrait{
   margin:0;
   align-self:center;
-  justify-self:end;
-  max-width:19rem;
+  justify-self:start;
+  max-width:17rem;
   width:100%;
 }
 .hero__portrait img{

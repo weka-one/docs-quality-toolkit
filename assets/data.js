@@ -84,7 +84,7 @@ const SITE = {
     "sub": "Senior Technical Writer at TikTok, working on developer documentation, information architecture, and the editorial systems that keep a large docs estate accurate as the product moves underneath it.",
     "portrait": {
       "src": "assets/img/portrait.jpg",
-      "alt": "Wesley Kao photographing his own reflection in a round mirror, in a room with red lanterns and stained glass"
+      "alt": "Wesley Kao photographing his own reflection in a mirror, a red paper lantern behind him"
     }
   },
   "about": {
