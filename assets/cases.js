@@ -249,6 +249,15 @@ const CASES = {
         "html": "TikTok Minis is a platform for third-party developers building games, short-form drama apps, and booking integrations that run inside TikTok. Growing it means onboarding developers who are outside the company, in markets across the world, in time zones nobody is awake for."
       },
       {
+        "t": "figure",
+        "src": "/_blob/2b77511cb8cac2aba45e9a552a32a3d3",
+        "assetId": "2b77511cb8cac2aba45e9a552a32a3d3",
+        "alt": "TikTok Minis UI mobile",
+        "caption": "",
+        "size": "full",
+        "align": ""
+      },
+      {
         "t": "p",
         "html": "When onboarding is manual, each of those developers costs a person. A partner manager walks them through integration, answers the same questions that were answered last week, and chases the same compliance paperwork. That model produced fewer than 10 app launches per two-week cycle, and it had a ceiling set by headcount rather than by demand. Meanwhile the business was expanding into seven new markets."
       },
@@ -262,7 +271,7 @@ const CASES = {
       },
       {
         "t": "p",
-        "html": "I collaborated closely with engineering, operations, and product management stakeholders to develop and deliver the entire public documentation set for TikTok Minis and Mini Games: the introduction and platform concepts, the mini games and mini dramas build guides, and the monetization documentation. All requests for documentation came through me, and I was the sole publisher.&nbsp;"
+        "html": "I collaborated closely with engineering, operations, and product management stakeholders to develop and deliver the entire public documentation set for TikTok Minis and Mini Games: the introduction and platform concepts, the mini games and mini dramas build guides, and the monetization documentation. All requests for documentation came through me, and I was the sole publisher."
       },
       {
         "t": "table",
@@ -300,7 +309,7 @@ const CASES = {
       },
       {
         "t": "p",
-        "html": "The core work was documenting the integration workflow end to end so it could be followed without a partner manager in the loop. Once that existed, intake stopped being a conversation and became a process: 359 developers were screened across 29 countries, and biweekly launches moved from fewer than 10 to more than 200."
+        "html": "The core work was documenting the integration workflow end to end so it could be followed without a partner manager in the loop. The process itself included both configuration guidelines for our developer platform and technical specifications for API and SDK integrations. Once the comprehensive workflow was published, intake stopped being a conversation and became a process: 359 developers were screened across 29 countries, and biweekly launches moved from fewer than 10 to more than 200."
       },
       {
         "t": "h2",
@@ -431,6 +440,15 @@ const CASES = {
       {
         "t": "p",
         "html": "The central move was refactoring 70+ existing technical guides into 140+ feature guides organized to mirror the tool's own layout of objects, components, and assets. Splitting pages roughly doubled the page count, which sounds like the wrong direction until you look at what the old pages were: single documents covering several unrelated features because those features had happened to ship together. A reader with a component selected in the editor could now find exactly the page for that component."
+      },
+      {
+        "t": "figure",
+        "src": "/_blob/82544ece0406889491258418fbc2f52b",
+        "assetId": "82544ece0406889491258418fbc2f52b",
+        "alt": "Effect House tool",
+        "caption": "Effect House program",
+        "size": "full",
+        "align": ""
       },
       {
         "t": "p",

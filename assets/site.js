@@ -147,6 +147,17 @@
     el.classList.toggle("is-empty", value.trim() === "");
   }
 
+  const portrait = $("#hero-portrait");
+  if (portrait) {
+    const pt = SITE.hero.portrait;
+    if (pt && pt.src) {
+      portrait.innerHTML =
+        `<img src="${esc(BASE + pt.src)}" alt="${esc(pt.alt || "")}" width="760" height="950" loading="eager" decoding="async">`;
+    } else {
+      portrait.remove();
+    }
+  }
+
   const aboutBody = $("#about-body");
   if (aboutBody) {
     aboutBody.innerHTML = SITE.about.paragraphs

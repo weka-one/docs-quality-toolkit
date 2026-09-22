@@ -81,12 +81,16 @@ const SITE = {
   },
   "hero": {
     "statement": "Wesley Kao",
-    "sub": "Senior Technical Writer at TikTok, working on developer documentation, information architecture, and the editorial systems that keep a large docs estate accurate as the product moves underneath it."
+    "sub": "Senior Technical Writer at TikTok, working on developer documentation, information architecture, and the editorial systems that keep a large docs estate accurate as the product moves underneath it.",
+    "portrait": {
+      "src": "assets/img/portrait.jpg",
+      "alt": "Wesley Kao photographing his own reflection in a round mirror, in a room with red lanterns and stained glass"
+    }
   },
   "about": {
     "paragraphs": [
-      "I turn complicated products into documentation people can actually follow. Having worked in product areas ranging from SaaS to developer integrations, I have extensive experience managing systems and defining standards. But more than that, I'm deeply curious individual with and penchant for interrogating systems a knack for collaboration.",
-      "I currently work as a Senior Technical Writer at TikTok, where I work cross-functionally with teams across the world to deliver documentation to the developers who use our platform. As the sole writer managing TikTok’s developer documentation, I created our style guide, and laid the foundation for our platform's information architecture, localization rules, and technical writing workflows.",
+      "I turn complicated products into documentation people can actually follow. Having worked in product areas ranging from SaaS to developer integrations, I have extensive experience managing systems and defining standards. But more than that, I'm a deeply curious individual with a penchant for interrogating systems and a knack for collaboration.",
+      "I currently work as a Senior Technical Writer at TikTok, where I work cross-functionally with teams across the world to deliver documentation to the developers who use our platform. As the sole writer managing TikTok's developer documentation, I created our style guide, and laid the foundation for our platform's information architecture, localization rules, and technical writing workflows.",
       "Outside of work you can find me running outside, doing Muay Thai, or at home whipping up an amazing meal for friends. I am also very likely to bring home-baked treats into the office."
     ],
     "aside": [
@@ -119,7 +123,7 @@ const SITE = {
       },
       {
         "label": "Location",
-        "value": "Alameda, CA — Bay Area",
+        "value": "San Francisco Bay Area, CA",
         "href": null
       }
     ]
@@ -167,8 +171,9 @@ const SITE = {
         "Authored and published all 108 pages of public documentation for TikTok Minis and Mini Games, cutting developer onboarding time fourfold and taking launches from under 10 to over 200 per two-week cycle.",
         "Published the monetization documentation behind roughly $100k in daily GMV from mini games through in-app purchases and ads.",
         "Delivered onboarding guides and API documentation for travel partners including Expedia and Booking.com launching hotel booking on TikTok.",
-        "Managed the migration of TikTok for Devleopers documentation to a custom CMS, defining the information architecture and docsite UI copy.",
-        "Created and maintain TikTok's developer documentation style guide."
+        "Managed the migration of TikTok for Developers documentation to a custom CMS, defining the information architecture and docsite UI copy.",
+        "Created and maintain TikTok's developer documentation style guide.",
+        "Built AI skills that review documentation against our internal writing standards, turning a manual editorial pass into an automated one."
       ]
     },
     {
@@ -211,6 +216,7 @@ const SITE = {
     {
       "heading": "Tools & formats",
       "items": [
+        "AI tooling & automation",
         "Markdown",
         "reStructuredText",
         "HTML & CSS",

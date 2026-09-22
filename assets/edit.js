@@ -46,6 +46,8 @@
   function cleanHtml(el) {
     const box = document.createElement("div");
     box.innerHTML = el.innerHTML;
+    /* Belt and braces: editing chrome is never content. */
+    for (const n of box.querySelectorAll(".blocktools,.sheet-back,.editbar")) n.remove();
     sanitize(box);
     return box.innerHTML.replace(/\s+/g, " ").trim();
   }
@@ -126,9 +128,10 @@ const CASES = ${JSON.stringify(cases, null, 2)};
     }
     const prose = document.querySelector("#case");
     if (prose) {
-      for (const bar of prose.querySelectorAll(".blocktools")) bar.remove();
-      for (const n of prose.querySelectorAll(".has-blocktools")) n.classList.remove("has-blocktools");
-      if (on && window.EditImages && EditImages.ready) EditImages.decorate(prose);
+      if (window.EditImages && EditImages.ready) {
+        EditImages.teardown();
+        if (on) EditImages.decorate(prose);
+      }
     }
     $("#editbar").hidden = !on;
     $("#edit-toggle").textContent = on ? "Cancel" : "Edit text";

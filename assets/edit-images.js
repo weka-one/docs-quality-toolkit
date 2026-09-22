@@ -100,60 +100,122 @@ window.EditImages = (function () {
     });
   }
 
-  /* ---- per-block controls, drawn in edit mode ---- */
+  /* ---- per-block controls ----
+     ONE toolbar, fixed-position, owned by <body>. An earlier version
+     appended a toolbar into each block; because those blocks are the
+     editable fields, the button labels were read back as content and
+     saved into the text. A toolbar that never lives inside an editable
+     element cannot do that. */
+  let bar = null, forIndex = -1, hideTimer = null, active = false, wired = null;
+
+  function ensureBar() {
+    if (bar) return bar;
+    bar = el("div", "blocktools");
+    bar.hidden = true;
+    bar.addEventListener("mouseenter", () => clearTimeout(hideTimer));
+    bar.addEventListener("mouseleave", scheduleHide);
+    document.body.append(bar);
+    return bar;
+  }
+  const scheduleHide = () => {
+    clearTimeout(hideTimer);
+    hideTimer = setTimeout(() => { if (bar) bar.hidden = true; forIndex = -1; }, 220);
+  };
+
+  function fill(i) {
+    if (!bar) return;
+    const body = CASES[ctx.slug].body;
+    if (!body[i]) return;
+    bar.replaceChildren();
+
+    const add = el("button", "", "+ Image");
+    add.type = "button";
+    add.title = "Add an image after this block";
+    add.addEventListener("click", () => openPicker(i));
+    bar.append(add);
+
+    const del = el("button", "", "Remove");
+    del.type = "button";
+    del.addEventListener("click", () => {
+      const what = body[i].t === "figure" ? "this image" : "this block";
+      if (!confirm(`Remove ${what}? Cancelling edit mode undoes it.`)) return;
+      body.splice(i, 1);
+      bar.hidden = true; forIndex = -1;
+      ctx.rerender(); ctx.markDirty();
+    });
+    bar.append(del);
+
+    if (body[i] && body[i].t === "figure") {
+      const group = (opts, key, cur) => {
+        bar.append(el("span", "blocktools__sep"));
+        for (const [val, label] of opts) {
+          const b = el("button", cur === val ? "is-on" : "", label);
+          b.type = "button";
+          b.addEventListener("click", () => {
+            body[i][key] = val;
+            bar.hidden = true; forIndex = -1;
+            ctx.rerender(); ctx.markDirty();
+          });
+          bar.append(b);
+        }
+      };
+      group(SIZES, "size", body[i].size || "full");
+      group(PLACE, "align", body[i].align || "");
+      const alt = el("button", "", "Alt text\u2026");
+      alt.type = "button";
+      alt.addEventListener("click", () => {
+        const next = prompt("Alt text — what does this image show?", body[i].alt || "");
+        if (next !== null) { body[i].alt = next.trim(); ctx.rerender(); ctx.markDirty(); }
+      });
+      bar.append(alt);
+    }
+  }
+
+  function showFor(node, i) {
+    if (!active || !bar || i < 0) return;
+    if (i === forIndex && !bar.hidden) return;
+    forIndex = i;
+    fill(i);
+    bar.hidden = false;
+    const r = node.getBoundingClientRect();
+    const w = bar.offsetWidth;
+    bar.style.top = Math.max(8, Math.round(r.top - bar.offsetHeight - 6)) + "px";
+    bar.style.left = Math.round(Math.min(r.right - w, window.innerWidth - w - 12)) + "px";
+  }
+
+  /* One delegated listener on the prose container, not one per block:
+     blocks survive a re-render and leaving edit mode, so per-block
+     listeners pile up and outlive the toolbar they point at. */
   function decorate(rootEl) {
     if (!ctx) return;
-    const body = CASES[ctx.slug].body;
-    const blocks = [...rootEl.querySelectorAll(".prose > *")];
+    active = true;
+    ensureBar();
+    const prose = rootEl.querySelector(".prose");
+    if (!prose || wired === prose) return;
+    wired = prose;
 
-    blocks.forEach((node, i) => {
-      const bar = el("div", "blocktools");
+    const locate = (target) => {
+      const node = target && target.closest ? target.closest(".prose > *") : null;
+      if (!node || node.parentElement !== prose) return null;
+      return { node, i: [...prose.children].indexOf(node) };
+    };
+    const enter = (e) => {
+      if (!active) return;
+      const hit = locate(e.target);
+      if (!hit) return;
+      clearTimeout(hideTimer);
+      showFor(hit.node, hit.i);
+    };
+    prose.addEventListener("mouseover", enter);
+    prose.addEventListener("focusin", enter);
+    prose.addEventListener("mouseleave", scheduleHide);
+  }
 
-      const add = el("button", "", "+ Image");
-      add.type = "button";
-      add.title = "Add an image after this block";
-      add.addEventListener("click", () => openPicker(i));
-      bar.append(add);
-
-      const del = el("button", "", "Remove");
-      del.type = "button";
-      del.title = "Remove this block";
-      del.addEventListener("click", () => {
-        const what = body[i].t === "figure" ? "this image" : "this block";
-        if (!confirm(`Remove ${what}? You can undo by cancelling edit mode.`)) return;
-        body.splice(i, 1);
-        ctx.rerender();
-        ctx.markDirty();
-      });
-      bar.append(del);
-
-      if (body[i] && body[i].t === "figure") {
-        bar.append(el("span", "blocktools__sep"));
-        for (const [val, label] of SIZES) {
-          const b = el("button", body[i].size === val ? "is-on" : "", label);
-          b.type = "button";
-          b.addEventListener("click", () => { body[i].size = val; ctx.rerender(); ctx.markDirty(); });
-          bar.append(b);
-        }
-        bar.append(el("span", "blocktools__sep"));
-        for (const [val, label] of PLACE) {
-          const b = el("button", (body[i].align || "") === val ? "is-on" : "", label);
-          b.type = "button";
-          b.addEventListener("click", () => { body[i].align = val; ctx.rerender(); ctx.markDirty(); });
-          bar.append(b);
-        }
-        const alt = el("button", "", "Alt text…");
-        alt.type = "button";
-        alt.addEventListener("click", () => {
-          const next = prompt("Alt text — what does this image show?", body[i].alt || "");
-          if (next !== null) { body[i].alt = next.trim(); ctx.rerender(); ctx.markDirty(); }
-        });
-        bar.append(alt);
-      }
-
-      node.classList.add("has-blocktools");
-      node.append(bar);
-    });
+  function teardown() {
+    active = false;
+    clearTimeout(hideTimer);
+    if (bar) { bar.remove(); bar = null; }
+    forIndex = -1;
   }
 
   return {
@@ -163,6 +225,7 @@ window.EditImages = (function () {
       return { canUpload: !!assets };
     },
     decorate,
+    teardown,
     get ready() { return !!ctx; }
   };
 })();
