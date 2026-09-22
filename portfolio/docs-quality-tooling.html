@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Checking documentation the way CI checks code — Wesley Kao</title>
+<meta name="description" content="Three tools that check documentation automatically: a style linter that cut violations 36% across 553 pages, a freshness checker with zero false alarms, and a pipeline for docs that don't live in Git.">
+<meta property="og:title" content="Checking documentation the way CI checks code">
+<meta property="og:description" content="A style linter, a freshness checker, and a monitoring pipeline — measured on 553 pages of documentation I didn't write.">
+<meta property="og:type" content="article">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=Newsreader:opsz,wght@6..72,300;6..72,400;6..72,500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/site.css">
+</head>
+<body data-base="../" data-page="docs-quality-tooling">
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="rail"></header>
+
+<main id="main">
+  <article class="case">
+    <a class="case__back" href="index.html">&larr; Portfolio</a>
+    <p class="case__kicker">Independent project · 2026</p>
+    <h1 class="case__title">Checking documentation the way CI checks code</h1>
+    <p class="case__deck">Three tools that catch what a style guide can't enforce by hand — and what happened when I tried to measure whether they actually worked.</p>
+
+    <dl class="meta">
+      <div><dt>Role</dt><dd>Sole author — design, build, evaluation</dd></div>
+      <div><dt>Built with</dt><dd>Vale, GitHub Actions, OpenAPI, a headless browser</dd></div>
+      <div><dt>Measured on</dt><dd>Meilisearch documentation (MIT, pinned commit)</dd></div>
+      <div><dt>Tests</dt><dd>273 across the three tools</dd></div>
+    </dl>
+
+    <dl class="stats">
+      <div><dt>553</dt><dd>pages of documentation I didn't write, used as the test corpus</dd></div>
+      <div><dt>36%</dt><dd>fewer style violations after the automated fixes ran</dd></div>
+      <div><dt>0</dt><dd>false alarms from the freshness checker at its shipping setting</dd></div>
+      <div><dt>23 of 40</dt><dd>style-guide rules a machine can check; the rest need a person</dd></div>
+    </dl>
+
+    <div class="prose">
+
+      <h2>Documentation breaks quietly</h2>
+      <p>It breaks in two ways, and neither announces itself. It drifts out of house style — one heading capitalized differently, one product name written three ways. And it drifts out of sync with the product, which is worse: the endpoint moved, the parameter was renamed, and the page still confidently says otherwise.</p>
+      <p>Both happen a page at a time. Neither shows up until a reader hits it. Code has linters and tests for exactly this problem; documentation usually has a style guide nobody has time to enforce by hand.</p>
+      <p>I built three tools to close that gap.</p>
+
+      <h2>What I built</h2>
+      <ul>
+        <li><strong>A style linter</strong> — 40 rules covering heading case, requirement words, banned punctuation, and product-term drift. Runs on every pull request and annotates the diff.</li>
+        <li><strong>A freshness checker</strong> — reads the code samples, routes and parameter tables on a page, then checks each claim against the product's API definition. Does this endpoint still exist? Is this parameter still called that? Is this value still valid?</li>
+        <li><strong>A monitoring pipeline</strong> — runs both on a schedule, for documentation that lives in a CMS rather than Git, where there is no pull request to gate and no diff to check.</li>
+      </ul>
+
+      <h2>Measured on documentation I didn't write</h2>
+      <p>A style rule tested against text you already agree with proves nothing. So I measured everything against 553 pages of the Meilisearch documentation — open source, pinned to a specific commit so the results reproduce — along with that project's official API definition. Nothing was hand-picked to pass, and several rules were retired once it turned out their output was mostly noise.</p>
+      <p>Running the rules and applying the automated fixes cut style violations by 36%, from 1,092 to 704.</p>
+
+      <h2>Four decisions that did most of the work</h2>
+      <ol>
+        <li><strong>Rules are tested like code.</strong> 173 test cases pin down both what each rule catches and what it must never flag. A rule with no tests fails the build.</li>
+        <li><strong>Code samples are provably untouched.</strong> A linter that rewrites prose must never reach inside a code block. A separate check proves all 16,541 protected segments come through byte-identical — which is what makes it safe to let the automated fixes run without a human reading every diff.</li>
+        <li><strong>It fails on new problems, not old ones.</strong> A quality tool that blocks work on day one over 400 pre-existing issues gets switched off in week one. This one only fails a build on findings that weren't there before.</li>
+        <li><strong>Policy lives in a config file.</strong> Which heading case, which callout labels, which languages are allowed — all configuration. Pointing the tool at a different style guide is an edit, not a rewrite.</li>
+      </ol>
+
+      <h2>Zero false alarms, on purpose</h2>
+      <p>At its shipping setting, the freshness checker reports 16 problems and all 16 are real.</p>
+      <p>That is a deliberate trade, not a lucky result. Told to report everything, it finds 51 problems and 30 of them are wrong — three false alarms for every two real ones, which is precisely how a tool gets ignored by the second week. Raising the confidence bar gives up about a quarter of the real problems and leaves a queue a writer can trust completely.</p>
+      <p>I would rather miss a few things than be the tool nobody believes. Making that trade visible, instead of guessing at it, is what the evaluation harness is for.</p>
+
+      <h2>Being graded on my own homework</h2>
+      <p>The first evaluation scored perfectly — full marks on both measures. That was a red flag, not a result.</p>
+      <p>I had written the answer key by reading the tool's own output. Measured that way, a tool cannot miss anything, because anything it missed never made it into the answer key in the first place. The score was guaranteed before I ran it.</p>
+
+      <div class="pull">
+        <p>So I built a second answer key by hand — checking every route and parameter on a sample of pages against the API definition, without looking at the tool at all. The first time I ran against it, the tool scored zero. That is what made it worth keeping.</p>
+      </div>
+
+      <p>Breaking the results down per detector showed where the inaccuracy actually lived: three of the five were already perfect, and effectively every false alarm came from one detector reading endpoints that belonged to a different service. Knowing that is the difference between tuning one thing and distrusting the whole tool.</p>
+
+      <h2>Documentation that doesn't live in Git</h2>
+      <p>Both tools assumed a folder of Markdown that a pull request changes. Plenty of documentation doesn't work that way. It lives in a CMS — no pull request, no diff, no file on disk until something goes and fetches one.</p>
+      <p>The checks were never the problem; they work on text. What needed replacing was the part that produces the text. There are now four ways in: a folder, a CMS read API, the published site, or a real browser for sites that assemble their pages on the fly. None of them hardcodes a particular CMS.</p>
+      <p>That last option taught me the most. Sites built in the browser serve an empty shell to a plain fetch, so my first attempt mined the data embedded in the page and scored every string on how much it read like English. Run against a real developer site, it returned the newsletter blurb, a legal modal, and an unsubscribe line — the site's own interface copy, which is exactly where the long grammatical sentences live. The actual documentation was in fragments too short to score. The approach wasn't undertuned; it was guessing.</p>
+      <p>Driving a real browser removed the guesswork and gave back something the data-mining never had: structure. A rendered page knows which part is navigation and which part is the article, so the checks can read the body and leave the furniture alone.</p>
+      <p>The obvious version of that was slow. A four-page crawl took 35 seconds, because every short page sat out the full timeout waiting for content that had already arrived. Ending the wait when the text stops changing brought it to 3.6 seconds — under a second per page, which makes a 500-page site a half-hour unattended run.</p>
+
+      <h2>What it doesn't do</h2>
+      <p>Of 40 checkable items in the style guide, 23 are automated and 17 need a person. Voice, argument structure, and whether an example is actually useful are not lintable. Claiming otherwise would have made the tool untrustworthy in the places where it does work.</p>
+      <p>Three other limits worth stating plainly:</p>
+      <ul>
+        <li>The figure for how much the freshness checker <em>finds</em> rests on a small hand-built sample. The figure for how much of what it finds is <em>real</em> is solid; the other half of the picture is thinner.</li>
+        <li>Everything was measured against one documentation set. How it performs on another, with different conventions, is unknown until someone runs it.</li>
+        <li>The 36% is what the automated fixes achieved, not everything the rules found. The rest was deliberately left for a human.</li>
+      </ul>
+
+      <h2>What I'd build next</h2>
+      <p>Not another detector. The freshness checker already knows an endpoint moved and knows what it moved to — which is enough to open a pull request with the correction rather than a ticket describing it.</p>
+      <p>The evaluation harness is what makes that safe to attempt. A tool that is right 41% of the time must never be allowed to write anything. A tool that is right every time, over a deliberately narrowed set of findings, can.</p>
+
+    </div>
+
+    <nav class="pager" id="pager" aria-label="More projects"></nav>
+  </article>
+
+  <footer>Built by hand with HTML, CSS, and a little JavaScript.</footer>
+</main>
+
+<script src="../assets/data.js"></script>
+<script src="../assets/site.js"></script>
+</body>
+</html>

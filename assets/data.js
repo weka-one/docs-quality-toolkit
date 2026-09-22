@@ -11,6 +11,14 @@
 
 const PROJECTS = [
   {
+    slug: "docs-quality-tooling",
+    title: "Checking documentation the way CI checks code",
+    nav: "Docs quality tooling",
+    org: "Independent project",
+    deck: "Three tools that catch what a style guide can't enforce by hand — a style linter, a freshness checker that compares docs against the API they describe, and a pipeline that runs both against documentation that doesn't live in Git.",
+    tags: ["Docs-as-code", "CI quality gates", "Evaluation", "Automation"]
+  },
+  {
     slug: "tiktok-minis",
     title: "Documentation as the onboarding path for a developer platform",
     nav: "TikTok Minis",
