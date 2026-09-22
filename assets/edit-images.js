@@ -55,6 +55,18 @@ window.EditImages = (function () {
     back.append(box);
     document.body.append(back);
 
+    /* Uploading needs the `assets` capability. Declaring it makes the
+       artifact organization-internal, which blocked the page outright,
+       so it is off: offer the URL field alone rather than a file input
+       that cannot work. Re-declaring `assets` at publish turns the
+       upload half back on with no other change. */
+    if (!assets) {
+      box.querySelector("#img-file").closest(".sheet__row").remove();
+      box.querySelector(".sheet__or").remove();
+      box.querySelector('label[for], .sheet__row input#img-url')
+         .closest(".sheet__row").querySelector("span").textContent = "Image URL";
+    }
+
     const status = box.querySelector("#img-status");
     const close = () => back.remove();
     back.addEventListener("click", (e) => { if (e.target === back) close(); });
@@ -62,12 +74,16 @@ window.EditImages = (function () {
     box.querySelector("#img-alt").focus();
 
     box.querySelector("#img-add").addEventListener("click", async () => {
-      const file = box.querySelector("#img-file").files[0];
+      const fileInput = box.querySelector("#img-file");
+      const file = fileInput ? fileInput.files[0] : null;
       const url = box.querySelector("#img-url").value.trim();
       const alt = box.querySelector("#img-alt").value.trim();
       const caption = box.querySelector("#img-cap").value.trim();
 
-      if (!file && !url) { status.textContent = "Choose a file or paste a URL."; return; }
+      if (!file && !url) {
+        status.textContent = assets ? "Choose a file or paste a URL." : "Paste an image URL.";
+        return;
+      }
       if (!alt) { status.textContent = "Alt text is required — describe what the image shows."; return; }
 
       let src = url, assetId = null;
