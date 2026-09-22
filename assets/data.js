@@ -43,14 +43,6 @@ const PROJECTS = [
     tags: ["Style guides", "Terminology", "Contribution workflow", "Localization"]
   },
   {
-    slug: "release-documentation",
-    title: "Documenting a product that shipped every two weeks",
-    nav: "Release documentation",
-    org: "TikTok · Effect House",
-    deck: "Keeping a learning-resources estate accurate against a release cadence that kept moving underneath it.",
-    tags: ["Release process", "Feature documentation", "Cross-functional review"]
-  },
-  {
     slug: "crash-course",
     title: "Teaching AR authoring to people who have never opened the tool",
     nav: "Crash Course",
