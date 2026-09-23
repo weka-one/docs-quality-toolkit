@@ -822,3 +822,182 @@ footer{
   .hero{grid-template-columns:1fr;}
   .hero__portrait{display:none;}
 }
+
+/* ---------------------------------------------------------------
+   Palettes. Each is a token swap: colours plus a type pairing.
+   The default (no data-palette) is Sage, defined at the top.
+   assets/theme.js sets data-palette and loads the matching fonts.
+   --------------------------------------------------------------- */
+:root[data-palette="vermilion"]{
+  --paper:#FAF6F0;
+  --sheet:#F2ECE2;
+  --ink:#1C1714;
+  --muted:#6E645C;
+  --rule:#E0D6C8;
+  --accent:#C0411F;
+  --accent-weak:#C0411F14;
+  --serif:"Fraunces", Iowan Old Style, Georgia, serif;
+  --sans:"Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root[data-palette="vermilion"]:not([data-theme="light"]){
+  --paper:#17120F;
+  --sheet:#1F1915;
+  --ink:#EFE7DD;
+  --muted:#A0948A;
+  --rule:#332A24;
+  --accent:#F2795A;
+  --accent-weak:#F2795A14;
+  }
+}
+:root[data-palette="vermilion"][data-theme="dark"]{
+  --paper:#17120F;
+  --sheet:#1F1915;
+  --ink:#EFE7DD;
+  --muted:#A0948A;
+  --rule:#332A24;
+  --accent:#F2795A;
+  --accent-weak:#F2795A14;
+}
+:root[data-palette="cobalt"]{
+  --paper:#EEF1F7;
+  --sheet:#F8FAFD;
+  --ink:#111827;
+  --muted:#5A6478;
+  --rule:#D2D9E6;
+  --accent:#1F45D8;
+  --accent-weak:#1F45D814;
+  --serif:"Source Serif 4", Iowan Old Style, Georgia, serif;
+  --sans:"Space Grotesk", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root[data-palette="cobalt"]:not([data-theme="light"]){
+  --paper:#0D1117;
+  --sheet:#141A22;
+  --ink:#E4E9F2;
+  --muted:#8B97AC;
+  --rule:#232C39;
+  --accent:#7AA2FF;
+  --accent-weak:#7AA2FF14;
+  }
+}
+:root[data-palette="cobalt"][data-theme="dark"]{
+  --paper:#0D1117;
+  --sheet:#141A22;
+  --ink:#E4E9F2;
+  --muted:#8B97AC;
+  --rule:#232C39;
+  --accent:#7AA2FF;
+  --accent-weak:#7AA2FF14;
+}
+:root[data-palette="plum"]{
+  --paper:#F4F0F4;
+  --sheet:#FBF8FB;
+  --ink:#1E1622;
+  --muted:#6A5F70;
+  --rule:#DFD5E0;
+  --accent:#8A2A6B;
+  --accent-weak:#8A2A6B14;
+  --serif:"Spectral", Iowan Old Style, Georgia, serif;
+  --sans:"DM Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root[data-palette="plum"]:not([data-theme="light"]){
+  --paper:#16121A;
+  --sheet:#1E1823;
+  --ink:#EDE6F0;
+  --muted:#9C90A4;
+  --rule:#2E2635;
+  --accent:#E48AC8;
+  --accent-weak:#E48AC814;
+  }
+}
+:root[data-palette="plum"][data-theme="dark"]{
+  --paper:#16121A;
+  --sheet:#1E1823;
+  --ink:#EDE6F0;
+  --muted:#9C90A4;
+  --rule:#2E2635;
+  --accent:#E48AC8;
+  --accent-weak:#E48AC814;
+}
+:root[data-palette="signal"]{
+  --paper:#FAFAFA;
+  --sheet:#F1F1F3;
+  --ink:#101012;
+  --muted:#5E5E66;
+  --rule:#E1E1E4;
+  --accent:#4F2FE8;
+  --accent-weak:#4F2FE814;
+  --serif:"Manrope", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --sans:"Manrope", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root[data-palette="signal"]:not([data-theme="light"]){
+  --paper:#0C0C0E;
+  --sheet:#151517;
+  --ink:#EDEDEF;
+  --muted:#92929C;
+  --rule:#252528;
+  --accent:#A78BFA;
+  --accent-weak:#A78BFA14;
+  }
+}
+:root[data-palette="signal"][data-theme="dark"]{
+  --paper:#0C0C0E;
+  --sheet:#151517;
+  --ink:#EDEDEF;
+  --muted:#92929C;
+  --rule:#252528;
+  --accent:#A78BFA;
+  --accent-weak:#A78BFA14;
+}
+
+/* ---------------------------------------------------------------
+   Accent touches — shared by every palette
+   --------------------------------------------------------------- */
+.h2 > span:first-child::before{
+  content:"";
+  display:inline-block;
+  width:.42rem;height:.42rem;
+  margin-right:.55rem;
+  vertical-align:.08em;
+  border-radius:1px;
+  background:var(--accent);
+}
+.card__num{color:var(--accent);}
+.stats dt{color:var(--accent);}
+.case__kicker{color:var(--accent);}
+.rail__link.is-on{color:var(--accent);}
+
+/* ---------------------------------------------------------------
+   Theme picker — a temporary control for choosing a palette
+   --------------------------------------------------------------- */
+.picker{
+  position:fixed;right:1rem;bottom:1rem;z-index:70;
+  display:flex;align-items:center;gap:.5rem;
+  padding:.45rem .55rem .45rem .8rem;
+  background:var(--sheet);
+  border:1px solid var(--rule);
+  border-radius:999px;
+  box-shadow:0 2px 12px rgb(0 0 0 / 8%);
+  font-size:.72rem;
+  color:var(--muted);
+}
+.picker__label{letter-spacing:.02em;}
+.picker button{
+  width:1.35rem;height:1.35rem;
+  padding:0;border-radius:50%;
+  border:1px solid rgb(0 0 0 / 18%);
+  cursor:pointer;
+  transition:transform .14s ease, box-shadow .14s ease;
+}
+.picker button:hover{transform:scale(1.12);}
+.picker button[aria-pressed="true"]{
+  box-shadow:0 0 0 2px var(--paper), 0 0 0 3.5px var(--ink);
+}
+@media (max-width:700px){
+  .picker{right:.6rem;bottom:.6rem;}
+  .picker__label{display:none;}
+}
+@media print{.picker{display:none;}}
