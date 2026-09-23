@@ -9,7 +9,7 @@ const PROJECTS = [
   {
     "slug": "docs-quality-tooling",
     "title": "Turning a style guide into something a machine can check",
-    "nav": "Automating a style guide",
+    "nav": "Style guide automation",
     "org": "Personal project",
     "deck": "How much of a style guide can a machine enforce on its own? I encoded the TikTok for Developers style guide as automated checks, built them with Claude Code, and measured them against 553 pages of public documentation. A proof of concept.",
     "tags": [
@@ -21,7 +21,7 @@ const PROJECTS = [
   },
   {
     "slug": "tiktok-minis",
-    "title": "Documentation as the onboarding path for a developer platform",
+    "title": "Documenting TikTok Minis so developers could onboard themselves",
     "nav": "TikTok Minis",
     "org": "TikTok · TikTok for Developers",
     "deck": "108 pages covering TikTok Minis, Mini Games, Mini Dramas, and Monetization — the self-service path that replaced manual developer onboarding during a seven-market expansion.",
@@ -34,7 +34,7 @@ const PROJECTS = [
   },
   {
     "slug": "docs-platform-migration",
-    "title": "Rebuilding a documentation platform and its information architecture",
+    "title": "Migrating a documentation platform, and rebuilding what it said",
     "nav": "Platform migration",
     "org": "TikTok · Effect House",
     "deck": "Moving 300+ guides off WordPress onto Docusaurus — and restructuring what they said while they moved.",
@@ -60,7 +60,7 @@ const PROJECTS = [
   },
   {
     "slug": "crash-course",
-    "title": "Teaching AR authoring to people who have never opened the tool",
+    "title": "Crash Course, an AR curriculum for people who have never opened the tool",
     "nav": "Crash Course",
     "org": "TikTok · Effect House",
     "deck": "An instructional-design program built from scratch: the highest-performing Effect House video series to date, plus the creator mission around it.",
@@ -81,7 +81,7 @@ const SITE = {
   },
   "hero": {
     "statement": "Wesley Kao",
-    "sub": "Senior Technical Writer at TikTok, working on developer documentation, information architecture, and the editorial systems that keep a large docs estate accurate as the product moves underneath it.",
+    "sub": "Senior Technical Writer at TikTok, working on developer documentation, information architecture, and the editorial systems that keep a large docs estate accurate as the products move underneath it.",
     "portrait": {
       "src": "assets/img/portrait.jpg",
       "alt": "Wesley Kao photographing his own reflection in a mirror, a red paper lantern behind him"

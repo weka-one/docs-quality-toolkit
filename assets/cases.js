@@ -7,7 +7,7 @@ const CASES = {
   "docs-quality-tooling": {
     "kicker": "Personal project · 2026",
     "title": "Turning a style guide into something a machine can check",
-    "deck": "I wrote TikTok's developer style guide. This was me finding out how much of it a machine could enforce on its own — and where that stops working.",
+    "deck": "I wrote TikTok's developer style guide. I wanted to find out how much of it a machine could enforce on its own — and where that stops working.",
     "description": "A personal project encoding a developer style guide as automated checks, built with Claude Code and measured against 553 pages of public documentation. A proof of concept.",
     "meta": [
       {
@@ -56,11 +56,11 @@ const CASES = {
       },
       {
         "t": "p",
-        "html": "A style guide only works if somebody enforces it. Across a large documentation set that means a person reading every page and noticing that a heading is capitalized wrong, or that a product name is written three different ways. Nobody has time for that, so mostly it does not happen."
+        "html": "A style guide only works if somebody enforces it. Across a large documentation set that means a person reading every page and noticing that a heading is capitalized wrong, or that a product name is written three different ways. This is time consuming and therefore not often addressed."
       },
       {
         "t": "p",
-        "html": "Programmers solved this a long time ago with linters — a tool that reads your work, checks it against a list of rules, and flags anything that breaks one. It runs every time, automatically, and never gets tired or distracted."
+        "html": "Linters can solve this problem: a tool reads your work, checks it against a list of rules, and flags anything that breaks one. It runs automatically every time, delivering consistent results."
       },
       {
         "t": "p",
@@ -88,10 +88,6 @@ const CASES = {
       },
       {
         "t": "p",
-        "html": "Worth spelling out, because \"automated documentation review\" sounds more mysterious than it is."
-      },
-      {
-        "t": "p",
         "html": "<strong>The style linter is built on Vale</strong>, an open-source tool for checking prose. Each rule is a small configuration file: a pattern to look for and a message to show when it matches. Vale reads the Markdown and reports every hit with a line number. The work was translating the style guide into 40 of those, and deciding which ones were worth having at all."
       },
       {
@@ -99,20 +95,16 @@ const CASES = {
         "html": "<strong>The freshness checker compares two descriptions of the same thing.</strong> An API has a machine-readable definition — an OpenAPI file listing every endpoint, parameter and valid value. The documentation describes that same API in prose and code samples. If the page says a parameter is called <code>user_id</code> and the definition says <code>userId</code>, the page is wrong. The checker reads both and reports the disagreements."
       },
       {
-        "t": "p",
-        "html": "Neither is clever. Both are ordinary comparisons done consistently — which is exactly what a person reading 500 pages cannot do."
-      },
-      {
         "t": "h2",
         "html": "How I built it"
       },
       {
         "t": "p",
-        "html": "I built it with Claude Code. I decided what the tools should do, wrote the rules, chose what to test them against, and said what evidence I wanted before believing any of it. Claude wrote the implementation. I read the output, ran it against real documentation, and decided what to keep."
+        "html": "I built these tools with Claude Code. I decided what the tools should do, wrote the rules, chose what to test them against, and said what evidence I wanted before believing any of it. Claude wrote the implementation. I read the output, ran it against real documentation, and decided what to keep."
       },
       {
         "t": "p",
-        "html": "I would rather say that plainly than imply otherwise, and not only because it is true. The interesting part of this project was never the code. It was working out what a machine can usefully check, what it cannot, and how to tell the difference — and that part does not come from the tool."
+        "html": "The most fascinating part of this project was not the code: it was working out what a machine can usefully check, what it cannot, and how to tell the difference, and that part does not come from the tool."
       },
       {
         "t": "h2",
@@ -124,7 +116,7 @@ const CASES = {
       },
       {
         "t": "p",
-        "html": "I used the Meilisearch documentation — 553 pages, open source, pinned to a specific version so the results can be checked — along with its official API definition. Nothing was picked to make the tools look good, and several rules were dropped once it was clear their output was mostly noise."
+        "html": "I used the Meilisearch documentation: 553 pages, open source, pinned to a specific version so the results can be checked, along with its official API definition. Nothing was picked to make the tools look good, and several rules were dropped once it was clear their output was mostly noise."
       },
       {
         "t": "p",
@@ -136,7 +128,7 @@ const CASES = {
       },
       {
         "t": "p",
-        "html": "Two terms, because they are how a tool like this is judged:"
+        "html": "The tool has two main criteria:&nbsp;"
       },
       {
         "t": "ul",
@@ -146,22 +138,14 @@ const CASES = {
         ]
       },
       {
-        "t": "p",
-        "html": "At its shipping setting the freshness checker reports 16 problems and all 16 are real. That is perfect precision."
-      },
-      {
-        "t": "p",
-        "html": "It gets there by staying quiet about anything it is unsure of. Told to report everything, it finds 51 problems and 30 of them are wrong — three false alarms for every two real ones. A tool like that gets switched off in a week. Raising the bar means missing about a quarter of the real problems and leaving a list a writer can trust completely."
-      },
-      {
         "t": "pull",
         "items": [
-          "That trade is the actual decision in this project. A tool nobody believes is worth less than a tool that finds less."
+          "A tool nobody believes is worth less than a tool that finds less."
         ]
       },
       {
         "t": "h2",
-        "html": "The mistake worth asking me about"
+        "html": "The mistake worth investigating"
       },
       {
         "t": "p",
@@ -177,7 +161,7 @@ const CASES = {
       },
       {
         "t": "p",
-        "html": "I keep this in the write-up on purpose. It is easy to produce a number that looks like evidence and is not, and I would rather be the person who caught it than the person who shipped it."
+        "html": "It is easy to produce a number that looks like evidence and is not, and I would rather be the person who caught it than the person who shipped it."
       },
       {
         "t": "h2",
@@ -185,7 +169,7 @@ const CASES = {
       },
       {
         "t": "p",
-        "html": "The rules encode a real style guide and the results are measured on real documentation. But of 40 checkable items in that style guide, 23 can be automated and 17 need a person — voice, argument structure, whether an example is actually useful. I would not claim more than that."
+        "html": "The rules encode a real style guide and the results are measured on real documentation. But of 40 checkable items in that style guide, 23 can be automated and 17 need a person — voice, argument structure, whether an example is actually useful."
       },
       {
         "t": "p",
@@ -193,13 +177,13 @@ const CASES = {
       },
       {
         "t": "p",
-        "html": "So the approach is demonstrated and the numbers are real, and putting it to work where I am would be a separate project. That seemed worth saying outright."
+        "html": "The approach is demonstrated and the numbers are real. Putting this tool to work on TikTok's developer documentation is a continuing endeavor, but the foundation for it has been established."
       }
     ]
   },
   "tiktok-minis": {
     "kicker": "TikTok · TikTok for Developers · 2025–present",
-    "title": "Documentation as the onboarding path for a developer platform",
+    "title": "Documenting TikTok Minis so developers could onboard themselves",
     "deck": "The public documentation set for TikTok Minis and Mini Games — the self-service path that replaced manual developer onboarding during a seven-market expansion.",
     "description": "Authoring 108 pages of public documentation for TikTok Minis and Mini Games: the self-service onboarding path that took biweekly app launches from under 10 to over 200.",
     "meta": [
@@ -353,7 +337,7 @@ const CASES = {
   },
   "docs-platform-migration": {
     "kicker": "TikTok · Effect House · 2023–2025",
-    "title": "Rebuilding a documentation platform and its information architecture",
+    "title": "Migrating a documentation platform, and rebuilding what it said",
     "deck": "Moving 300+ guides off WordPress onto Docusaurus — and restructuring what they said while they moved.",
     "description": "Moving 300+ Effect House guides off WordPress onto Docusaurus, rebuilding the information architecture in the same pass, and shipping 256 redirect rules so nothing broke.",
     "meta": [
@@ -632,7 +616,7 @@ const CASES = {
   },
   "crash-course": {
     "kicker": "TikTok · Effect House · 2023–2025",
-    "title": "Teaching an AR program to people who have never opened the tool",
+    "title": "Crash Course, an AR curriculum for people who have never opened the tool",
     "deck": "An instructional-design program built from scratch: the highest-performing Effect House video series to date, plus the creator mission around it.",
     "description": "Designing the Effect House Crash Course and the #MyFirstTikTokEffect mission: the highest-performing Effect House video series to date, built on explicit learning objectives.",
     "meta": [
