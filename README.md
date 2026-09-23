@@ -13,6 +13,7 @@ portfolio/<slug>.html       one case study per project
 assets/data.js              all content — the only file to edit for copy
 assets/site.css             tokens, layout, components
 assets/site.js              rail, cards, writing index, pager, scroll-spy
+scripts/build.mjs           quality gate, then stage _site/ for deploy
 scripts/check.mjs           quality gate, run in CI
 scripts/terminology.json    editorial rules the gate enforces
 ```
@@ -41,14 +42,26 @@ Run `node scripts/check.mjs` before pushing.
 
 ## Deployment
 
-Pushing to `main` publishes the site to GitHub Pages
-(`.github/workflows/deploy.yml`). The deploy job waits on the quality
-gate, so a push that fails `scripts/check.mjs` never reaches the live
-site and the previous version keeps serving.
+Hosted on Cloudflare Pages, built from the private repository. Pushing
+to `main` publishes; every pull request gets its own preview URL.
 
-Only `index.html`, `assets/` and `portfolio/` are uploaded. The scripts,
-the workflows and this README stay in the repository and off the web
-server.
+| Cloudflare setting | Value |
+| --- | --- |
+| Framework preset | None |
+| Build command | `node scripts/build.mjs` |
+| Build output directory | `_site` |
+| Root directory | *(leave empty)* |
+| `NODE_VERSION` | `22` |
+
+`scripts/build.mjs` runs the quality gate first and exits non-zero if it
+fails, which fails the Cloudflare build — so a broken link or a
+terminology error never reaches the live site, and the previous
+deployment keeps serving. Only then does it stage `index.html`,
+`assets/` and `portfolio/` into `_site/`. The scripts, the workflow and
+this README stay in the repository and off the web server.
+
+`_site/` is generated and git-ignored. Run `node scripts/build.mjs`
+locally to reproduce exactly what gets deployed.
 
 ## Quality gate
 

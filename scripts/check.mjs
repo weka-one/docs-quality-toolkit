@@ -36,7 +36,8 @@ const warn = (...a) => report("warn", ...a);
 const pages = [];
 (function walk(dir) {
   for (const entry of readdirSync(dir)) {
-    if (entry === ".git" || entry === "node_modules") continue;
+    // _site is the built copy of these same pages; walking it double-counts.
+    if (entry === ".git" || entry === "node_modules" || entry === "_site") continue;
     const path = join(dir, entry);
     if (statSync(path).isDirectory()) walk(path);
     else if (entry.endsWith(".html")) pages.push(path);
