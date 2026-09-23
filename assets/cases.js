@@ -138,9 +138,67 @@ const CASES = {
         ]
       },
       {
+        "t": "p",
+        "html": "Both are governed by a single dial. Every finding the checker produces carries a confidence score between 0 and 1, built out of what it was able to verify: whether it could tell which server the claim was aimed at, whether the claim came from a code sample or from looser prose, and whether the surrounding page looks like it is about this API at all. The tool reports only the findings that score above a set threshold."
+      },
+      {
+        "t": "p",
+        "html": "Nearly every false alarm traced back to one cause. A documentation page often discusses more than one API. A migration guide explaining how to move off Elasticsearch is full of Elasticsearch addresses, and none of those appear in Meilisearch's index, so each one looks like an endpoint that no longer exists. That single confusion accounts for effectively all 30 of the false positives below."
+      },
+      {
+        "t": "table",
+        "caption": "What the confidence threshold buys, measured on the Meilisearch corpus. The recall column carries a caveat, covered in the next section.",
+        "head": [
+          "Threshold",
+          "Reported",
+          "Real",
+          "False alarms",
+          "Precision",
+          "Recall"
+        ],
+        "rows": [
+          [
+            "0.00 (report everything)",
+            "51",
+            "21",
+            "30",
+            "0.41",
+            "1.00"
+          ],
+          [
+            "0.45",
+            "20",
+            "16",
+            "4",
+            "0.80",
+            "0.76"
+          ],
+          [
+            "<strong>0.60 (what it ships with)</strong>",
+            "<strong>16</strong>",
+            "<strong>16</strong>",
+            "<strong>0</strong>",
+            "<strong>1.00</strong>",
+            "<strong>0.76</strong>"
+          ],
+          [
+            "0.70",
+            "5",
+            "5",
+            "0",
+            "1.00",
+            "0.24"
+          ]
+        ]
+      },
+      {
+        "t": "p",
+        "html": "That table is the argument for 0.60. Reporting everything means three false alarms for every two real findings, which is how a tool gets switched off in its first week. Raising the bar from 0.45 to 0.60 costs nothing: the same 16 real findings survive and the last four false alarms disappear. Going further to 0.70 buys no additional precision and discards two thirds of what the tool found. 0.60 is the point where precision reaches 1.00 and recall has not yet started to fall."
+      },
+      {
         "t": "pull",
         "items": [
-          "A tool nobody believes is worth less than a tool that finds less."
+          "A writer with a short list they can trust will work through it. A writer with a long list that is wrong half the time stops opening it."
         ]
       },
       {
@@ -283,7 +341,8 @@ const CASES = {
             "Total",
             "108"
           ]
-        ]
+        ],
+        "foot": true
       },
       {
         "t": "h2",

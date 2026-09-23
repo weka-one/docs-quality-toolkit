@@ -49,12 +49,11 @@ function renderCase() {
           ${b.caption ? `<caption data-edit-html="${p("body", i, "caption")}">${b.caption}</caption>` : ""}
           <thead><tr>${b.head.map((h, k) =>
             `<th scope="col" data-edit="${p("body", i, "head", k)}">${esc(h)}</th>`).join("")}</tr></thead>
-          <tbody>${b.rows.slice(0, -1).map((row, r) =>
+          <tbody>${(b.foot ? b.rows.slice(0, -1) : b.rows).map((row, r) =>
             `<tr>${row.map((cell, k) =>
               `<td data-edit-html="${p("body", i, "rows", r, k)}">${cell}</td>`).join("")}</tr>`).join("")}</tbody>
-          <tfoot>${b.rows.slice(-1).map((row, r) =>
-            `<tr>${row.map((cell, k) =>
-              `<td data-edit-html="${p("body", i, "rows", b.rows.length - 1, k)}">${cell}</td>`).join("")}</tr>`).join("")}</tfoot>
+          ${b.foot ? `<tfoot><tr>${b.rows[b.rows.length - 1].map((cell, k) =>
+            `<td data-edit-html="${p("body", i, "rows", b.rows.length - 1, k)}">${cell}</td>`).join("")}</tr></tfoot>` : ""}
         </table>`;
       default:
         return "";
