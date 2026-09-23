@@ -39,6 +39,17 @@ slug, and write it.
 
 Run `node scripts/check.mjs` before pushing.
 
+## Deployment
+
+Pushing to `main` publishes the site to GitHub Pages
+(`.github/workflows/deploy.yml`). The deploy job waits on the quality
+gate, so a push that fails `scripts/check.mjs` never reaches the live
+site and the previous version keeps serving.
+
+Only `index.html`, `assets/` and `portfolio/` are uploaded. The scripts,
+the workflows and this README stay in the repository and off the web
+server.
+
 ## Quality gate
 
 `scripts/check.mjs` runs on every push and pull request
