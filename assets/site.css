@@ -2,16 +2,16 @@
    Tokens
    --------------------------------------------------------------- */
 :root{
-  --paper:#E8EAE6;
-  --sheet:#F3F5F1;
-  --ink:#181B18;
-  --muted:#676D66;
-  --rule:#CDD1C9;
-  --accent:#0F5A4C;
-  --accent-weak:#0F5A4C14;
+  --paper:#FAFAFA;
+  --sheet:#F1F1F3;
+  --ink:#101012;
+  --muted:#5E5E66;
+  --rule:#E1E1E4;
+  --accent:#4F2FE8;
+  --accent-weak:#4F2FE81A;
 
-  --sans:"IBM Plex Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  --serif:"Newsreader", Iowan Old Style, Georgia, "Times New Roman", serif;
+  --sans:"Manrope", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --serif:"Manrope", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 
   --rail:15rem;
   --gut:clamp(1.25rem, 4vw, 3.5rem);
@@ -19,23 +19,23 @@
 }
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
-    --paper:#131614;
-    --sheet:#1A1E1B;
-    --ink:#E6EAE4;
-    --muted:#98A097;
-    --rule:#2B312C;
-    --accent:#63C7AC;
-    --accent-weak:#63C7AC1A;
+    --paper:#0C0C0E;
+    --sheet:#151517;
+    --ink:#EDEDEF;
+    --muted:#92929C;
+    --rule:#252528;
+    --accent:#A78BFA;
+    --accent-weak:#A78BFA1A;
   }
 }
 :root[data-theme="dark"]{
-  --paper:#131614;
-  --sheet:#1A1E1B;
-  --ink:#E6EAE4;
-  --muted:#98A097;
-  --rule:#2B312C;
-  --accent:#63C7AC;
-  --accent-weak:#63C7AC1A;
+  --paper:#0C0C0E;
+  --sheet:#151517;
+  --ink:#EDEDEF;
+  --muted:#92929C;
+  --rule:#252528;
+  --accent:#A78BFA;
+  --accent-weak:#A78BFA1A;
 }
 
 /* ---------------------------------------------------------------
@@ -200,10 +200,10 @@ section:first-of-type,#about{border-top:0;}
 .hero__statement{
   font-family:var(--serif);
   font-optical-sizing:auto;
-  font-weight:400;
+  font-weight:600;
   font-size:clamp(2rem, 1.1rem + 3.6vw, 3.9rem);
   line-height:1.1;
-  letter-spacing:-.02em;
+  letter-spacing:-.035em;
   margin:0;
   max-width:19ch;
   text-wrap:balance;
@@ -416,7 +416,7 @@ footer{
 .case__title{
   font-family:var(--serif);
   font-optical-sizing:auto;
-  font-weight:400;
+  font-weight:600;
   font-size:clamp(1.9rem, 1.2rem + 2.4vw, 3rem);
   line-height:1.12;
   letter-spacing:-.02em;
@@ -457,7 +457,7 @@ footer{
 .stats dt{
   font-family:var(--serif);
   font-size:clamp(1.6rem,1.2rem + 1.2vw,2.1rem);
-  font-weight:500;
+  font-weight:700;
   line-height:1.05;
   letter-spacing:-.02em;
   margin:0;
@@ -476,9 +476,9 @@ footer{
 }
 .prose h2{
   font-family:var(--serif);
-  font-weight:500;
+  font-weight:600;
   font-size:clamp(1.35rem,1.15rem + .7vw,1.7rem);
-  letter-spacing:-.015em;
+  letter-spacing:-.025em;
   line-height:1.25;
   margin:3.25rem 0 1.1rem;
   max-width:28ch;
@@ -823,138 +823,9 @@ footer{
   .hero__portrait{display:none;}
 }
 
-/* ---------------------------------------------------------------
-   Palettes. Each is a token swap: colours plus a type pairing.
-   The default (no data-palette) is Sage, defined at the top.
-   assets/theme.js sets data-palette and loads the matching fonts.
-   --------------------------------------------------------------- */
-:root[data-palette="vermilion"]{
-  --paper:#FAF6F0;
-  --sheet:#F2ECE2;
-  --ink:#1C1714;
-  --muted:#6E645C;
-  --rule:#E0D6C8;
-  --accent:#C0411F;
-  --accent-weak:#C0411F14;
-  --serif:"Fraunces", Iowan Old Style, Georgia, serif;
-  --sans:"Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-}
-@media (prefers-color-scheme: dark){
-  :root[data-palette="vermilion"]:not([data-theme="light"]){
-  --paper:#17120F;
-  --sheet:#1F1915;
-  --ink:#EFE7DD;
-  --muted:#A0948A;
-  --rule:#332A24;
-  --accent:#F2795A;
-  --accent-weak:#F2795A14;
-  }
-}
-:root[data-palette="vermilion"][data-theme="dark"]{
-  --paper:#17120F;
-  --sheet:#1F1915;
-  --ink:#EFE7DD;
-  --muted:#A0948A;
-  --rule:#332A24;
-  --accent:#F2795A;
-  --accent-weak:#F2795A14;
-}
-:root[data-palette="cobalt"]{
-  --paper:#EEF1F7;
-  --sheet:#F8FAFD;
-  --ink:#111827;
-  --muted:#5A6478;
-  --rule:#D2D9E6;
-  --accent:#1F45D8;
-  --accent-weak:#1F45D814;
-  --serif:"Source Serif 4", Iowan Old Style, Georgia, serif;
-  --sans:"Space Grotesk", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-}
-@media (prefers-color-scheme: dark){
-  :root[data-palette="cobalt"]:not([data-theme="light"]){
-  --paper:#0D1117;
-  --sheet:#141A22;
-  --ink:#E4E9F2;
-  --muted:#8B97AC;
-  --rule:#232C39;
-  --accent:#7AA2FF;
-  --accent-weak:#7AA2FF14;
-  }
-}
-:root[data-palette="cobalt"][data-theme="dark"]{
-  --paper:#0D1117;
-  --sheet:#141A22;
-  --ink:#E4E9F2;
-  --muted:#8B97AC;
-  --rule:#232C39;
-  --accent:#7AA2FF;
-  --accent-weak:#7AA2FF14;
-}
-:root[data-palette="plum"]{
-  --paper:#F4F0F4;
-  --sheet:#FBF8FB;
-  --ink:#1E1622;
-  --muted:#6A5F70;
-  --rule:#DFD5E0;
-  --accent:#8A2A6B;
-  --accent-weak:#8A2A6B14;
-  --serif:"Spectral", Iowan Old Style, Georgia, serif;
-  --sans:"DM Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-}
-@media (prefers-color-scheme: dark){
-  :root[data-palette="plum"]:not([data-theme="light"]){
-  --paper:#16121A;
-  --sheet:#1E1823;
-  --ink:#EDE6F0;
-  --muted:#9C90A4;
-  --rule:#2E2635;
-  --accent:#E48AC8;
-  --accent-weak:#E48AC814;
-  }
-}
-:root[data-palette="plum"][data-theme="dark"]{
-  --paper:#16121A;
-  --sheet:#1E1823;
-  --ink:#EDE6F0;
-  --muted:#9C90A4;
-  --rule:#2E2635;
-  --accent:#E48AC8;
-  --accent-weak:#E48AC814;
-}
-:root[data-palette="signal"]{
-  --paper:#FAFAFA;
-  --sheet:#F1F1F3;
-  --ink:#101012;
-  --muted:#5E5E66;
-  --rule:#E1E1E4;
-  --accent:#4F2FE8;
-  --accent-weak:#4F2FE814;
-  --serif:"Manrope", ui-sans-serif, system-ui, -apple-system, sans-serif;
-  --sans:"Manrope", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-}
-@media (prefers-color-scheme: dark){
-  :root[data-palette="signal"]:not([data-theme="light"]){
-  --paper:#0C0C0E;
-  --sheet:#151517;
-  --ink:#EDEDEF;
-  --muted:#92929C;
-  --rule:#252528;
-  --accent:#A78BFA;
-  --accent-weak:#A78BFA14;
-  }
-}
-:root[data-palette="signal"][data-theme="dark"]{
-  --paper:#0C0C0E;
-  --sheet:#151517;
-  --ink:#EDEDEF;
-  --muted:#92929C;
-  --rule:#252528;
-  --accent:#A78BFA;
-  --accent-weak:#A78BFA14;
-}
 
 /* ---------------------------------------------------------------
-   Accent touches — shared by every palette
+   Accent
    --------------------------------------------------------------- */
 .h2 > span:first-child::before{
   content:"";
@@ -969,35 +840,3 @@ footer{
 .stats dt{color:var(--accent);}
 .case__kicker{color:var(--accent);}
 .rail__link.is-on{color:var(--accent);}
-
-/* ---------------------------------------------------------------
-   Theme picker — a temporary control for choosing a palette
-   --------------------------------------------------------------- */
-.picker{
-  position:fixed;right:1rem;bottom:1rem;z-index:70;
-  display:flex;align-items:center;gap:.5rem;
-  padding:.45rem .55rem .45rem .8rem;
-  background:var(--sheet);
-  border:1px solid var(--rule);
-  border-radius:999px;
-  box-shadow:0 2px 12px rgb(0 0 0 / 8%);
-  font-size:.72rem;
-  color:var(--muted);
-}
-.picker__label{letter-spacing:.02em;}
-.picker button{
-  width:1.35rem;height:1.35rem;
-  padding:0;border-radius:50%;
-  border:1px solid rgb(0 0 0 / 18%);
-  cursor:pointer;
-  transition:transform .14s ease, box-shadow .14s ease;
-}
-.picker button:hover{transform:scale(1.12);}
-.picker button[aria-pressed="true"]{
-  box-shadow:0 0 0 2px var(--paper), 0 0 0 3.5px var(--ink);
-}
-@media (max-width:700px){
-  .picker{right:.6rem;bottom:.6rem;}
-  .picker__label{display:none;}
-}
-@media print{.picker{display:none;}}
