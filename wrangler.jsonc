@@ -1,0 +1,15 @@
+/* Cloudflare deployment config.
+ *
+ * The Workers dashboard no longer has a "build output directory" field;
+ * the directory to serve is declared here instead. Everything in _site/
+ * is uploaded as static assets, with no Worker script in front of it.
+ *
+ * Dashboard needs only: build command `node scripts/build.mjs`.
+ */
+{
+  "name": "wesley-kao-portfolio",
+  "compatibility_date": "2026-09-23",
+  "assets": {
+    "directory": "./_site"
+  }
+}

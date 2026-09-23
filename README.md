@@ -13,6 +13,7 @@ portfolio/<slug>.html       one case study per project
 assets/data.js              all content — the only file to edit for copy
 assets/site.css             tokens, layout, components
 assets/site.js              rail, cards, writing index, pager, scroll-spy
+wrangler.jsonc              Cloudflare config — which directory to serve
 scripts/build.mjs           quality gate, then stage _site/ for deploy
 scripts/check.mjs           quality gate, run in CI
 scripts/terminology.json    editorial rules the gate enforces
@@ -47,11 +48,20 @@ to `main` publishes; every pull request gets its own preview URL.
 
 | Cloudflare setting | Value |
 | --- | --- |
-| Framework preset | None |
 | Build command | `node scripts/build.mjs` |
-| Build output directory | `_site` |
+| Deploy command | *(leave as the default)* |
 | Root directory | *(leave empty)* |
 | `NODE_VERSION` | `22` |
+
+The directory to serve is **not** a dashboard setting. Newer Cloudflare
+projects read it from `wrangler.jsonc` in this repository:
+
+```jsonc
+{ "assets": { "directory": "./_site" } }
+```
+
+Older Pages projects have a "Build output directory" field instead; set
+it to `_site` and the wrangler file is ignored.
 
 `scripts/build.mjs` runs the quality gate first and exits non-zero if it
 fails, which fails the Cloudflare build — so a broken link or a
